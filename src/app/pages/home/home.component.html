@@ -1,0 +1,26 @@
+<div class="cards">
+  <div class="card" *ngFor="let item of resumen">
+    <div class="icon">{{ item.icon }}</div>
+    <p>{{ item.label }}</p>
+    <h2>{{ item.value }}</h2>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Reservas recientes</h3>
+  <table>
+    <tr>
+      <th>Cliente</th>
+      <th>Paquete</th>
+      <th>Fecha</th>
+      <th>Estado</th>
+    </tr>
+
+    <tr *ngFor="let r of reservas">
+      <td>{{ r.cliente }}</td>
+      <td>{{ r.paquete }}</td>
+      <td>{{ r.fecha }}</td>
+      <td><span class="estado {{ r.estado | lowercase }}">{{ r.estado }}</span></td>
+    </tr>
+  </table>
+</div>

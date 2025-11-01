@@ -1,0 +1,19 @@
+.navbar {
+  background: white;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 20px;
+}

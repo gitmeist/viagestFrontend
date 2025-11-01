@@ -1,0 +1,45 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Pago } from '../entities/pago';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root' // Singleton global
+})
+export class PagoService {
+
+  private readonly baseUrl = `${environment.apiUrl}/pagos`;
+
+  constructor(private http: HttpClient) { }
+
+  /** Crear nuevo pago */
+  alta(pago: Pago): Observable<Pago> {
+    return this.http.post<Pago>(this.baseUrl, pago);
+  }
+
+  /** Modificar pago existente */
+  modificar(id: number, pago: Pago): Observable<Pago> {
+    return this.http.put< Pago>(`${this.baseUrl}/${id}`, pago);
+  }
+
+  /** Eliminar pago por ID */
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  /** Buscar pago por ID */
+  buscarUno(id: number): Observable<Pago> {
+    return this.http.get<Pago>(`${this.baseUrl}/${id}`);
+  }
+
+  /** Listar todos los pagos */
+  buscarTodos(): Observable<Pago[]> {
+    return this.http.get<Pago[]>(this.baseUrl);
+  }
+
+  /** Buscar pagos por reserva */
+  buscarPorReserva(idReserva: number): Observable<Pago[]> {
+    return this.http.get<Pago[]>(`${this.baseUrl}/reserva/${idReserva}`);
+  }
+}

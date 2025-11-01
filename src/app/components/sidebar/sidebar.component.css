@@ -1,0 +1,41 @@
+.sidebar {
+  width: 240px;
+  background: #0d385a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.logo {
+  padding: 0 20px;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu a {
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #dbe7f3;
+  font-size: 15px;
+  transition: .2s;
+}
+
+.menu a:hover,
+.menu a.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.footer {
+  padding: 15px 20px;
+  font-size: 14px;
+  border-top: 1px solid rgba(255, 255, 255, .15);
+}

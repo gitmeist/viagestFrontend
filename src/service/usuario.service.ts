@@ -1,0 +1,45 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Usuario } from '../entities/usuario';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root' // Singleton global
+})
+export class UsuarioService {
+
+  private readonly baseUrl = `${environment.apiUrl}/usuarios`;
+
+  constructor(private http: HttpClient) { }
+
+  /** Listar todos los usuarios */
+  listarTodos(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(this.baseUrl);
+  }
+
+  /** Obtener usuario por username */
+  buscarPorUsername(username: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.baseUrl}/${username}`);
+  }
+
+  /** Crear nuevo usuario */
+  crear(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(this.baseUrl, usuario);
+  }
+
+  /** Actualizar usuario */
+  actualizar(usuario: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(this.baseUrl, usuario);
+  }
+
+  /** Eliminar usuario por username */
+  eliminar(username: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${username}`);
+  }
+
+  /** Listar usuarios por rol */
+  buscarPorRol(rol: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}/rol/${rol}`);
+  }
+}

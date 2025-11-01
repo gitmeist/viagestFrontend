@@ -1,0 +1,50 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.05);
+}
+
+.card .icon {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background: #f4f7fa;
+}
+
+.estado {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.estado.confirmada { background: #c8f3d5; color: #0c662e; }
+.estado.pendiente { background: #f9ecb4; color: #8c6b00; }
+.estado.completada { background: #d5dffb; color: #254a96; }
