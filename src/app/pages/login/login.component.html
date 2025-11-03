@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="container">
+  <div class="login-box">
+
+    <div class="card-login">
+      <img src="assets/logo.png" alt="ViaGest Logo" class="logo">
+
+      <h2>Bienvenido a ViaGest</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <label>Email o nombre de usuario:</label>
+        <input type="text" formControlName="username" placeholder="Introduce tu email o nombre de usuario">
+
+        <label>Contraseña:</label>
+        <input type="password" formControlName="password" placeholder="Introduce tu contraseña">
+
+        <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
+
+      </form>
+    </div>
+
+  </div>
+
+  <div class="bg-panel"></div>
+</div>

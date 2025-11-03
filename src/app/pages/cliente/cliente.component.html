@@ -1,0 +1,42 @@
+<div class="clientes-container">
+  <div class="filtros">
+    <input type="text" placeholder="Buscar por nombre, email o CIF" [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
+    <input type="date" placeholder="Filtrar por fecha de registro" [(ngModel)]="filtroFechaRegistro" (change)="aplicarFiltros()" />
+    <input type="text" placeholder="Filtrar por email" [(ngModel)]="filtroEmail" (input)="aplicarFiltros()" />
+  </div>
+
+  <table class="tabla-clientes">
+    <thead>
+      <tr>
+        <th>CIF</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Domicilio</th>
+        <th>Fecha Registro</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientesFiltrados">
+        <td>{{ cliente.cif }}</td>
+        <td>{{ cliente.nombre }}</td>
+        <td>{{ cliente.email }}</td>
+        <td>{{ cliente.telefono }}</td>
+        <td>{{ cliente.domicilio }}</td>
+        <td>{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+        <td>
+          <button (click)="ver(cliente)">Ver</button>
+          <button (click)="editar(cliente)">Editar</button>
+          <button (click)="borrar(cliente)">Borrar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="paginacion">
+    <button [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">Anterior</button>
+    <span>Página {{ paginaActual }}</span>
+    <button [disabled]="clientesFiltrados.length < clientesPorPagina" (click)="cambiarPagina(paginaActual + 1)">Siguiente</button>
+  </div>
+</div>

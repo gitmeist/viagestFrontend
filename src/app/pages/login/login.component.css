@@ -1,0 +1,64 @@
+/* Contenedor principal dividido en dos */
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* Caja blanca centrada */
+.login-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  background: #f3f5f7;
+}
+
+/* Tarjeta del formulario */
+.card-login {
+  background: #fff;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+  width: 380px;
+  text-align: center;
+}
+
+.logo {
+  width: 130px;
+  margin-bottom: 1rem;
+}
+
+/* Inputs */
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+/* Botón */
+button {
+  width: 100%;
+  background: #4aa1a0;
+  border: none;
+  padding: 12px;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: #9bb8b8;
+  cursor: not-allowed;
+}
+
+/* Panel derecho con degradado */
+.bg-panel {
+  width: 50%;
+  background: linear-gradient(to bottom, #4bb4a5, #0c3c6e);
+}
