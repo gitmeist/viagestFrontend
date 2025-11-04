@@ -1,0 +1,71 @@
+<div class="reservas-container">
+  <h2>Listado de Reservas</h2>
+
+  <div class="acciones">
+    <input type="text" placeholder="Buscar por cliente..." />
+    <select>
+      <option value="">Todos los estados</option>
+      <option value="PENDIENTE">Pendiente</option>
+      <option value="CONFIRMADA">Confirmada</option>
+      <option value="CANCELADA">Cancelada</option>
+    </select>
+    <div class="rango-fecha">
+      <input type="date" />
+      <input type="date" />
+    </div>
+  </div>
+
+  <table class="tabla-reservas">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Paquete</th>
+        <th>Fecha Reserva</th>
+        <th>Fecha Viaje</th>
+        <th>Personas</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reserva of reservas">
+        <td>{{ reserva.idReserva }}</td>
+        <td>{{ reserva.cliente.nombre }}</td>
+        <td>{{ reserva.paquete.nombre }}</td>
+        <td>{{ reserva.fechaReserva | date }}</td>
+        <td>{{ reserva.fechaViaje | date }}</td>
+        <td>{{ reserva.numPersonas }}</td>
+        <td>
+          <span class="estado" [ngClass]="reserva.estadoReserva.toLowerCase()">
+            {{ reserva.estadoReserva }}
+          </span>
+        </td>
+        <td>
+          <button title="Editar">✏️</button>
+          <button title="Eliminar">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="paginacion">
+    <button>Anterior</button>
+    <button>Siguiente</button>
+  </div>
+
+  <div class="resumen">
+    <div class="card total">
+      Total Reservas: <h3>40</h3>
+    </div>
+    <div class="card pendientes">
+      Pendientes: <h3>12</h3>
+    </div>
+    <div class="card confirmadas">
+      Confirmadas: <h3>22</h3>
+    </div>
+    <div class="card canceladas">
+      Canceladas: <h3>6</h3>
+    </div>
+  </div>
+</div>

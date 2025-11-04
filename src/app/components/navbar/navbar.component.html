@@ -1,8 +1,9 @@
 <header class="navbar">
-  <h2>Bienvenida, Cristina</h2>
+  <h2>Bienvenida, {{ username || 'Invitado' }}</h2>
 
   <div class="actions">
     <span class="icon">🔔</span>
     <span class="icon">👤</span>
+    <button (click)="logout()" class="logout-btn">Cerrar sesión</button>
   </div>
 </header>
