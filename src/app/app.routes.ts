@@ -6,6 +6,7 @@
   import { ClienteComponent } from './pages/cliente/cliente.component';
   import { authGuard } from './guards/auth.guard'; 
 import { ReservaComponent } from './pages/reserva/reserva.component';
+import { PagosComponent } from './pages/pagos/pagos.component';
 
   export const routes: Routes = [
     {
@@ -23,7 +24,9 @@ import { ReservaComponent } from './pages/reserva/reserva.component';
         { path: '', redirectTo: 'home', pathMatch: 'full' },
         { path: 'home', component: HomeComponent },
         { path: 'clientes', component: ClienteComponent },
-        { path: 'reservas', component: ReservaComponent }
+        { path: 'reservas', component: ReservaComponent },
+        { path: 'pagos', component: PagosComponent },
+        
       ]
     },
     { path: '**', redirectTo: 'home' }

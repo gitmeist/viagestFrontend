@@ -1,0 +1,171 @@
+/* ===== CONTENEDOR GENERAL ===== */
+.pagos-container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* ===== TÍTULO ===== */
+.pagos-container h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* ===== BUSCADOR Y FILTROS ===== */
+.acciones {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  align-items: center;
+}
+
+.acciones input,
+.acciones select {
+  padding: 8px 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.acciones input[type="date"] {
+  width: 160px;
+}
+
+/* ===== TABLA ===== */
+.tabla-pagos {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla-pagos th {
+  background: #f4f6f8;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.tabla-pagos td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.tabla-pagos tr:hover {
+  background: #f9fafb;
+}
+
+/* ===== ESTADO BADGES ===== */
+.estado {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+}
+
+.estado.confirmado {
+  background: #eaffea;
+  color: #2ea043;
+  border: 1px solid #2ea043;
+}
+
+.estado.pendiente {
+  background: #fff7d6;
+  color: #d79b00;
+  border: 1px solid #d79b00;
+}
+
+.estado.fallado {
+  background: #ffe5e5;
+  color: #d93b3b;
+  border: 1px solid #d93b3b;
+}
+
+/* ===== BOTONES ACCIÓN ===== */
+.acciones-btns button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 6px;
+  opacity: 0.8;
+}
+
+.acciones-btns button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Botón PAGAR */
+.btn-pagar {
+  background: #009e63;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-pagar:hover {
+  background: #007a4c;
+  transform: scale(1.05);
+}
+
+/* ===== PAGINACIÓN ===== */
+.paginacion {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.paginacion button {
+  padding: 6px 12px;
+  background: #e7e7e7;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.paginacion button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== TARJETAS DE RESUMEN ===== */
+.resumen {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 12px 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+
+.card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.card.total { border-left: 4px solid #007bff; }
+.card.pendientes { border-left: 4px solid #f0a500; }
+.card.confirmadas { border-left: 4px solid #2ea043; }
+.card.canceladas { border-left: 4px solid #d93b3b; }

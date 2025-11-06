@@ -1,0 +1,80 @@
+<div class="pagos-container">
+  <h2>Gestión de Pagos</h2>
+
+  <!-- BUSCADOR Y FILTROS -->
+  <div class="acciones">
+    <input
+      type="text"
+      placeholder="Buscar por cliente o referencia"
+      [(ngModel)]="filtroTexto"
+      (input)="aplicarFiltros()"
+    />
+
+    <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+      <option value="">Estados</option>
+      <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+    </select>
+
+    <select [(ngModel)]="filtroMetodo" (change)="aplicarFiltros()">
+      <option value="">Métodos de Pago</option>
+      <option *ngFor="let metodo of metodos" [value]="metodo">{{ metodo }}</option>
+    </select>
+
+    <input type="date" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" />
+    <input type="date" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" />
+  </div>
+
+  <!-- TABLA -->
+  <table class="tabla-pagos">
+    <thead>
+      <tr>
+        <th>ID Pago</th>
+        <th>ID Reserva</th>
+        <th>Cliente</th>
+        <th>Monto</th>
+        <th>Método</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Referencia</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let pago of pagosPaginados">
+        <td>{{ pago.idPago }}</td>
+        <td>{{ pago.reserva.idReserva }}</td>
+        <td>{{ pago.reserva.cliente.nombre }}</td>
+        <td>{{ pago.monto | currency:'EUR' }}</td>
+        <td>{{ pago.metodoPago }}</td>
+        <td>{{ pago.fechaPago | date:'yyyy-MM-dd' }}</td>
+
+        <td>
+          <span class="estado" [ngClass]="getEstadoCss(pago.estadoPago)">
+            {{ pago.estadoPago }}
+          </span>
+        </td>
+
+        <td>{{ pago.referencia }}</td>
+
+        <td class="acciones-btns">
+          <button (click)="confirmarPago(pago)">PAGAR</button>
+          <button (click)="eliminarPago(pago.idPago)">🗑</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGINACIÓN -->
+  <div class="paginacion">
+    <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+      Anterior
+    </button>
+
+    <span>{{ paginaActual }}</span>
+
+    <button
+      (click)="cambiarPagina(paginaActual + 1)"
+      [disabled]="paginaActual * elementosPorPagina >= pagosFiltrados.length"
+    >
+      Si
