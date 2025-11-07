@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ClienteService } from '../../../service/cliente.service';
 import { FormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ClienteService } from '../../core/service/cliente.service';
 
 
 interface Cliente {

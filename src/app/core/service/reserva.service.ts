@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Reserva } from '../entities/reserva';
-import { environment } from '../environments/environment';
+import { environment } from '../../../environments/environment';
+import { Reserva } from '../../shared/interfaces/reserva';
 
 @Injectable({
   providedIn: 'root' // Singleton global

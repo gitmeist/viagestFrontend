@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { Reserva } from '../../../entities/reserva';
-import { ReservaService } from '../../../service/reserva.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Reserva } from '../../shared/interfaces/reserva';
+import { ReservaService } from '../../core/service/reserva.service';
 
 @Component({
   selector: 'app-reserva',

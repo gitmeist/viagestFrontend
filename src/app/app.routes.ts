@@ -1,12 +1,12 @@
   import { Routes } from '@angular/router';
-  import { LoginComponent } from './pages/login/login.component';
-  import { HomeComponent } from './pages/home/home.component';
-  import { PublicLayoutComponent } from './component/public-layout/public-layout.component';
-  import { PrivateLayoutComponent } from './component/private-layout/private-layout.component';
-  import { ClienteComponent } from './pages/cliente/cliente.component';
-  import { authGuard } from './guards/auth.guard'; 
+  import { PublicLayoutComponent } from './shared/components/public-layout/public-layout.component';
+  import { PrivateLayoutComponent } from './shared/components/private-layout/private-layout.component';
+import { LoginComponent } from './pages/login/login.component';
+import { authGuard } from './core/guards/auth.guard';
+import { HomeComponent } from './pages/home/home.component';
 import { ReservaComponent } from './pages/reserva/reserva.component';
 import { PagosComponent } from './pages/pagos/pagos.component';
+import { ClienteComponent } from './pages/cliente/cliente.component';
 
   export const routes: Routes = [
     {

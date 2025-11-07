@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
@@ -8,8 +8,9 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:9009'; // URL del backend
   private readonly USER_KEY = 'user';
+  private http = inject(HttpClient)
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   /**
    * Realiza login enviando username y password al backend.

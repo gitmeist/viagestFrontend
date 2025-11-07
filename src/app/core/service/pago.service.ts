@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Pago } from '../entities/pago';
-import { environment } from '../environments/environment';
+import { environment } from '../../../environments/environment';
+import { Pago } from '../../shared/interfaces/pago';
 
 @Injectable({
   providedIn: 'root' // Singleton global

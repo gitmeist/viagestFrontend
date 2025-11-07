@@ -1,6 +1,6 @@
 // src/app/entities/factura.ts
 
-import { Pago } from './pago';
+import { Pago } from "./pago";
 
 /**
  * Representa una factura emitida por el sistema.

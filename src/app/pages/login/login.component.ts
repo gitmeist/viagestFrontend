@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../auth/AuthService';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../core/service/AuthService';
 
 @Component({
   standalone: true,

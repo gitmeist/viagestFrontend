@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Pago } from '../../../entities/pago';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { PagoService } from '../../../service/pago.service';
-import { EstadoPago } from '../../../entities/estado-pago';
-import { MetodoPago } from '../../../entities/metodo-pago';
 import { OnInit } from '@angular/core';
+import { EstadoPago } from '../../shared/interfaces/estado-pago';
+import { MetodoPago } from '../../shared/interfaces/metodo-pago';
+import { PagoService } from '../../core/service/pago.service';
+import { Pago } from '../../shared/interfaces/pago';
 
 @Component({
   selector: 'app-pagos',

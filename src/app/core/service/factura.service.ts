@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Factura } from '../entities/factura';
-import { environment } from '../environments/environment';
+import { environment } from '../../../environments/environment';
+import { Factura } from '../../shared/interfaces/factura';
 
 @Injectable({
   providedIn: 'root' // Singleton global
