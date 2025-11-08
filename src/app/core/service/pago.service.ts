@@ -15,31 +15,31 @@ export class PagoService {
 
   /** Crear nuevo pago */
   alta(pago: Pago): Observable<Pago> {
-    return this.http.post<Pago>(this.baseUrl, pago);
+    return this.http.post<Pago>(this.baseUrl, pago, { withCredentials: true });
   }
 
   /** Modificar pago existente */
   modificar(id: number, pago: Pago): Observable<Pago> {
-    return this.http.put< Pago>(`${this.baseUrl}/${id}`, pago);
+    return this.http.put<Pago>(`${this.baseUrl}/${id}`, pago, { withCredentials: true });
   }
 
   /** Eliminar pago por ID */
   eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   /** Buscar pago por ID */
   buscarUno(id: number): Observable<Pago> {
-    return this.http.get<Pago>(`${this.baseUrl}/${id}`);
+    return this.http.get<Pago>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   /** Listar todos los pagos */
   buscarTodos(): Observable<Pago[]> {
-    return this.http.get<Pago[]>(this.baseUrl);
+    return this.http.get<Pago[]>(this.baseUrl, { withCredentials: true });
   }
 
   /** Buscar pagos por reserva */
   buscarPorReserva(idReserva: number): Observable<Pago[]> {
-    return this.http.get<Pago[]>(`${this.baseUrl}/reserva/${idReserva}`);
+    return this.http.get<Pago[]>(`${this.baseUrl}/reserva/${idReserva}`, { withCredentials: true });
   }
 }

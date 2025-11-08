@@ -6,7 +6,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:9009'; // URL del backend
+  private baseUrl = 'http://localhost:9009/api'; // URL del backend
   private readonly USER_KEY = 'user';
   private http = inject(HttpClient)
 

@@ -15,41 +15,41 @@ export class ReservaService {
 
   /** Crear nueva reserva */
   alta(reserva: Reserva): Observable<Reserva> {
-    return this.http.post<Reserva>(this.baseUrl, reserva);
+    return this.http.post<Reserva>(this.baseUrl, reserva, { withCredentials: true });
   }
 
   /** Modificar reserva existente */
   modificar(id: number, reserva: Reserva): Observable<Reserva> {
-    return this.http.put<Reserva>(`${this.baseUrl}/${id}`, reserva);
+    return this.http.put<Reserva>(`${this.baseUrl}/${id}`, reserva, { withCredentials: true });
   }
 
   /** Eliminar reserva por ID */
   eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   /** Buscar reserva por ID */
   buscarUna(id: number): Observable<Reserva> {
-    return this.http.get<Reserva>(`${this.baseUrl}/${id}`);
+    return this.http.get<Reserva>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
 
   /** Listar todas las reservas */
   buscarTodas(): Observable<Reserva[]> {
-    return this.http.get<Reserva[]>(this.baseUrl);
+    return this.http.get<Reserva[]>(this.baseUrl, { withCredentials: true });
   }
 
   /** Listar reservas por cliente (CIF) */
   buscarPorCliente(cif: string): Observable<Reserva[]> {
-    return this.http.get<Reserva[]>(`${this.baseUrl}/cliente/${cif}`);
+    return this.http.get<Reserva[]>(`${this.baseUrl}/cliente/${cif}`, { withCredentials: true });
   }
 
   /** Listar reservas por usuario (username) */
   buscarPorUsuario(username: string): Observable<Reserva[]> {
-    return this.http.get<Reserva[]>(`${this.baseUrl}/usuario/${username}`);
+    return this.http.get<Reserva[]>(`${this.baseUrl}/usuario/${username}`, { withCredentials: true });
   }
 
   /** Listar reservas por paquete (idPaquete) */
   buscarPorPaquete(idPaquete: number): Observable<Reserva[]> {
-    return this.http.get<Reserva[]>(`${this.baseUrl}/paquete/${idPaquete}`);
+    return this.http.get<Reserva[]>(`${this.baseUrl}/paquete/${idPaquete}`, { withCredentials: true });
   }
 }
