@@ -1,41 +1,120 @@
-.sidebar {
-  width: 240px;
-  background: #0d385a;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 0;
-}
-
-.logo {
-  padding: 0 20px;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-
-.menu {
-  flex: 1;
+/* --- dimensiones y fondo --- */
+.sb {
+  position: sticky;
+  top: 0;
+  width: 260px;
+  min-height: 100dvh;
+  padding: 18px 14px;
+  background: #0b2a3c;
+  /* azul petróleo */
+  color: #e9f1f7;
   display: flex;
   flex-direction: column;
 }
 
-.menu a {
-  padding: 12px 20px;
+
+/* --- cabecera / brand --- */
+.sb__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  margin-bottom: 10px;
+}
+
+
+.sb__logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: #2098d8;
+  display: inline-block;
+}
+
+
+.sb__name {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+
+
+/* --- menú --- */
+.sb__menu {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.sb__bottom {
+  margin-top: auto;
+}
+
+
+/* “Configuración” pegado abajo si hay altura */
+
+
+.sb__menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
-  color: #dbe7f3;
-  font-size: 15px;
-  transition: .2s;
+  color: #e9f1f7;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background .15s ease, transform .02s;
 }
 
-.menu a:hover,
-.menu a.active {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+
+.sb__menu a:hover {
+  background: #10364b;
 }
 
-.footer {
-  padding: 15px 20px;
-  font-size: 14px;
-  border-top: 1px solid rgba(255, 255, 255, .15);
+
+.sb__menu a.is-active {
+  background: #0e3951;
+  outline: 1px solid rgba(255, 255, 255, .06);
+}
+
+
+.sb__ico {
+  width: 20px;
+  text-align: center;
+  opacity: .95;
+}
+
+
+/* opcional: estado focus con teclado */
+.sb__menu a:focus-visible {
+  outline: 2px solid #2098d8;
+  outline-offset: 2px;
+}
+
+
+/* responsive estrecho */
+@media (max-width: 900px) {
+  .sb {
+    width: 220px;
+  }
+}
+
+
+.sb__ico {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.sb__ico svg {
+  width: 18px;
+  height: 18px;
+  stroke: #ffffff;
 }

@@ -1,15 +1,113 @@
-<aside class="sidebar">
-  <div class="logo">ViaGest</div>
-
-  <nav class="menu">
-    <a routerLink="/home" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
-    <a routerLink="/paquetes" routerLinkActive="active">Paquetes</a>
-    <a routerLink="/reservas" routerLinkActive="active">Reservas</a>
-    <a routerLink="/pagos" routerLinkActive="active">Pagos</a>
-  </nav>
-
-  <div class="footer">
-    <a routerLink="/settings">⚙ Ajustes</a>
+<nav class="sb">
+  <!-- Marca -->
+  <div class="sb__brand">
+    <span class="sb__logo"></span>
+    <span class="sb__name">ViaGest</span>
   </div>
-</aside>
+
+
+  <ul class="sb__menu">
+    <!-- Inicio -->
+    <li>
+      <a routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="sb__ico" aria-hidden="true">
+          <!-- Icono Home -->
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <path d="M3 10.5L12 3l9 7.5"></path>
+              <path d="M5 11v9h6v-6h2v6h6v-9"></path>
+            </g>
+          </svg>
+        </span>
+        Home
+      </a>
+    </li>
+
+
+    <!-- Clientes -->
+    <li>
+      <a routerLink="/clientes" routerLinkActive="is-active">
+        <span class="sb__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+              <path d="M7 8h10M7 12h6M7 16h8"></path>
+            </g>
+          </svg>
+        </span>
+        Clientes
+      </a>
+    </li>
+
+
+    <!-- Paquetes -->
+    <li>
+      <a routerLink="/paquetes" routerLinkActive="is-active">
+        <span class="sb__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <path d="M14 2H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9z"></path>
+              <path d="M14 2v7h7"></path>
+              <path d="M9 13h8M9 17h8"></path>
+            </g>
+          </svg>
+        </span>
+        Paquetes
+      </a>
+    </li>
+
+
+    <!-- Reservas -->
+    <li>
+      <a routerLink="/reservas" routerLinkActive="is-active">
+        <span class="sb__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <rect x="3" y="9" width="18" height="9" rx="2"></rect>
+              <path d="M12 9V4"></path>
+              <circle cx="8.5" cy="13.5" r="1"></circle>
+              <circle cx="15.5" cy="13.5" r="1"></circle>
+              <path d="M9.5 18a3.5 3.5 0 0 0 5 0"></path>
+            </g>
+          </svg>
+        </span>
+        Reservas
+      </a>
+    </li>
+
+
+    <!-- Pagos -->
+    <li>
+      <a routerLink="/pagos" routerLinkActive="is-active">
+        <span class="sb__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M12 2v2M12 20v2M2 12h2M20 12h2"></path>
+            </g>
+          </svg>
+        </span>
+        Pagos
+      </a>
+    </li>
+
+
+    <!-- Ajustes -->
+    <li class="sb__bottom">
+      <a routerLink="/settings" routerLinkActive="is-active">
+        <span class="sb__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a1.8 1.8 0 1 1-2.6 2.6l-.1-.1a1 1 0 0 0-1.1-.2 8.6 8.6 0 0 1-1.6.7 1 1 0 0 0-.7 1V21a1.8 1.8 0 1 1-3.6 0v-.2a1 1 0 0 0-.7-1 8.6 8.6 0 0 1-1.6-.7 1 1 0 0 0-1.1.2l-.1.1a1.8 1.8 0 1 1-2.6-2.6l.1-.1a1 1 0 0 0 .2-1.1 8.6 8.6 0 0 1-.7-1.6 1 1 0 0 0-1-.7H3a1.8 1.8 0 1 1 0-3.6h.2a1 1 0 0 0 1-.7 8.6 8.6 0 0 1 .7-1.6 1 1 0 0 0-.2-1.1l-.1-.1a1.8 1.8 0 1 1 2.6-2.6l.1.1a1 1 0 0 0 1.1.2 8.6 8.6 0 0 1 1.6-.7 1 1 0 0 0 .7-1V3a1.8 1.8 0 1 1 3.6 0v.2a1 1 0 0 0 .7 1 8.6 8.6 0 0 1 1.6.7 1 1 0 0 0 1.1-.2l.1-.1a1.8 1.8 0 1 1 2.6 2.6l-.1.1a1 1 0 0 0-.2 1.1c.27.52.5 1.06.7 1.6a1 1 0 0 0 1 .7H21a1.8 1.8 0 1 1 0 3.6h-.2a1 1 0 0 0-1 .7c-.2.56-.43 1.1-.7 1.6z">
+              </path>
+            </g>
+          </svg>
+        </span>
+        <span>Ajustes</span>
+      </a>
+    </li>
+  </ul>
+</nav>

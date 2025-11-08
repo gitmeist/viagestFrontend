@@ -7,18 +7,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   selector: 'app-private-layout',
   imports: [RouterModule, NavbarComponent, SidebarComponent],
   templateUrl: './private-layout.component.html',
-  styleUrl: './private-layout.component.css',
-  template: `
-    <div class="layout">
-      <app-sidebar></app-sidebar>
-      <div class="main">
-        <app-navbar></app-navbar>
-        <div class="content">
-          <router-outlet></router-outlet>
-        </div>
-      </div>
-    </div>
-  `
+  styleUrl: './private-layout.component.css'
 })
 export class PrivateLayoutComponent {
 

@@ -1,9 +1,13 @@
 <header class="navbar">
-  <h2>Bienvenida, {{ username || 'Invitado' }}</h2>
+  <h2>Bienvenido, {{ username || 'Invitado' }}</h2>
 
   <div class="actions">
-    <span class="icon">🔔</span>
-    <span class="icon">👤</span>
-    <button (click)="logout()" class="logout-btn">Cerrar sesión</button>
+    <button type="button" class="icon" aria-label="Notificaciones" title="Notificaciones">
+      <span aria-hidden="true">🔔</span>
+    </button>
+    <button type="button" class="icon" aria-label="Perfil de usuario" title="Perfil">
+      <span aria-hidden="true">👤</span>
+    </button>
+    <button type="button" (click)="logout()" class="logout-btn">Cerrar sesión</button>
   </div>
 </header>
