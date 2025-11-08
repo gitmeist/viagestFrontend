@@ -1,0 +1,105 @@
+.paquetes-container {
+  padding: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #0b2a3c;
+}
+
+.filtros {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.filtros input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.filtros label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.tabla-container {
+  overflow-x: auto;
+}
+
+.tabla-paquetes {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-paquetes thead {
+  background: #0b2a3c;
+  color: white;
+}
+
+.tabla-paquetes th,
+.tabla-paquetes td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-paquetes tbody tr:hover {
+  background: #f9fafb;
+}
+
+.activo {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.inactivo {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.btn-toggle,
+.btn-eliminar {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+  font-size: 14px;
+  transition: opacity 0.2s;
+}
+
+.btn-toggle {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-toggle:hover {
+  opacity: 0.8;
+}
+
+.btn-eliminar {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  opacity: 0.8;
+}
+
+.sin-datos {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+}
+

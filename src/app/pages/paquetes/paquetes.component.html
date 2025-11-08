@@ -1,0 +1,66 @@
+<div class="paquetes-container">
+  <h1>Gestión de Paquetes</h1>
+
+  <div class="filtros">
+    <input 
+      type="text" 
+      placeholder="Buscar por nombre o destino" 
+      [(ngModel)]="busqueda" 
+      (input)="aplicarFiltros()" 
+    />
+    <label>
+      <input 
+        type="checkbox" 
+        [(ngModel)]="mostrarSoloActivos" 
+        (change)="aplicarFiltros()" 
+      />
+      Solo activos
+    </label>
+  </div>
+
+  <div class="tabla-container">
+    <table class="tabla-paquetes">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Destino</th>
+          <th>Precio</th>
+          <th>Duración (días)</th>
+          <th>Incluye Vuelo</th>
+          <th>Incluye Hotel</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paquete of paquetesFiltrados">
+          <td>{{ paquete.idPaquete }}</td>
+          <td>{{ paquete.nombre }}</td>
+          <td>{{ paquete.destino }}</td>
+          <td>{{ paquete.precio }}€</td>
+          <td>{{ paquete.duracionDias }}</td>
+          <td>{{ paquete.incluyeVuelo ? 'Sí' : 'No' }}</td>
+          <td>{{ paquete.incluyeHotel ? 'Sí' : 'No' }}</td>
+          <td>
+            <span [class.activo]="paquete.activo" [class.inactivo]="!paquete.activo">
+              {{ paquete.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <button (click)="toggleActivo(paquete)" class="btn-toggle">
+              {{ paquete.activo ? 'Desactivar' : 'Activar' }}
+            </button>
+            <button (click)="eliminarPaquete(paquete.idPaquete)" class="btn-eliminar">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="paquetesFiltrados.length === 0">
+          <td colspan="9" class="sin-datos">No se encontraron paquetes</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

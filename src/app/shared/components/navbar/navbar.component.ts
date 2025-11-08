@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/service/AuthService';
 })
 export class NavbarComponent implements OnInit {
 
-  username: string = 'Usuario';
+  username: string | null = null;
 
   constructor(private authService: AuthService) {}
 
