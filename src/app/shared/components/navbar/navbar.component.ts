@@ -1,7 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/service/AuthService';
+
+
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,13 @@ export class NavbarComponent implements OnInit {
 
   username: string | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router  // 🔹 inyectamos Router aquí
+  ) {
+    const user = this.authService.getUser();
+    this.username = user?.username || null;
+  }
 
   ngOnInit(): void {
     const user = this.authService.getUser();
@@ -23,6 +31,10 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-  }
+  localStorage.removeItem('user');
+  this.router.navigate(['login']); // ruta relativa a PublicLayout
 }
+
+}
+
+

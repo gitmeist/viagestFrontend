@@ -107,11 +107,7 @@ export class ClienteComponent implements OnInit {
     console.log('Editar cliente', cliente);
   }
 
-  borrar(cliente: Cliente): void {
-    if (confirm(`¿Desea eliminar al cliente ${cliente.nombre}?`)) {
-      this.clienteService.eliminar(cliente.cif).subscribe(() => this.cargarClientes());
-    }
-  }
+  
 
   reservar(cliente: Cliente): void {
     console.log('Reservar para cliente', cliente);

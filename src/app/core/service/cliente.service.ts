@@ -23,11 +23,7 @@ export class ClienteService {
     return this.http.put<Cliente>(`${this.baseUrl}/${cif}`, cliente, { withCredentials: true });
   }
 
-  /** Eliminar cliente por CIF */
-  eliminar(cif: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${cif}`, { withCredentials: true });
-  }
-
+  
   /** Buscar cliente por CIF */
   buscarUno(cif: string): Observable<Cliente> {
     return this.http.get<Cliente>(`${this.baseUrl}/${cif}`, { withCredentials: true });
