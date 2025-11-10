@@ -6,6 +6,7 @@ import { ClienteService } from '../../core/service/cliente.service';
 import { ReservaService } from '../../core/service/reserva.service';
 import { PaqueteService } from '../../core/service/paquete.service';
 import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
+import { PagoService } from '../../core/service/pago.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private clienteService: ClienteService,
     private reservaService: ReservaService,
-    private paqueteService: PaqueteService
+    private paqueteService: PaqueteService,
+    private pagoService: PagoService
   ) {}
 
   ngOnInit(): void {
@@ -84,5 +86,12 @@ export class HomeComponent implements OnInit {
     this.reservasActivas = activas.slice(0, 10);
     });
 
+  }
+
+  private cargarIngresosUltimoMes(): void {
+    this.pagoService.pagosUltimoMes().subscribe(pagos => {
+      const total = pagos.reduce((acc, pago) => acc + (pago.monto || 0), 0);
+      this.resumen[3].value = total.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+    });
   }
 }

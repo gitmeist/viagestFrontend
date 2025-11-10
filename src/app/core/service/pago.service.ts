@@ -42,4 +42,10 @@ export class PagoService {
   buscarPorReserva(idReserva: number): Observable<Pago[]> {
     return this.http.get<Pago[]>(`${this.baseUrl}/reserva/${idReserva}`, { withCredentials: true });
   }
+
+  /** Buscar pagos generados en el último mes */
+  pagosUltimoMes(): Observable<Pago[]> {
+    return this.http.get<Pago[]>(`${this.baseUrl}/ultimo-mes`, { withCredentials: true });
+  }
 }
+  
