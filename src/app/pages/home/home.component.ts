@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { OnInit } from '@angular/core';
+import { ClienteService } from '../../core/service/cliente.service';
+import { ReservaService } from '../../core/service/reserva.service';
+import { PaqueteService } from '../../core/service/paquete.service';
+import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
 
 @Component({
   selector: 'app-home',
@@ -8,18 +13,76 @@ import { RouterModule } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-   resumen = [
-    { label: 'Clientes', value: 1234, icon: '👥' },
-    { label: 'Reservas Activas', value: 52, icon: '📅' },
-    { label: 'Paquetes Disponibles', value: 12, icon: '📦' },
-    { label: 'Ingresos Totales', value: '12,234€', icon: '💶' }
+export class HomeComponent implements OnInit {
+  resumen = [
+    { label: 'Clientes', value: 0, icon: '👥' },
+    { label: 'Reservas Activas', value: 0, icon: '📅' },
+    { label: 'Paquetes Disponibles', value: 0, icon: '📦' },
+    { label: 'Ingresos Totales', value: '0€', icon: '💶' }
   ];
 
-  reservas = [
-    { cliente: 'Pedro García', paquete: 'Aventura a Londres', fecha: '2024-08-15', estado: 'Confirmada' },
-    { cliente: 'Laura García', paquete: 'Escapada a Roma', fecha: '2024-08-15', estado: 'Pendiente' },
-    { cliente: 'Pedro García', paquete: 'Excursión a Barcelona', fecha: '2024-08-10', estado: 'Completada' }
-  ];
+  reservas: any[] = [];
+  reservasActivas: any[] = [];
 
+  constructor(
+    private clienteService: ClienteService,
+    private reservaService: ReservaService,
+    private paqueteService: PaqueteService
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarDatos();
+  }
+
+  private cargarDatos(): void {
+    // 1️⃣ Total de clientes
+    this.clienteService.buscarTodos().subscribe(clientes => {
+      this.resumen[0].value = clientes.length;
+    });
+
+    // 2️⃣ Reservas activas
+    this.reservaService.buscarTodas().subscribe(reservas => {
+      this.resumen[1].value = reservas.filter(r =>
+      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
+      ).length;
+    });
+
+    // 3️⃣ Paquetes activos
+    this.paqueteService.buscarActivos().subscribe(paquetes => {
+      this.resumen[2].value = paquetes.length;
+    });
+
+    // 4️⃣ Ingresos totales del mes actual
+    this.reservaService.buscarTodas().subscribe(reservas => {
+      const mesActual = new Date().getMonth();
+      const ingresosMes = reservas
+        .filter(r =>
+          new Date(r.fechaReserva).getMonth() === mesActual &&
+          r.estadoReserva === 'CONFIRMADA'
+        )
+        .reduce((total, r) => total + (r.paquete?.precio || 0), 0);
+      this.resumen[3].value = ingresosMes.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+    });
+
+    this.reservaService.buscarTodas().subscribe(reservas => {
+    // Actualiza el contador del resumen
+    this.resumen[1].value = reservas.filter(r =>
+      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
+    ).length;
+
+    // Filtra las activas
+    const activas = reservas.filter(r =>
+      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
+    );
+
+    // Ordena por fechaReserva (más recientes primero)
+    activas.sort((a, b) =>
+      new Date(b.fechaReserva).getTime() - new Date(a.fechaReserva).getTime()
+    );
+
+    // Guarda las 10 más recientes
+    this.reservasActivas = activas.slice(0, 10);
+    });
+
+  }
 }

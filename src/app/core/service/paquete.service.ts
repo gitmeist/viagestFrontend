@@ -42,4 +42,9 @@ export class PaqueteService {
   buscarActivos(): Observable<Paquete[]> {
     return this.http.get<Paquete[]>(`${this.baseUrl}/activos`, { withCredentials: true });
   }
+
+  /** Cambiar estado activo/inactivo de un paquete */
+  cambiarEstado(id: number, activo: boolean): Observable<Paquete> {
+    return this.http.patch<Paquete>(`${this.baseUrl}/${id}/activo?activo=${activo}`, {}, { withCredentials: true });
+  }
 }

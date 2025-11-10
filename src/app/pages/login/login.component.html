@@ -6,7 +6,7 @@
 
       <h2>Bienvenido a ViaGest</h2>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
 
         <label>Email o nombre de usuario:</label>
         <input type="text" formControlName="username" placeholder="Introduce tu email o nombre de usuario">

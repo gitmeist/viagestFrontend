@@ -85,15 +85,6 @@ export class ClienteComponent implements OnInit {
     // Aquí iría la navegación a un formulario con el cliente seleccionado
   }
 
-  borrar(cliente: Cliente): void {
-    if (confirm(`¿Desea eliminar al cliente ${cliente.nombre}?`)) {
-      this.clienteService.eliminar(cliente.cif).subscribe({
-        next: () => this.cargarClientes(),
-        error: (err) => console.error('Error al borrar cliente', err)
-      });
-    }
-  }
-
   ver(cliente: Cliente): void {
     console.log('Ver', cliente);
     // Aquí iría la navegación a una vista detallada del cliente

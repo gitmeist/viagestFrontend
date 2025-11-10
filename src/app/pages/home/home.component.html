@@ -1,3 +1,4 @@
+<!-- Tarjetas de resumen -->
 <div class="cards">
   <div class="card" *ngFor="let item of resumen">
     <div class="icon">{{ item.icon }}</div>
@@ -6,21 +7,43 @@
   </div>
 </div>
 
+<!-- Sección de reservas activas -->
 <div class="section">
-  <h3>Reservas recientes</h3>
-  <table>
-    <tr>
-      <th>Cliente</th>
-      <th>Paquete</th>
-      <th>Fecha</th>
-      <th>Estado</th>
-    </tr>
+  <h3>Últimas reservas</h3>
 
-    <tr *ngFor="let r of reservas">
-      <td>{{ r.cliente }}</td>
-      <td>{{ r.paquete }}</td>
-      <td>{{ r.fecha }}</td>
-      <td><span class="estado {{ r.estado | lowercase }}">{{ r.estado }}</span></td>
-    </tr>
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Paquete</th>
+        <th>Fecha de viaje</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of reservasActivas">
+        <!-- Cliente -->
+        <td>{{ r.cliente?.nombre }}</td>
+
+        <!-- Paquete -->
+        <td>{{ r.paquete?.nombre }}</td>
+
+        <!-- Fecha de viaje -->
+        <td>{{ r.fechaViaje | date: 'dd/MM/yyyy' }}</td>
+
+        <!-- Estado -->
+        <td>
+          <span class="estado {{ r.estadoReserva | lowercase }}">
+            {{ r.estadoReserva }}
+          </span>
+        </td>
+      </tr>
+
+      <!-- Si no hay reservas -->
+      <tr *ngIf="reservasActivas.length === 0">
+        <td colspan="4" class="sin-datos">No hay reservas activas</td>
+      </tr>
+    </tbody>
   </table>
 </div>

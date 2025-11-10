@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { PaqueteService } from '../../core/service/paquete.service';
 import { Paquete } from '../../shared/interfaces/paquete';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-paquetes',
@@ -47,18 +48,17 @@ export class PaquetesComponent implements OnInit {
     });
   }
 
-  toggleActivo(paquete: Paquete): void {
-    paquete.activo = !paquete.activo;
-    this.paqueteService.modificar(paquete.idPaquete, paquete).subscribe({
-      next: () => {
-        this.aplicarFiltros();
-      },
-      error: (error) => {
-        console.error('Error al actualizar paquete:', error);
-        paquete.activo = !paquete.activo; // Revertir cambio
-      }
+  toggleActivo(paquete: Paquete) {
+  const nuevoEstado = !paquete.activo;
+  this.paqueteService.cambiarEstado(paquete.idPaquete, nuevoEstado)
+    .subscribe(actualizado => {
+      paquete.activo = actualizado.activo; // Actualizar localmente
+      this.aplicarFiltros(); // Reaplicar filtros si se usa filtro "solo activos"
     });
-  }
+}
+
+  
+  
 
   eliminarPaquete(id: number): void {
     if (confirm('¿Está seguro de eliminar este paquete?')) {
