@@ -23,10 +23,6 @@ export class PagoService {
     return this.http.put<Pago>(`${this.baseUrl}/${id}`, pago, { withCredentials: true });
   }
 
-  /** Eliminar pago por ID */
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
-  }
 
   /** Buscar pago por ID */
   buscarUno(id: number): Observable<Pago> {
@@ -47,5 +43,9 @@ export class PagoService {
   pagosUltimoMes(): Observable<Pago[]> {
     return this.http.get<Pago[]>(`${this.baseUrl}/ultimo-mes`, { withCredentials: true });
   }
+
+  /** Cancelar un pago */
+  cancelarPago(idPago: number): Observable<Pago> {
+    return this.http.patch<Pago>(`${this.baseUrl}/${idPago}/cancelar`, {}, { withCredentials: true });
+  }
 }
-  

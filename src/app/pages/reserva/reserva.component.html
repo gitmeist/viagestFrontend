@@ -55,8 +55,8 @@
         <tbody>
           <tr *ngFor="let r of reservasFiltradas">
             <td class="text-muted">{{ r.idReserva }}</td>
-            <td>{{ r.cliente?.nombre }}</td>
-            <td>{{ r.paquete?.nombre }}</td>
+            <td>{{ r.cliente.nombre }}</td>
+            <td>{{ r.paquete.nombre }}</td>
             <td>{{ r.fechaReserva | date:'yyyy-MM-dd' }}</td>
             <td>{{ r.fechaViaje | date:'yyyy-MM-dd' }}</td>
             <td>{{ r.numPersonas }}</td>
