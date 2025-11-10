@@ -17,6 +17,9 @@ export class PaquetesComponent implements OnInit {
   paquetesFiltrados: Paquete[] = [];
   busqueda = '';
   mostrarSoloActivos = false;
+  mostrarModal = false;
+  nuevoPaquete: Paquete = this.crearNuevoPaquete();
+  
   destinoSeleccionado: string = ''; // Guarda el destino elegido
   destinos: string[] = [];
   destinosDisponibles: string[] = [];     
@@ -25,6 +28,19 @@ export class PaquetesComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarPaquetes();
+  }
+   private crearNuevoPaquete(): Paquete {
+    return {
+      idPaquete: 0,
+      nombre: '',
+      destino: '',
+      descripcion: '',
+      precio: 0,
+      duracionDias: 0,
+      incluyeVuelo: false,
+      incluyeHotel: false,
+      activo: true
+    };
   }
 
 cargarPaquetes(): void {
@@ -79,7 +95,25 @@ aplicarFiltros(): void {
       });
     }
   }
-  
+
+  abrirModal(): void {
+    this.mostrarModal = true;
+    this.nuevoPaquete = this.crearNuevoPaquete();
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  guardarPaquete(): void {
+    this.paqueteService.alta(this.nuevoPaquete).subscribe({
+      next: () => {
+        this.cargarPaquetes();
+        this.cerrarModal();
+      },
+      error: (error: any) => console.error('Error al guardar paquete:', error)
+    });
   }
   
+}
 

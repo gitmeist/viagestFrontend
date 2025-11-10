@@ -1,4 +1,12 @@
 /*Estructura general */
+
+.content {
+  flex: 1;
+  padding: 2rem 2rem 2rem 2rem; 
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
 .paquete-card {
   border-radius: 12px;
   overflow: hidden;
@@ -83,7 +91,7 @@
   border-radius: 6px;
 }
 
-/* Botones outline */
+/* Botones  */
 .btn-outline-warning {
   border-color: #d1b039;
   color: #d1b039;
@@ -143,3 +151,181 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Modal general */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-container {
+  background: #fff;
+  border-radius: 14px;
+  width: 700px; 
+  max-width: 95%;
+  padding: 2rem; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  animation: scaleIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Título */
+.modal-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.divider {
+  border: 0;
+  border-top: 2px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+}
+
+/* Inputs */
+label {
+  color: #6A9393;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+/* Checkboxes  */
+.rounded-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #6A9393;
+  appearance: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.rounded-checkbox:checked {
+  background-color: #4FA9A9;
+  border-color: #4FA9A9;
+}
+
+.rounded-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* Estado */
+.estado-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Texto "Estado"  */
+.estado-label {
+  color: #6A9393;
+  font-weight: 600;
+  min-width: 70px;
+}
+
+.estado-line {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #E0E0E0;
+  margin: 0 1rem;
+}
+
+/* Contenedor de los textos y checkbox */
+.estado-opciones {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Texto inactivo y activo */
+.estado-text-inactivo {
+  color: #9a9a9a;
+  font-weight: 500;
+}
+
+.estado-text-activo {
+  color: #6A9393;
+  font-weight: 500;
+}
+
+/* Ajuste del switch */
+.form-switch .form-check-input {
+  width: 40px;
+  height: 22px;
+  cursor: pointer;
+}
+
+/* Botones */
+.btn-cancelar {
+  background-color: #D1D1D1;
+  color: #4A4A4A;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.btn-cancelar:hover {
+  background-color: #c2c2c2;
+}
+
+.btn-guardar {
+  background-color: #4FA9A9;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.btn-guardar:hover {
+  background-color: #449696;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.btn-turquoise {
+  background-color: #4fa9a9;
+  color: #fff;
+  border: none;
+}
+.btn-turquoise:hover {
+  background-color: #449696;
+}
+@media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+}
+
