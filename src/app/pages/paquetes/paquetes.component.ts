@@ -16,11 +16,27 @@ export class PaquetesComponent implements OnInit {
   paquetesFiltrados: Paquete[] = [];
   busqueda = '';
   mostrarSoloActivos = false;
+  mostrarModal = false;
+  nuevoPaquete: Paquete = this.crearNuevoPaquete();
+  
 
   constructor(private paqueteService: PaqueteService) {}
 
   ngOnInit(): void {
     this.cargarPaquetes();
+  }
+   private crearNuevoPaquete(): Paquete {
+    return {
+      idPaquete: 0,
+      nombre: '',
+      destino: '',
+      descripcion: '',
+      precio: 0,
+      duracionDias: 0,
+      incluyeVuelo: false,
+      incluyeHotel: false,
+      activo: true
+    };
   }
 
   cargarPaquetes(): void {
@@ -53,6 +69,25 @@ export class PaquetesComponent implements OnInit {
         error: (error) => console.error('Error al eliminar paquete:', error)
       });
     }
+  }
+
+  abrirModal(): void {
+    this.mostrarModal = true;
+    this.nuevoPaquete = this.crearNuevoPaquete();
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  guardarPaquete(): void {
+    this.paqueteService.alta(this.nuevoPaquete).subscribe({
+      next: () => {
+        this.cargarPaquetes();
+        this.cerrarModal();
+      },
+      error: (error: any) => console.error('Error al guardar paquete:', error)
+    });
   }
   
 }
