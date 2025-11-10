@@ -4,10 +4,21 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Reserva } from '../../shared/interfaces/reserva';
 import { ReservaService } from '../../core/service/reserva.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+
+
 
 @Component({
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,  MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatButtonModule,],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.css'
 })

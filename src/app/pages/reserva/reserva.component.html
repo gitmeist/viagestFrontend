@@ -24,17 +24,15 @@
         </select>
       </div>
 
-      <div class="dropdown">
-        <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
-          Rango de Fecha
-        </button>
-        <div class="dropdown-menu p-3">
-          <label class="form-label small mb-1">Desde</label>
-          <input type="date" class="form-control mb-2" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" />
-          <label class="form-label small mb-1">Hasta</label>
-          <input type="date" class="form-control" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" />
-        </div>
-      </div>
+      <mat-form-field class="date-range-picker" appearance="fill">
+        <mat-label>Rango de Fecha</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Desde" [(ngModel)]="rangoFecha.desde" (dateChange)="aplicarFiltros()">
+              <input matEndDate placeholder="Hasta" [(ngModel)]="rangoFecha.hasta" (dateChange)="aplicarFiltros()">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
     </div>
 
     <!-- TABLA -->
