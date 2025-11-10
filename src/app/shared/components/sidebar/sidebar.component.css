@@ -55,8 +55,6 @@
 }
 
 
-/* “Configuración” pegado abajo si hay altura */
-
 
 .sb__menu a {
   display: flex;
@@ -89,14 +87,13 @@
 }
 
 
-/* opcional: estado focus con teclado */
 .sb__menu a:focus-visible {
   outline: 2px solid #2098d8;
   outline-offset: 2px;
 }
 
 
-/* responsive estrecho */
+/* responsive  */
 @media (max-width: 900px) {
   .sb {
     width: 220px;
@@ -113,8 +110,7 @@
 }
 
 
-.sb__ico svg {
-  width: 18px;
-  height: 18px;
-  stroke: #ffffff;
+.sb__ico i {
+  font-size: 18px;
+  color: #e9f1f7;
 }

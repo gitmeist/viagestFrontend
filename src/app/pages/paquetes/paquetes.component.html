@@ -1,66 +1,105 @@
-<div class="paquetes-container">
-  <h1>Gestión de Paquetes</h1>
-
-  <div class="filtros">
-    <input 
-      type="text" 
-      placeholder="Buscar por nombre o destino" 
-      [(ngModel)]="busqueda" 
-      (input)="aplicarFiltros()" 
-    />
-    <label>
-      <input 
-        type="checkbox" 
-        [(ngModel)]="mostrarSoloActivos" 
-        (change)="aplicarFiltros()" 
-      />
-      Solo activos
-    </label>
+<div class="container-fluid px-4 py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-semibold mb-0">Gestión de Paquetes turísticos</h4>
+    <button class="btn btn-success d-flex align-items-center gap-2">
+      <i class="bi bi-plus-lg"></i>
+      AÑADIR PAQUETE
+    </button>
   </div>
 
-  <div class="tabla-container">
-    <table class="tabla-paquetes">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Destino</th>
-          <th>Precio</th>
-          <th>Duración (días)</th>
-          <th>Incluye Vuelo</th>
-          <th>Incluye Hotel</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let paquete of paquetesFiltrados">
-          <td>{{ paquete.idPaquete }}</td>
-          <td>{{ paquete.nombre }}</td>
-          <td>{{ paquete.destino }}</td>
-          <td>{{ paquete.precio }}€</td>
-          <td>{{ paquete.duracionDias }}</td>
-          <td>{{ paquete.incluyeVuelo ? 'Sí' : 'No' }}</td>
-          <td>{{ paquete.incluyeHotel ? 'Sí' : 'No' }}</td>
-          <td>
-            <span [class.activo]="paquete.activo" [class.inactivo]="!paquete.activo">
-              {{ paquete.activo ? 'Activo' : 'Inactivo' }}
+  <!-- Filtros -->
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
+    <div class="input-group search-input">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="bi bi-search"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Buscar paquetes por nombre o destino"
+        [(ngModel)]="busqueda"
+        (input)="aplicarFiltros()"
+      />
+    </div>
+
+    <select class="form-select w-auto" [(ngModel)]="mostrarSoloActivos" (change)="aplicarFiltros()">
+      <option [ngValue]="false">Todos</option>
+      <option [ngValue]="true">Activos</option>
+    </select>
+
+    <button class="btn btn-outline-secondary d-flex align-items-center gap-1">
+      <i class="bi bi-funnel"></i>
+      Filtrar por destino
+    </button>
+  </div>
+
+  <!-- Cards de paquetes -->
+  <div class="row g-4">
+    <div
+      class="col-12 col-sm-6 col-md-4 col-lg-3"
+      *ngFor="let paquete of paquetesFiltrados"
+    >
+      <div class="card paquete-card shadow-sm border-0 h-100">
+        <img src="assets/img/paris.png" class="card-img-top" [alt]="paquete.nombre" />
+
+        <div class="card-body d-flex flex-column">
+          <p class="text-muted mb-1 small">
+            {{ paquete.destino }}
+          </p>
+          <h5 class="card-title fw-semibold mb-1">
+            {{ paquete.nombre }}
+          </h5>
+          <p class="card-text text-secondary small flex-grow-1">
+            {{ paquete.descripcion }}
+          </p>
+
+          <div class="mb-3 d-flex flex-wrap gap-2">
+            <span class="paquete-tag d-flex align-items-center">
+              <i class="bi bi-airplane me-1 text-white"></i> Incluye vuelo
             </span>
-          </td>
-          <td>
-            <button (click)="toggleActivo(paquete)" class="btn-toggle">
-              {{ paquete.activo ? 'Desactivar' : 'Activar' }}
-            </button>
-            <button (click)="eliminarPaquete(paquete.idPaquete)" class="btn-eliminar">
-              Eliminar
-            </button>
-          </td>
-        </tr>
-        <tr *ngIf="paquetesFiltrados.length === 0">
-          <td colspan="9" class="sin-datos">No se encontraron paquetes</td>
-        </tr>
-      </tbody>
-    </table>
+            <span class="paquete-tag d-flex align-items-center">
+              <i class="bi bi-hospital me-1 text-white"></i> Incluye hotel
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-auto">
+            <p class="fw-semibold mb-0">
+              {{ paquete.precio }}€ <span class="text-muted">/persona</span>
+            </p>
+            <span
+              class="badge"
+              [ngClass]="paquete.activo ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'"
+            >
+              {{ paquete.activo ? 'Activa' : 'Inactiva' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-footer bg-white border-0 pt-0 pb-3 text-center">
+          <button class="btn btn-sm btn-outline-success me-2">
+            <i class="bi bi-pencil"></i> Editar
+          </button>
+          <button class="btn btn-sm btn-outline-warning me-2">
+            <i class="bi bi-eye"></i> Ver
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminarPaquete(paquete.idPaquete)">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  <div class="d-flex justify-content-between align-items-center mt-3 text-muted small">
+    <p class="mb-0">Mostrando 1–3 de {{ paquetesFiltrados.length }}</p>
+    <nav>
+      <ul class="pagination pagination-sm mb-0">
+        <li class="page-item disabled"><a class="page-link">Anterior</a></li>
+        <li class="page-item active"><a class="page-link">1</a></li>
+        <li class="page-item"><a class="page-link">2</a></li>
+        <li class="page-item"><a class="page-link">Siguiente</a></li>
+      </ul>
+    </nav>
   </div>
 </div>
-

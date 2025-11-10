@@ -1,42 +1,175 @@
-<div class="clientes-container">
-  <div class="filtros">
-    <input type="text" placeholder="Buscar por nombre, email o CIF" [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
-    <input type="date" placeholder="Filtrar por fecha de registro" [(ngModel)]="filtroFechaRegistro" (change)="aplicarFiltros()" />
-    <input type="text" placeholder="Filtrar por email" [(ngModel)]="filtroEmail" (input)="aplicarFiltros()" />
+<!-- Cabecera fuera del contenedor -->
+<div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2>
+  <button
+    class="btn btn-turquoise d-flex align-items-center shadow-sm"
+    (click)="nuevoCliente()"
+    aria-label="Añadir cliente"
+  >
+    <i class="bi bi-plus-lg me-2"></i> Añadir Cliente
+  </button>
+</div>
+
+<!-- Contenedor principal -->
+<div class="clientes-container mx-3">
+  <div>
+    <!-- Filtros -->
+    <div class="filtros d-flex flex-wrap align-items-center gap-2 mb-4">
+      <div class="flex-grow-1 position-relative">
+        <label for="busqueda" class="visually-hidden">Buscar cliente</label>
+        <i class="bi bi-search position-absolute search-icon"></i>
+        <input
+          id="busqueda"
+          type="text"
+          class="form-control ps-5"
+          placeholder="Buscar por nombre, email, CIF..."
+          [(ngModel)]="busqueda"
+          (input)="aplicarFiltros()"
+        />
+      </div>
+
+      <div>
+        <label for="fechaRegistro" class="visually-hidden">Filtrar por fecha</label>
+        <div class="dropdown">
+          <button
+            class="btn btn-light border dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Filtrar por Fecha
+          </button>
+          <div class="dropdown-menu p-3">
+            <input
+              id="fechaRegistro"
+              type="date"
+              class="form-control"
+              [(ngModel)]="filtroFechaRegistro"
+              (change)="aplicarFiltros()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="emailFiltro" class="visually-hidden">Filtrar por email</label>
+        <div class="dropdown">
+          <button
+            class="btn btn-light border dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Filtrar por Email
+          </button>
+          <div class="dropdown-menu p-3">
+            <input
+              id="emailFiltro"
+              type="text"
+              class="form-control"
+              placeholder="Escribe un correo..."
+              [(ngModel)]="filtroEmail"
+              (input)="aplicarFiltros()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive flex-grow-1">
+      <table class="table align-middle table-hover">
+        <thead>
+          <tr>
+            <th>CIF</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Domicilio</th>
+            <th>Fecha de Registro</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of clientesFiltrados">
+            <td>{{ cliente.cif }}</td>
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.email }}</td>
+            <td>{{ cliente.telefono }}</td>
+            <td>{{ cliente.domicilio }}</td>
+            <td>{{ cliente.fechaRegistro | date: 'yyyy-MM-dd' }}</td>
+            <td class="text-center">
+              <button
+                class="btn btn-icon btn-outline-warning me-1"
+                (click)="ver(cliente)"
+                aria-label="Ver cliente"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+              <button
+                class="btn btn-icon btn-outline-success me-1"
+                (click)="editar(cliente)"
+                aria-label="Editar cliente"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                class="btn btn-reservar btn-turquoise ms-3"
+                (click)="reservar(cliente)"
+                aria-label="Reservar cliente"
+              >
+                Reservar
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="clientesFiltrados.length === 0">
+            <td colspan="7" class="text-center text-muted py-4">
+              No se encontraron clientes.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <table class="tabla-clientes">
-    <thead>
-      <tr>
-        <th>CIF</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Teléfono</th>
-        <th>Domicilio</th>
-        <th>Fecha Registro</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cliente of clientesFiltrados">
-        <td>{{ cliente.cif }}</td>
-        <td>{{ cliente.nombre }}</td>
-        <td>{{ cliente.email }}</td>
-        <td>{{ cliente.telefono }}</td>
-        <td>{{ cliente.domicilio }}</td>
-        <td>{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</td>
-        <td>
-          <button (click)="ver(cliente)">Ver</button>
-          <button (click)="editar(cliente)">Editar</button>
-          <button (click)="borrar(cliente)">Borrar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<!-- Paginación -->
+<div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+  <small class="text-muted">
+    Mostrando
+    {{ (paginaActual - 1) * clientesPorPagina + 1 }} -
+    {{ Math.min(paginaActual * clientesPorPagina, clientes.length) }}
+    de {{ clientes.length }}
+  </small>
 
   <div class="paginacion">
-    <button [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">Anterior</button>
-    <span>Página {{ paginaActual }}</span>
-    <button [disabled]="clientesFiltrados.length < clientesPorPagina" (click)="cambiarPagina(paginaActual + 1)">Siguiente</button>
+    <button
+      class="btn-paginacion"
+      [disabled]="paginaActual === 1"
+      (click)="cambiarPagina(paginaActual - 1)"
+    >
+      Anterior
+    </button>
+
+    <!-- Números de página -->
+    <ng-container *ngFor="let num of [].constructor(Math.ceil(clientes.length / clientesPorPagina)); let i = index">
+      <button
+        class="btn-paginacion"
+        [class.activa]="paginaActual === i + 1"
+        (click)="cambiarPagina(i + 1)"
+      >
+        {{ i + 1 }}
+      </button>
+    </ng-container>
+
+    <button
+      class="btn-paginacion"
+      [disabled]="paginaActual >= Math.ceil(clientes.length / clientesPorPagina)"
+      (click)="cambiarPagina(paginaActual + 1)"
+    >
+      Siguiente
+    </button>
   </div>
+</div>
+
 </div>

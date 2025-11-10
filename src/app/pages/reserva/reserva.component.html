@@ -1,71 +1,142 @@
-<div class="reservas-container">
-  <h2>Listado de Reservas</h2>
+<!-- CABECERA  -->
+<div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Reservas</h2>
+</div>
 
-  <div class="acciones">
-    <input type="text" placeholder="Buscar por cliente..." />
-    <select>
-      <option value="">Todos los estados</option>
-      <option value="PENDIENTE">Pendiente</option>
-      <option value="CONFIRMADA">Confirmada</option>
-      <option value="CANCELADA">Cancelada</option>
-    </select>
-    <div class="rango-fecha">
-      <input type="date" />
-      <input type="date" />
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="reservas-container mx-3">
+  <div>
+    <!-- BUSCADOR Y FILTROS -->
+    <div class="acciones d-flex flex-wrap align-items-center gap-2 mb-3">
+      <div class="position-relative flex-grow-1" style="min-width:260px;">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" class="form-control ps-5" placeholder="Buscar por cliente o paquete" [(ngModel)]="busqueda"
+          (input)="aplicarFiltros()" aria-label="Buscar" />
+      </div>
+
+      <div>
+        <select class="form-select" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()"
+          aria-label="Filtrar por estados">
+          <option value="">Filtrar por Estados</option>
+          <option value="PENDIENTE">Pendiente</option>
+          <option value="CONFIRMADA">Confirmada</option>
+          <option value="CANCELADA">Cancelada</option>
+        </select>
+      </div>
+
+      <div class="dropdown">
+        <button class="btn btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          Rango de Fecha
+        </button>
+        <div class="dropdown-menu p-3">
+          <label class="form-label small mb-1">Desde</label>
+          <input type="date" class="form-control mb-2" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" />
+          <label class="form-label small mb-1">Hasta</label>
+          <input type="date" class="form-control" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-responsive flex-grow-1">
+      <table class="table tabla-reservas align-middle mb-0">
+        <thead>
+          <tr>
+            <th>ID RESERVA</th>
+            <th>NOMBRE</th>
+            <th>PAQUETE</th>
+            <th>FECHA DE RESERVA</th>
+            <th>FECHA DE VIAJE</th>
+            <th>PERSONAS</th>
+            <th>ESTADO</th>
+            <th class="text-center">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of reservasFiltradas">
+            <td class="text-muted">{{ r.idReserva }}</td>
+            <td>{{ r.cliente?.nombre }}</td>
+            <td>{{ r.paquete?.nombre }}</td>
+            <td>{{ r.fechaReserva | date:'yyyy-MM-dd' }}</td>
+            <td>{{ r.fechaViaje | date:'yyyy-MM-dd' }}</td>
+            <td>{{ r.numPersonas }}</td>
+            <td>
+              <span class="estado" [ngClass]="estadoClass(r.estadoReserva)">
+                {{ r.estadoReserva | lowercase }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-icon btn-outline-warning me-1" (click)="ver(r)" title="Ver">
+                <i class="bi bi-eye"></i>
+              </button>
+
+              <button class="btn btn-icon btn-outline-success me-1" (click)="editar(r)" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </button>
+
+              <button class="btn btn-icon btn-outline-danger" (click)="borrar(r)" title="Eliminar">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="reservasFiltradas.length === 0">
+            <td colspan="8" class="text-center text-muted py-4">No se encontraron reservas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+      <small class="text-muted">
+        Mostrando {{ (paginaActual - 1) * reservasPorPagina + 1 }} -
+        {{ Math.min(paginaActual * reservasPorPagina, totalFiltradas) }} de {{ totalFiltradas }}
+      </small>
+
+      <div class="paginacion">
+        <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
+          Anterior
+        </button>
+
+        <ng-container *ngFor="let p of pageNumbers(); let i = index">
+          <button class="btn-paginacion" [class.activa]="paginaActual === p" (click)="cambiarPagina(p)">
+            {{ p }}
+          </button>
+        </ng-container>
+
+        <button class="btn-paginacion" [disabled]="paginaActual === totalPages"
+          (click)="cambiarPagina(paginaActual + 1)">
+          Siguiente
+        </button>
+      </div>
     </div>
   </div>
+</div>
 
-  <table class="tabla-reservas">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Paquete</th>
-        <th>Fecha Reserva</th>
-        <th>Fecha Viaje</th>
-        <th>Personas</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let reserva of reservas">
-        <td>{{ reserva.idReserva }}</td>
-        <td>{{ reserva.cliente.nombre }}</td>
-        <td>{{ reserva.paquete.nombre }}</td>
-        <td>{{ reserva.fechaReserva | date }}</td>
-        <td>{{ reserva.fechaViaje | date }}</td>
-        <td>{{ reserva.numPersonas }}</td>
-        <td>
-          <span class="estado" [ngClass]="reserva.estadoReserva.toLowerCase()">
-            {{ reserva.estadoReserva }}
-          </span>
-        </td>
-        <td>
-          <button title="Editar">✏️</button>
-          <button title="Eliminar">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="paginacion">
-    <button>Anterior</button>
-    <button>Siguiente</button>
+<!-- RESUMEN FUERA DEL CONTENEDOR -->
+<div class="resumen mt-4 px-4 mb-4">
+  <div class="card resumen-card total">
+    <div class="small text-muted">TOTAL RESERVAS</div>
+    <h3>{{ total }}</h3>
+    <i class="bi bi-file-text resumen-icon"></i>
   </div>
 
-  <div class="resumen">
-    <div class="card total">
-      Total Reservas: <h3>40</h3>
-    </div>
-    <div class="card pendientes">
-      Pendientes: <h3>12</h3>
-    </div>
-    <div class="card confirmadas">
-      Confirmadas: <h3>22</h3>
-    </div>
-    <div class="card canceladas">
-      Canceladas: <h3>6</h3>
-    </div>
+  <div class="card resumen-card pendientes">
+    <div class="small text-muted">RESERVAS PENDIENTES</div>
+    <h3>{{ pendientes }}</h3>
+    <i class="bi bi-hourglass-split resumen-icon"></i>
+  </div>
+
+  <div class="card resumen-card confirmadas">
+    <div class="small text-muted">RESERVAS CONFIRMADAS</div>
+    <h3>{{ confirmadas }}</h3>
+    <i class="bi bi-check-circle resumen-icon"></i>
+  </div>
+
+  <div class="card resumen-card canceladas">
+    <div class="small text-muted">RESERVAS CANCELADAS</div>
+    <h3>{{ canceladas }}</h3>
+    <i class="bi bi-x-circle resumen-icon"></i>
   </div>
 </div>

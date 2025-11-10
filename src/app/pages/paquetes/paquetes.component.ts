@@ -12,7 +12,7 @@ import { Paquete } from '../../shared/interfaces/paquete';
   styleUrl: './paquetes.component.css'
 })
 export class PaquetesComponent implements OnInit {
-  paquetes: Paquete[] = [];
+   paquetes: Paquete[] = [];
   paquetesFiltrados: Paquete[] = [];
   busqueda = '';
   mostrarSoloActivos = false;
@@ -29,48 +29,31 @@ export class PaquetesComponent implements OnInit {
         this.paquetes = data;
         this.aplicarFiltros();
       },
-      error: (error) => {
-        console.error('Error al cargar paquetes:', error);
-      }
+      error: (error) => console.error('Error al cargar paquetes:', error)
     });
   }
 
   aplicarFiltros(): void {
     this.paquetesFiltrados = this.paquetes.filter(paquete => {
-      const coincideBusqueda = !this.busqueda || 
+      const coincideBusqueda =
+        !this.busqueda ||
         paquete.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
         paquete.destino.toLowerCase().includes(this.busqueda.toLowerCase());
-      
-      const esActivo = !this.mostrarSoloActivos || paquete.activo;
-      
-      return coincideBusqueda && esActivo;
-    });
-  }
 
-  toggleActivo(paquete: Paquete): void {
-    paquete.activo = !paquete.activo;
-    this.paqueteService.modificar(paquete.idPaquete, paquete).subscribe({
-      next: () => {
-        this.aplicarFiltros();
-      },
-      error: (error) => {
-        console.error('Error al actualizar paquete:', error);
-        paquete.activo = !paquete.activo; // Revertir cambio
-      }
+      const esActivo = !this.mostrarSoloActivos || paquete.activo;
+
+      return coincideBusqueda && esActivo;
     });
   }
 
   eliminarPaquete(id: number): void {
     if (confirm('¿Está seguro de eliminar este paquete?')) {
       this.paqueteService.eliminar(id).subscribe({
-        next: () => {
-          this.cargarPaquetes();
-        },
-        error: (error) => {
-          console.error('Error al eliminar paquete:', error);
-        }
+        next: () => this.cargarPaquetes(),
+        error: (error) => console.error('Error al eliminar paquete:', error)
       });
     }
   }
+  
 }
 

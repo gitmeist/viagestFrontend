@@ -13,8 +13,10 @@
 
 .content {
   flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 900px) {

@@ -12,19 +12,21 @@ import { ReservaService } from '../../core/service/reserva.service';
   styleUrl: './reserva.component.css'
 })
 export class ReservaComponent implements OnInit {
-reservas: Reserva[] = [];
+ reservas: Reserva[] = [];
   reservasFiltradas: Reserva[] = [];
-
-  // Filtros
+Math = Math;
+  
+  // filtros
   busqueda = '';
   filtroEstado = '';
   rangoFecha = { desde: '', hasta: '' };
 
-  // Paginación
+  // paginacion
   paginaActual = 1;
   reservasPorPagina = 10;
+  totalFiltradas = 0;
 
-  // Contadores resumen
+  // resumen
   total = 0;
   pendientes = 0;
   confirmadas = 0;
@@ -39,49 +41,74 @@ reservas: Reserva[] = [];
   cargarReservas(): void {
     this.reservaService.buscarTodas().subscribe({
       next: (data) => {
-        this.reservas = data;
+        this.reservas = data || [];
         this.actualizarResumen();
+        this.aplicarFiltros();
       },
       error: (err) => {
-        console.error('Error cargando reservas:', err);
+        console.error('Error cargando reservas', err);
+        this.reservas = [];
+        this.reservasFiltradas = [];
       }
     });
   }
 
-  obtenerReservasFiltradas(): Reserva[] {
-    let filtradas = this.reservas;
+  aplicarFiltros(): void {
+    let filtradas = (this.reservas || []).filter(r => !!r);
 
-    if (this.busqueda) {
+    // búsqueda por cliente o paquete
+    if (this.busqueda && this.busqueda.trim() !== '') {
       const b = this.busqueda.toLowerCase();
       filtradas = filtradas.filter(r =>
-        r.cliente.nombre.toLowerCase().includes(b) ||
-        r.paquete.nombre.toLowerCase().includes(b)
+        (r.cliente?.nombre || '').toLowerCase().includes(b) ||
+        (r.paquete?.nombre || '').toLowerCase().includes(b)
       );
     }
 
+    // estado
     if (this.filtroEstado) {
       filtradas = filtradas.filter(r => r.estadoReserva === this.filtroEstado);
     }
 
+    // rango fecha (fechaViaje)
     if (this.rangoFecha.desde) {
-      filtradas = filtradas.filter(r =>
-        new Date(r.fechaViaje) >= new Date(this.rangoFecha.desde)
-      );
+      const desde = new Date(this.rangoFecha.desde);
+      filtradas = filtradas.filter(r => new Date(r.fechaViaje) >= desde);
     }
-
     if (this.rangoFecha.hasta) {
-      filtradas = filtradas.filter(r =>
-        new Date(r.fechaViaje) <= new Date(this.rangoFecha.hasta)
-      );
+      const hasta = new Date(this.rangoFecha.hasta);
+      filtradas = filtradas.filter(r => new Date(r.fechaViaje) <= hasta);
     }
 
-    this.reservasFiltradas = filtradas;
-    return filtradas.slice((this.paginaActual - 1) * this.reservasPorPagina, this.paginaActual * this.reservasPorPagina);
+    // actualizar totales y paginar
+    this.totalFiltradas = filtradas.length;
+    const inicio = (this.paginaActual - 1) * this.reservasPorPagina;
+    this.reservasFiltradas = filtradas.slice(inicio, inicio + this.reservasPorPagina);
   }
 
-  cambiarPagina(nuevaPagina: number): void {
-    this.paginaActual = nuevaPagina;
-    this.obtenerReservasFiltradas();
+  cambiarPagina(nueva: number): void {
+    const max = this.totalPages;
+    if (nueva < 1 || nueva > max) return;
+    this.paginaActual = nueva;
+    this.aplicarFiltros();
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.totalFiltradas / this.reservasPorPagina));
+  }
+
+  // Genera array de números de página
+  pageNumbers(): number[] {
+    const pages = [];
+    const max = this.totalPages;
+    for (let i = 1; i <= max; i++) pages.push(i);
+    return pages;
+  }
+
+  estadoClass(estado: string | undefined): string {
+    if (!estado) return '';
+    return estado.toLowerCase() === 'confirmada' ? 'confirmada' :
+           estado.toLowerCase() === 'pendiente' ? 'pendiente' : 'cancelada';
   }
 
   actualizarResumen(): void {
@@ -91,23 +118,17 @@ reservas: Reserva[] = [];
     this.canceladas = this.reservas.filter(r => r.estadoReserva === 'CANCELADA').length;
   }
 
-  ver(reserva: Reserva): void {
-    alert(`Reserva ${reserva.idReserva} seleccionada`);
+  ver(r: Reserva): void { console.log('Ver', r); }
+  editar(r: Reserva): void { console.log('Editar', r); }
+  borrar(r: Reserva): void {
+    if (!confirm(`¿Eliminar reserva ${r.idReserva}?`)) return;
+    this.reservaService.eliminar(r.idReserva).subscribe({
+      next: () => { this.cargarReservas(); },
+      error: (e) => alert('Error al eliminar')
+    });
   }
 
-  editar(reserva: Reserva): void {
-    alert(`Editar reserva ${reserva.idReserva}`);
-  }
-
-  borrar(reserva: Reserva): void {
-    if (confirm(`¿Seguro que deseas eliminar la reserva #${reserva.idReserva}?`)) {
-      this.reservaService.eliminar(reserva.idReserva).subscribe({
-        next: () => {
-          alert('Reserva eliminada con éxito');
-          this.cargarReservas();
-        },
-        error: () => alert('Error al borrar la reserva')
-      });
-    }
+  nuevoRegistro(): void {
+    console.log('Crear nueva reserva');
   }
 }
