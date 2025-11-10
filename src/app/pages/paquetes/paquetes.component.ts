@@ -17,6 +17,9 @@ export class PaquetesComponent implements OnInit {
   paquetesFiltrados: Paquete[] = [];
   busqueda = '';
   mostrarSoloActivos = false;
+  destinoSeleccionado: string = ''; // Guarda el destino elegido
+  destinos: string[] = [];
+  destinosDisponibles: string[] = [];     
 
   constructor(private paqueteService: PaqueteService) {}
 
@@ -24,28 +27,33 @@ export class PaquetesComponent implements OnInit {
     this.cargarPaquetes();
   }
 
-  cargarPaquetes(): void {
-    this.paqueteService.buscarTodos().subscribe({
-      next: (data) => {
-        this.paquetes = data;
-        this.aplicarFiltros();
-      },
-      error: (error) => console.error('Error al cargar paquetes:', error)
-    });
-  }
+cargarPaquetes(): void {
+  this.paqueteService.buscarTodos().subscribe({
+    next: (data) => {
+      this.paquetes = data;
 
-  aplicarFiltros(): void {
-    this.paquetesFiltrados = this.paquetes.filter(paquete => {
-      const coincideBusqueda =
-        !this.busqueda ||
-        paquete.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
-        paquete.destino.toLowerCase().includes(this.busqueda.toLowerCase());
-      
-      const esActivo = !this.mostrarSoloActivos || paquete.activo;
-      
-      return coincideBusqueda && esActivo;
-    });
-  }
+      // Obtener todos los destinos únicos
+      this.destinosDisponibles = [...new Set(this.paquetes.map(p => p.destino))];
+
+      this.aplicarFiltros();
+    },
+    error: (error) => console.error('Error al cargar paquetes:', error)
+  });
+}
+
+aplicarFiltros(): void {
+  this.paquetesFiltrados = this.paquetes.filter(paquete => {
+    const coincideBusqueda =
+      !this.busqueda ||
+      paquete.nombre.toLowerCase().includes(this.busqueda.toLowerCase()) ||
+      paquete.destino.toLowerCase().includes(this.busqueda.toLowerCase());
+
+    const esActivo = !this.mostrarSoloActivos || paquete.activo;
+    const coincideDestino = !this.destinoSeleccionado || paquete.destino === this.destinoSeleccionado;
+
+    return coincideBusqueda && esActivo && coincideDestino;
+  });
+}
 
   toggleActivo(paquete: Paquete): void {
     paquete.activo = !paquete.activo;
