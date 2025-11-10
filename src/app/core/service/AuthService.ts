@@ -41,6 +41,12 @@ export class AuthService {
 
   /** Cierra sesión y elimina los datos del usuario */
   logout() {
-    localStorage.removeItem(this.USER_KEY);
+  return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
+    .pipe(
+      tap(() => {
+        localStorage.removeItem(this.USER_KEY);
+      })
+    );
   }
+
 }
