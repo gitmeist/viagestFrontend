@@ -40,6 +40,19 @@ export class ClienteComponent implements OnInit {
   cantidadPago: number = 0;
   metodoPago: string = '';
 
+    //  modal de cliente
+mostrarModalCliente = false;
+
+nuevoClienteData: Cliente = {
+  cif: '',
+  nombre: '',
+  email: '',
+  telefono: '',
+  domicilio: '',
+  fechaNacimiento: '',
+  fechaRegistro: ''
+};
+
   constructor(private clienteService: ClienteService,
     private paqueteService: PaqueteService
   ) { }
@@ -81,6 +94,36 @@ export class ClienteComponent implements OnInit {
     });
     this.cerrarModalReserva();
   }
+
+
+// Abrir modal cliente
+abrirModalCliente() {
+  this.mostrarModalCliente = true;
+}
+
+// Cerrar modal
+cerrarModalCliente() {
+  this.mostrarModalCliente = false;
+  this.nuevoClienteData = {
+    cif: '',
+    nombre: '',
+    email: '',
+    telefono: '',
+    domicilio: '',
+    fechaNacimiento: '',
+    fechaRegistro: ''
+  };
+}
+
+// Guardar cliente
+guardarCliente() {
+  console.log('Nuevo cliente:', this.nuevoClienteData);
+  // llamar al servicio para guardarlo en la base de datos
+  this.clientes.push({ ...this.nuevoClienteData });
+  this.aplicarFiltros();
+  this.cerrarModalCliente();
+}
+
 
   cargarClientes(): void {
     this.clienteService.buscarTodos().subscribe({

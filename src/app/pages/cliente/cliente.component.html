@@ -1,8 +1,13 @@
 <!-- Cabecera -->
 <div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
-  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2> <button
-    class="btn btn-turquoise d-flex align-items-center shadow-sm" (click)="nuevoCliente()" aria-label="Añadir cliente">
-    <i class="bi bi-plus-lg me-2"></i> Añadir Cliente </button>
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2> 
+  <button
+  class="btn btn-turquoise d-flex align-items-center shadow-sm"
+  (click)="abrirModalCliente()"
+  aria-label="Añadir cliente">
+  <i class="bi bi-plus-lg me-2"></i> Añadir Cliente
+</button>
+
 </div>
 
 <!-- Contenedor principal -->
@@ -194,6 +199,64 @@
         <button type="submit" class="btn btn-turquoise shadow-sm">Guardar Reserva</button>
       </div>
 
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: AÑADIR CLIENTE -->
+<div class="modal-overlay" *ngIf="mostrarModalCliente" (click)="cerrarModalCliente()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button type="button" class="close-btn" (click)="cerrarModalCliente()" aria-label="Cerrar modal">&times;</button>
+
+    <h4 class="fw-semibold mb-3">Nuevo Cliente</h4>
+    <hr class="divider" />
+
+    <form (ngSubmit)="guardarCliente()">
+      <!-- DATOS DEL CLIENTE -->
+      <h6 class="modal-title">Datos del Cliente</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>CIF</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.cif" name="cif" required placeholder="CIF del cliente" />
+        </div>
+        <div class="col-md-6">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.nombre" name="nombre" required placeholder="Nombre completo" />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Email</label>
+          <input type="email" class="form-control" [(ngModel)]="nuevoClienteData.email" name="email" required placeholder="Correo electrónico" />
+        </div>
+        <div class="col-md-6">
+          <label>Teléfono</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.telefono" name="telefono" required placeholder="Teléfono de contacto" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Domicilio</label>
+        <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.domicilio" name="domicilio" required placeholder="Dirección del cliente" />
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Fecha de Nacimiento</label>
+          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaNacimiento" name="fechaNacimiento" required />
+        </div>
+        <div class="col-md-6">
+          <label>Fecha de Registro</label>
+          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaRegistro" name="fechaRegistro" required />
+        </div>
+      </div>
+
+      <hr class="divider" />
+      <div class="text-end mt-3">
+        <button type="button" class="btn-cancelar me-2" (click)="cerrarModalCliente()">Cancelar</button>
+        <button type="submit" class="btn btn-turquoise shadow-sm">Guardar Cliente</button>
+      </div>
     </form>
   </div>
 </div>
