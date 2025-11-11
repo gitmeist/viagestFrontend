@@ -76,17 +76,7 @@ export class PagosComponent implements OnInit {
     this.paginaActual = 1; // Reset paginación al filtrar
   }
 
-  /** Elimina un pago */
-  eliminarPago(id: number): void {
-    if (!confirm('¿Seguro que deseas eliminar este pago?')) return;
-    this.pagoService.eliminar(id).subscribe({
-      next: () => {
-        this.pagos = this.pagos.filter(p => p.idPago !== id);
-        this.aplicarFiltros();
-      },
-      error: () => alert('Error al eliminar el pago')
-    });
-  }
+  
 
   /** Simulación de pago confirmado */
   confirmarPago(pago: Pago): void {
@@ -117,7 +107,9 @@ export class PagosComponent implements OnInit {
     return {
       'COMPLETADO': 'badge-confirmado',
       'PENDIENTE': 'badge-pendiente',
-      'FALLIDO': 'badge-fallido'
+      'FALLIDO': 'badge-fallido',
+      'CANCELADO': 'badge-cancelado',
+      'DEVUELTO': 'badge-devuelto'
     }[estado] || '';
   }
 }

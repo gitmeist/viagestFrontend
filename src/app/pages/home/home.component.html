@@ -3,7 +3,7 @@
   <div class="card" *ngFor="let item of resumen">
     <div class="icon">{{ item.icon }}</div>
     <p>{{ item.label }}</p>
-    <h2>{{ item.value }}</h2>
+    <h2>{{ item.value }}</h2> <!-- Ingresos ahora mostrarán el total del último mes -->
   </div>
 </div>
 
@@ -23,16 +23,9 @@
 
     <tbody>
       <tr *ngFor="let r of reservasActivas">
-        <!-- Cliente -->
         <td>{{ r.cliente?.nombre }}</td>
-
-        <!-- Paquete -->
         <td>{{ r.paquete?.nombre }}</td>
-
-        <!-- Fecha de viaje -->
         <td>{{ r.fechaViaje | date: 'dd/MM/yyyy' }}</td>
-
-        <!-- Estado -->
         <td>
           <span class="estado {{ r.estadoReserva | lowercase }}">
             {{ r.estadoReserva }}
@@ -40,7 +33,6 @@
         </td>
       </tr>
 
-      <!-- Si no hay reservas -->
       <tr *ngIf="reservasActivas.length === 0">
         <td colspan="4" class="sin-datos">No hay reservas activas</td>
       </tr>

@@ -58,8 +58,9 @@
         <td>{{ pago.referencia }}</td>
 
         <td class="acciones-btns">
-          <button (click)="confirmarPago(pago)">PAGAR</button>
-          <button (click)="eliminarPago(pago.idPago)">🗑</button>
+          <button *ngIf="pago.estadoPago === 'PENDIENTE'" (click)="confirmarPago(pago)">
+          PAGAR
+          </button>
         </td>
       </tr>
     </tbody>
@@ -77,4 +78,4 @@
       (click)="cambiarPagina(paginaActual + 1)"
       [disabled]="paginaActual * elementosPorPagina >= pagosFiltrados.length"
     >
-      Si
+      Siguiente
