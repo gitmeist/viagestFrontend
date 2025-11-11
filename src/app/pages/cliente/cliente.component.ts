@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClienteService } from '../../core/service/cliente.service';
 import { Cliente } from '../../shared/interfaces/cliente';
+import { Paquete } from '../../shared/interfaces/paquete';
+import { PaqueteService } from '../../core/service/paquete.service';
 
 @Component({
   selector: 'app-cliente',
@@ -22,17 +24,69 @@ export class ClienteComponent implements OnInit {
   paginaActual = 1;
   clientesPorPagina = 5;
 
-  constructor(private clienteService: ClienteService) {}
+  mostrarModalReserva = false;
+  paquetes: Paquete[] = [];
+
+  clienteParaReserva: Cliente | null = null;
+  paqueteSeleccionado: Paquete | null = null;
+
+  // Datos de reserva
+  fechaReserva: string = '';
+  fechaViaje: string = '';
+  numeroPersonas: number = 1;
+  observaciones: string = '';
+
+  // Datos de pago
+  cantidadPago: number = 0;
+  metodoPago: string = '';
+
+  constructor(private clienteService: ClienteService,
+    private paqueteService: PaqueteService
+  ) { }
+
 
   ngOnInit(): void {
     this.cargarClientes();
+    this.clienteService.buscarTodos().subscribe(data => this.clientes = data || []);
+    this.paqueteService.buscarTodos().subscribe(data => this.paquetes = data || []);
+  }
+
+  abrirModalReserva(cliente: Cliente) {
+    this.clienteParaReserva = cliente;
+    this.mostrarModalReserva = true;
+  }
+
+  cerrarModalReserva() {
+    this.mostrarModalReserva = false;
+    this.clienteParaReserva = null;
+    this.paqueteSeleccionado = null;
+    this.fechaReserva = '';
+    this.fechaViaje = '';
+    this.numeroPersonas = 1;
+    this.observaciones = '';
+    this.cantidadPago = 0;
+    this.metodoPago = '';
+  }
+
+  guardarReserva() {
+    console.log('Datos de la reserva:', {
+      cliente: this.clienteParaReserva,
+      paquete: this.paqueteSeleccionado,
+      fechaReserva: this.fechaReserva,
+      fechaViaje: this.fechaViaje,
+      numeroPersonas: this.numeroPersonas,
+      observaciones: this.observaciones,
+      cantidadPago: this.cantidadPago,
+      metodoPago: this.metodoPago
+    });
+    this.cerrarModalReserva();
   }
 
   cargarClientes(): void {
     this.clienteService.buscarTodos().subscribe({
       next: (data) => {
         this.clientes = data || [];
-        this.paginaActual = 1; 
+        this.paginaActual = 1;
         this.aplicarFiltros();
       },
       error: (err) => {
@@ -90,11 +144,11 @@ export class ClienteComponent implements OnInit {
       const coincideEmail = !this.filtroEmail || (c.email?.toLowerCase().includes(this.filtroEmail.toLowerCase()) || false);
       return coincideBusqueda && coincideFecha && coincideEmail;
     }).length;
-    
+
     const maxPaginas = Math.ceil(totalFiltrados / this.clientesPorPagina);
-    
+
     if (pagina < 1 || pagina > maxPaginas) return;
-    
+
     this.paginaActual = pagina;
     this.aplicarFiltros();
   }
@@ -106,8 +160,6 @@ export class ClienteComponent implements OnInit {
   editar(cliente: Cliente): void {
     console.log('Editar cliente', cliente);
   }
-
-  
 
   reservar(cliente: Cliente): void {
     console.log('Reservar para cliente', cliente);

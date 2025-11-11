@@ -1,77 +1,33 @@
-<!-- Cabecera fuera del contenedor -->
+<!-- Cabecera -->
 <div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
-  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2>
-  <button
-    class="btn btn-turquoise d-flex align-items-center shadow-sm"
-    (click)="nuevoCliente()"
-    aria-label="Añadir cliente"
-  >
-    <i class="bi bi-plus-lg me-2"></i> Añadir Cliente
-  </button>
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2> <button
+    class="btn btn-turquoise d-flex align-items-center shadow-sm" (click)="nuevoCliente()" aria-label="Añadir cliente">
+    <i class="bi bi-plus-lg me-2"></i> Añadir Cliente </button>
 </div>
 
 <!-- Contenedor principal -->
 <div class="clientes-container mx-3">
   <div>
+
     <!-- Filtros -->
     <div class="filtros d-flex flex-wrap align-items-center gap-2 mb-4">
-      <div class="flex-grow-1 position-relative">
-        <label for="busqueda" class="visually-hidden">Buscar cliente</label>
-        <i class="bi bi-search position-absolute search-icon"></i>
-        <input
-          id="busqueda"
-          type="text"
-          class="form-control ps-5"
-          placeholder="Buscar por nombre, email, CIF..."
-          [(ngModel)]="busqueda"
-          (input)="aplicarFiltros()"
-        />
+      <div class="flex-grow-1 position-relative"> <label for="busqueda" class="visually-hidden">Buscar cliente</label>
+        <i class="bi bi-search position-absolute search-icon"></i> <input id="busqueda" type="text"
+          class="form-control ps-5" placeholder="Buscar por nombre, email, CIF..." [(ngModel)]="busqueda"
+          (input)="aplicarFiltros()" />
       </div>
-
-      <div>
-        <label for="fechaRegistro" class="visually-hidden">Filtrar por fecha</label>
-        <div class="dropdown">
-          <button
-            class="btn btn-light border dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Filtrar por Fecha
-          </button>
-          <div class="dropdown-menu p-3">
-            <input
-              id="fechaRegistro"
-              type="date"
-              class="form-control"
-              [(ngModel)]="filtroFechaRegistro"
-              (change)="aplicarFiltros()"
-            />
-          </div>
+      <div> <label for="fechaRegistro" class="visually-hidden">Filtrar por fecha</label>
+        <div class="dropdown"> <button class="btn btn-light border dropdown-toggle" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false"> Filtrar por Fecha </button>
+          <div class="dropdown-menu p-3"> <input id="fechaRegistro" type="date" class="form-control"
+              [(ngModel)]="filtroFechaRegistro" (change)="aplicarFiltros()" /> </div>
         </div>
       </div>
-
-      <div>
-        <label for="emailFiltro" class="visually-hidden">Filtrar por email</label>
-        <div class="dropdown">
-          <button
-            class="btn btn-light border dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Filtrar por Email
-          </button>
-          <div class="dropdown-menu p-3">
-            <input
-              id="emailFiltro"
-              type="text"
-              class="form-control"
-              placeholder="Escribe un correo..."
-              [(ngModel)]="filtroEmail"
-              (input)="aplicarFiltros()"
-            />
-          </div>
+      <div> <label for="emailFiltro" class="visually-hidden">Filtrar por email</label>
+        <div class="dropdown"> <button class="btn btn-light border dropdown-toggle" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false"> Filtrar por Email </button>
+          <div class="dropdown-menu p-3"> <input id="emailFiltro" type="text" class="form-control"
+              placeholder="Escribe un correo..." [(ngModel)]="filtroEmail" (input)="aplicarFiltros()" /> </div>
         </div>
       </div>
     </div>
@@ -98,78 +54,146 @@
             <td>{{ cliente.telefono }}</td>
             <td>{{ cliente.domicilio }}</td>
             <td>{{ cliente.fechaRegistro | date: 'yyyy-MM-dd' }}</td>
-            <td class="text-center">
-              <button
-                class="btn btn-icon btn-outline-warning me-1"
-                (click)="ver(cliente)"
-                aria-label="Ver cliente"
-              >
-                <i class="bi bi-eye"></i>
-              </button>
-              <button
-                class="btn btn-icon btn-outline-success me-1"
-                (click)="editar(cliente)"
-                aria-label="Editar cliente"
-              >
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button
-                class="btn btn-reservar btn-turquoise ms-3"
-                (click)="reservar(cliente)"
-                aria-label="Reservar cliente"
-              >
-                Reservar
-              </button>
-            </td>
+            <td class="text-center"> <button class="btn btn-icon btn-outline-warning me-1" (click)="ver(cliente)"
+                aria-label="Ver cliente"> <i class="bi bi-eye"></i> </button> <button
+                class="btn btn-icon btn-outline-success me-1" (click)="editar(cliente)" aria-label="Editar cliente"> <i
+                  class="bi bi-pencil"></i> </button> <button class="btn btn-reservar btn-turquoise ms-3"
+                (click)="abrirModalReserva(cliente)" aria-label="Reservar cliente"> Reservar </button> </td>
           </tr>
-
           <tr *ngIf="clientesFiltrados.length === 0">
-            <td colspan="7" class="text-center text-muted py-4">
-              No se encontraron clientes.
-            </td>
+            <td colspan="7" class="text-center text-muted py-4"> No se encontraron clientes. </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 
-<!-- Paginación -->
-<div class="d-flex justify-content-between align-items-center mt-3 pt-2">
-  <small class="text-muted">
-    Mostrando
-    {{ (paginaActual - 1) * clientesPorPagina + 1 }} -
-    {{ Math.min(paginaActual * clientesPorPagina, clientes.length) }}
-    de {{ clientes.length }}
-  </small>
-
-  <div class="paginacion">
-    <button
-      class="btn-paginacion"
-      [disabled]="paginaActual === 1"
-      (click)="cambiarPagina(paginaActual - 1)"
-    >
-      Anterior
-    </button>
-
-    <!-- Números de página -->
-    <ng-container *ngFor="let num of [].constructor(Math.ceil(clientes.length / clientesPorPagina)); let i = index">
-      <button
-        class="btn-paginacion"
-        [class.activa]="paginaActual === i + 1"
-        (click)="cambiarPagina(i + 1)"
-      >
-        {{ i + 1 }}
-      </button>
-    </ng-container>
-
-    <button
-      class="btn-paginacion"
-      [disabled]="paginaActual >= Math.ceil(clientes.length / clientesPorPagina)"
-      (click)="cambiarPagina(paginaActual + 1)"
-    >
-      Siguiente
-    </button>
+  <!-- Paginación -->
+  <div class="d-flex justify-content-between align-items-center mt-3 pt-2"> <small class="text-muted"> Mostrando {{
+      (paginaActual - 1) * clientesPorPagina + 1 }} - {{ Math.min(paginaActual * clientesPorPagina, clientes.length) }}
+      de {{ clientes.length }} </small>
+    <div class="paginacion"> <button class="btn-paginacion" [disabled]="paginaActual === 1"
+        (click)="cambiarPagina(paginaActual - 1)"> Anterior </button> <!-- Números de página --> <ng-container
+        *ngFor="let num of [].constructor(Math.ceil(clientes.length / clientesPorPagina)); let i = index"> <button
+          class="btn-paginacion" [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)"> {{ i + 1 }}
+        </button> </ng-container> <button class="btn-paginacion"
+        [disabled]="paginaActual >= Math.ceil(clientes.length / clientesPorPagina)"
+        (click)="cambiarPagina(paginaActual + 1)"> Siguiente </button> </div>
   </div>
 </div>
 
+<!-- MODAL -->
+
+<div class="modal-overlay" *ngIf="mostrarModalReserva" (click)="cerrarModalReserva()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button type="button" class="close-btn" (click)="cerrarModalReserva()" aria-label="Cerrar modal">&times;</button>
+
+    <h4 class="fw-semibold mb-3">Nueva Reserva</h4>
+    <form (ngSubmit)="guardarReserva()">
+
+      <!-- DATOS DEL CLIENTE -->
+      <h6 class="modal-title">Datos del Cliente</h6>
+      <hr class="divider" />
+      <div class="row g-3 mb-3">
+        <div class="col">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [value]="clienteParaReserva?.nombre" readonly />
+        </div>
+        <div class="col">
+          <label>Email</label>
+          <input type="text" class="form-control" [value]="clienteParaReserva?.email" readonly />
+        </div>
+      </div>
+      <div class="row g-3 mb-3">
+        <div class="col">
+          <label>Teléfono</label>
+          <input type="text" class="form-control" [value]="clienteParaReserva?.telefono" readonly />
+        </div>
+        <div class="col">
+          <label>CIF</label>
+          <input type="text" class="form-control" [value]="clienteParaReserva?.cif" readonly />
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- PAQUETE TURÍSTICO -->
+      <h6 class="modal-title">Paquete Turístico</h6>
+      <div class="mb-3">
+        <label>Selecciona un paquete</label>
+        <select class="form-select" [(ngModel)]="paqueteSeleccionado" name="paqueteSelect" required>
+          <option value="" disabled selected>Selecciona un paquete</option>
+          <option *ngFor="let paquete of paquetes" [ngValue]="paquete"> {{ paquete.nombre }} </option>
+        </select>
+      </div>
+      <div class="row g-3 mb-3" *ngIf="paqueteSeleccionado">
+        <div class="col">
+          <label>Destino</label>
+          <input type="text" class="form-control" [value]="paqueteSeleccionado.destino" readonly />
+        </div>
+        <div class="col">
+          <label>Duración (días)</label>
+          <input type="text" class="form-control" [value]="paqueteSeleccionado.duracionDias" readonly />
+        </div>
+        <div class="col">
+          <label>Precio (€)</label>
+          <input type="text" class="form-control" [value]="paqueteSeleccionado.precio" readonly />
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- DETALLES DE LA RESERVA -->
+      <h6 class="modal-title">Detalles de la Reserva</h6>
+      <div class="row g-3 mb-3">
+        <div class="col">
+          <label>Fecha de Reserva</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaReserva" name="fechaReserva" required />
+        </div>
+        <div class="col">
+          <label>Fecha de Viaje</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaViaje" name="fechaViaje" required />
+        </div>
+        <div class="col">
+          <label>Nº Personas</label>
+          <input type="number" class="form-control" [(ngModel)]="numeroPersonas" name="numeroPersonas" min="1" required
+            placeholder="Nº Personas" />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Observaciones</label>
+        <textarea class="form-control" rows="2" [(ngModel)]="observaciones" name="observaciones"
+          placeholder="Observaciones"></textarea>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- DETALLES DEL PAGO -->
+      <h6 class="modal-title">Detalles del Pago</h6>
+      <div class="row g-3 mb-3">
+        <div class="col">
+          <label>Cantidad (€)</label>
+          <input type="number" class="form-control" [(ngModel)]="cantidadPago" name="cantidadPago" required
+            placeholder="Cantidad (€)" />
+        </div>
+        <div class="col">
+          <label>Método de Pago</label>
+          <select class="form-select" [(ngModel)]="metodoPago" name="metodoPago" required>
+            <option value="" disabled selected>Método de Pago</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Efectivo">Efectivo</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="divider" />
+      <!-- BOTONES -->
+      <div class="text-end mt-3">
+        <button type="button" class="btn-cancelar me-2" (click)="cerrarModalReserva()">Cancelar</button>
+        <button type="submit" class="btn btn-turquoise shadow-sm">Guardar Reserva</button>
+      </div>
+
+    </form>
+  </div>
 </div>
