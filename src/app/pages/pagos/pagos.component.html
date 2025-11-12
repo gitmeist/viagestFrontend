@@ -58,24 +58,34 @@
         <td>{{ pago.referencia }}</td>
 
         <td class="acciones-btns">
-          <button *ngIf="pago.estadoPago === 'PENDIENTE'" (click)="confirmarPago(pago)">
-          PAGAR
+          <button *ngIf="pago.estadoPago === 'PENDIENTE'" (click)="aceptarPago(pago)">
+            ACEPTAR
           </button>
         </td>
       </tr>
     </tbody>
   </table>
 
-  <!-- PAGINACIÓN -->
-  <div class="paginacion">
+  <!-- PAGINACIÓN DINÁMICA -->
+  <div class="paginacion" *ngIf="paginasTotales.length > 1">
     <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
       Anterior
     </button>
 
-    <span>{{ paginaActual }}</span>
+    <ng-container *ngFor="let num of paginasTotales">
+      <button
+        [ngClass]="{ activo: num === paginaActual }"
+        (click)="cambiarPagina(num)"
+      >
+        {{ num }}
+      </button>
+    </ng-container>
 
     <button
       (click)="cambiarPagina(paginaActual + 1)"
-      [disabled]="paginaActual * elementosPorPagina >= pagosFiltrados.length"
+      [disabled]="paginaActual === paginasTotales.length"
     >
       Siguiente
+    </button>
+  </div>
+</div>

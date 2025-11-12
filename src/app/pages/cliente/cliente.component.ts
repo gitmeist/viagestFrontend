@@ -99,6 +99,15 @@ nuevoClienteData: Cliente = {
 // Abrir modal cliente
 abrirModalCliente() {
   this.mostrarModalCliente = true;
+  this.nuevoClienteData = {
+    cif: '',
+    nombre: '',
+    email: '',
+    telefono: '',
+    domicilio: '',
+    fechaNacimiento: '',
+    fechaRegistro: this.obtenerFechaLocal()
+  };
 }
 
 // Cerrar modal
@@ -111,17 +120,39 @@ cerrarModalCliente() {
     telefono: '',
     domicilio: '',
     fechaNacimiento: '',
-    fechaRegistro: ''
+    fechaRegistro: this.obtenerFechaLocal()
   };
 }
 
 // Guardar cliente
 guardarCliente() {
-  console.log('Nuevo cliente:', this.nuevoClienteData);
-  // llamar al servicio para guardarlo en la base de datos
-  this.clientes.push({ ...this.nuevoClienteData });
-  this.aplicarFiltros();
-  this.cerrarModalCliente();
+  this.nuevoClienteData.fechaRegistro = new Date();
+
+  this.clienteService.alta(this.nuevoClienteData).subscribe({
+    next: (clienteGuardado) => {
+      console.log('Cliente creado:', clienteGuardado);
+      this.clientes.push(clienteGuardado);
+      this.aplicarFiltros();
+      this.cerrarModalCliente();
+      alert('✅ Cliente registrado correctamente.');
+    },
+    error: (err) => {
+      console.error('Error al guardar cliente:', err);
+      if (err.status === 409) {
+        alert('⚠️ Ya existe un cliente con ese CIF.');
+      } else if (err.status === 500) {
+        alert('❌ Error interno del servidor. Inténtalo más tarde.');
+      } else {
+        alert('❗ Error al guardar el cliente.');
+      }
+    }
+  });
+}
+
+obtenerFechaLocal(): string {
+  const hoy = new Date();
+  // Convertir a formato yyyy-MM-dd compatible con el input date
+  return hoy.toISOString().split('T')[0];
 }
 
 

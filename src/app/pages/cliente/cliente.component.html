@@ -89,10 +89,9 @@
 
 <!-- MODAL -->
 
-<div class="modal-overlay" *ngIf="mostrarModalReserva" (click)="cerrarModalReserva()">
+<div class="modal-overlay" *ngIf="mostrarModalReserva" >
   <div class="modal-container" (click)="$event.stopPropagation()">
-    <button type="button" class="close-btn" (click)="cerrarModalReserva()" aria-label="Cerrar modal">&times;</button>
-
+  <button type="button" class="close-btn" (click)="cerrarModalReserva()" aria-label="Cerrar modal">&times;</button>
     <h4 class="fw-semibold mb-3">Nueva Reserva</h4>
     <form (ngSubmit)="guardarReserva()">
 
@@ -204,14 +203,14 @@
 </div>
 
 <!-- MODAL: AÑADIR CLIENTE -->
-<div class="modal-overlay" *ngIf="mostrarModalCliente" (click)="cerrarModalCliente()">
+<div class="modal-overlay" *ngIf="mostrarModalCliente">
   <div class="modal-container" (click)="$event.stopPropagation()">
     <button type="button" class="close-btn" (click)="cerrarModalCliente()" aria-label="Cerrar modal">&times;</button>
 
     <h4 class="fw-semibold mb-3">Nuevo Cliente</h4>
     <hr class="divider" />
 
-    <form (ngSubmit)="guardarCliente()">
+    <form>
       <!-- DATOS DEL CLIENTE -->
       <h6 class="modal-title">Datos del Cliente</h6>
       <div class="row g-3 mb-3">
@@ -248,14 +247,14 @@
         </div>
         <div class="col-md-6">
           <label>Fecha de Registro</label>
-          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaRegistro" name="fechaRegistro" required />
+          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaRegistro" name="fechaRegistro" [readonly]="true"/>
         </div>
       </div>
 
       <hr class="divider" />
       <div class="text-end mt-3">
         <button type="button" class="btn-cancelar me-2" (click)="cerrarModalCliente()">Cancelar</button>
-        <button type="submit" class="btn btn-turquoise shadow-sm">Guardar Cliente</button>
+        <button type="submit" class="btn btn-turquoise shadow-sm" (click)="guardarCliente()">Guardar Cliente</button>
       </div>
     </form>
   </div>

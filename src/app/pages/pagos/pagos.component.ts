@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { OnInit } from '@angular/core';
 import { EstadoPago } from '../../shared/interfaces/estado-pago';
 import { MetodoPago } from '../../shared/interfaces/metodo-pago';
 import { PagoService } from '../../core/service/pago.service';
@@ -10,25 +9,26 @@ import { Pago } from '../../shared/interfaces/pago';
 
 @Component({
   selector: 'app-pagos',
+  standalone: true,
   imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './pagos.component.html',
   styleUrl: './pagos.component.css'
 })
 export class PagosComponent implements OnInit {
-
-  pagos: Pago[] = [];            // Lista total de pagos traídos de la API
-  pagosFiltrados: Pago[] = [];   // Lista visible según filtros
-  estados = Object.values(EstadoPago);   // ['PENDIENTE', 'CONFIRMADO', 'FALLIDO']
-  metodos = Object.values(MetodoPago);   // ['TARJETA', 'TRANSFERENCIA', 'EFECTIVO']
+  pagos: Pago[] = [];
+  pagosFiltrados: Pago[] = [];
+  estados = Object.values(EstadoPago);
+  metodos = Object.values(MetodoPago);
 
   filtroTexto = '';
   filtroEstado = '';
   filtroMetodo = '';
   rangoFecha = { desde: '', hasta: '' };
 
-  // Paginación manual (frontend)
+  // 🔹 Paginación
   paginaActual = 1;
   elementosPorPagina = 5;
+  paginasTotales: number[] = [];
 
   constructor(private pagoService: PagoService) {}
 
@@ -36,73 +36,78 @@ export class PagosComponent implements OnInit {
     this.cargarPagos();
   }
 
-  /** Llama al backend y trae todos los pagos */
+  /** Carga todos los pagos del backend */
   cargarPagos(): void {
     this.pagoService.buscarTodos().subscribe({
       next: (data) => {
         this.pagos = data;
-        this.pagosFiltrados = [...this.pagos];
+        this.aplicarFiltros(); // Filtra y pagina al cargar
       },
       error: (err) => console.error('Error al cargar pagos', err)
     });
   }
 
-  /** Filtrar por texto, estado, método o fechas */
+  /** Aplica filtros y actualiza la paginación */
   aplicarFiltros(): void {
     this.pagosFiltrados = this.pagos.filter(pago => {
-
+      const texto = this.filtroTexto.toLowerCase();
       const coincideTexto =
-        this.filtroTexto === '' ||
-        pago.referencia.toLowerCase().includes(this.filtroTexto.toLowerCase()) ||
-        pago.reserva.cliente?.nombre?.toLowerCase().includes(this.filtroTexto.toLowerCase());
+        !texto ||
+        pago.referencia.toLowerCase().includes(texto) ||
+        pago.reserva.cliente?.nombre?.toLowerCase().includes(texto);
 
-      const coincideEstado =
-        this.filtroEstado === '' || pago.estadoPago === this.filtroEstado;
-
-      const coincideMetodo =
-        this.filtroMetodo === '' || pago.metodoPago === this.filtroMetodo;
+      const coincideEstado = !this.filtroEstado || pago.estadoPago === this.filtroEstado;
+      const coincideMetodo = !this.filtroMetodo || pago.metodoPago === this.filtroMetodo;
 
       const fecha = new Date(pago.fechaPago).getTime();
       const desde = this.rangoFecha.desde ? new Date(this.rangoFecha.desde).getTime() : null;
       const hasta = this.rangoFecha.hasta ? new Date(this.rangoFecha.hasta).getTime() : null;
-
-      const coincideFecha =
-        (!desde || fecha >= desde) &&
-        (!hasta || fecha <= hasta);
+      const coincideFecha = (!desde || fecha >= desde) && (!hasta || fecha <= hasta);
 
       return coincideTexto && coincideEstado && coincideMetodo && coincideFecha;
     });
 
-    this.paginaActual = 1; // Reset paginación al filtrar
+    this.actualizarPaginacion();
   }
 
-  
+  /** Actualiza el número total de páginas dinámicamente */
+  actualizarPaginacion(): void {
+    const totalPaginas = Math.ceil(this.pagosFiltrados.length / this.elementosPorPagina);
+    this.paginasTotales = Array.from({ length: totalPaginas }, (_, i) => i + 1);
+    this.paginaActual = 1;
+  }
 
-  /** Simulación de pago confirmado */
-  confirmarPago(pago: Pago): void {
-    const actualizado: Pago = { ...pago, estadoPago: EstadoPago.PENDIENTE };
+  /** Cambia de página */
+  cambiarPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.paginasTotales.length) return;
+    this.paginaActual = pagina;
+  }
 
-    this.pagoService.modificar(pago.idPago, actualizado).subscribe({
+  /** Obtiene los pagos visibles según la página */
+  get pagosPaginados(): Pago[] {
+    const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
+    return this.pagosFiltrados.slice(inicio, inicio + this.elementosPorPagina);
+  }
+
+  /** Marca el pago como aceptado */
+  aceptarPago(pago: Pago): void {
+    if (!confirm(`¿Confirmar el pago #${pago.idPago}?`)) return;
+
+    this.pagoService.aceptarPago(pago.idPago).subscribe({
       next: (res) => {
         const index = this.pagos.findIndex(p => p.idPago === res.idPago);
-        this.pagos[index] = res;
+        if (index !== -1) this.pagos[index] = res;
         this.aplicarFiltros();
+        alert(`Pago #${pago.idPago} aceptado correctamente`);
       },
-      error: () => alert('Error al confirmar el pago')
+      error: (err) => {
+        console.error('Error al aceptar el pago:', err);
+        alert('No se pudo aceptar el pago');
+      }
     });
   }
 
-  /** Devuelve los elementos visibles para la página actual */
-  get pagosPaginados(): Pago[] {
-    const start = (this.paginaActual - 1) * this.elementosPorPagina;
-    return this.pagosFiltrados.slice(start, start + this.elementosPorPagina);
-  }
-
-  cambiarPagina(nueva: number): void {
-    this.paginaActual = nueva;
-  }
-
-  /** Clases dinámicas para badges */
+  /** Devuelve clases CSS según estado */
   getEstadoCss(estado: EstadoPago): string {
     return {
       'COMPLETADO': 'badge-confirmado',

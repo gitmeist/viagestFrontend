@@ -46,6 +46,10 @@ export class PagoService {
 
   /** Cancelar un pago */
   cancelarPago(idPago: number): Observable<Pago> {
-    return this.http.patch<Pago>(`${this.baseUrl}/${idPago}/cancelar`, {}, { withCredentials: true });
+    return this.http.patch<Pago>(`${this.baseUrl}/${idPago}/cancelar-pago`, {}, { withCredentials: true });
+  }
+
+  aceptarPago(idPago: number): Observable<Pago> {
+    return this.http.patch<Pago>(`${this.baseUrl}/${idPago}/aceptar-pago`, {}, { withCredentials: true });
   }
 }

@@ -169,3 +169,43 @@
 .card.pendientes { border-left: 4px solid #f0a500; }
 .card.confirmadas { border-left: 4px solid #2ea043; }
 .card.canceladas { border-left: 4px solid #d93b3b; }
+
+/* ===== PAGINACIÓN (mejorada) ===== */
+.paginacion {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: center;
+}
+
+.paginacion button {
+  padding: 6px 12px;
+  background: #e7e7e7;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+/* Efecto hover */
+.paginacion button:hover:not(:disabled) {
+  background: #007bff;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Botón deshabilitado */
+.paginacion button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Página activa */
+.paginacion .activo {
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
