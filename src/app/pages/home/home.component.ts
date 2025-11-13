@@ -15,11 +15,13 @@ import { PagoService } from '../../core/service/pago.service';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
+  mesActual: string = '';
+  
   resumen = [
     { label: 'Clientes', value: 0, icon: '👥' },
     { label: 'Reservas Activas', value: 0, icon: '📅' },
     { label: 'Paquetes Disponibles', value: 0, icon: '📦' },
-    { label: 'Ingresos Totales', value: '0€', icon: '💶' }
+    { label: '', value: '0€', icon: '💶' } // Label will be set dynamically
   ];
 
   reservas: any[] = [];
@@ -33,7 +35,16 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.establecerMesActual();
     this.cargarDatos();
+  }
+
+  private establecerMesActual(): void {
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const fecha = new Date();
+    this.mesActual = meses[fecha.getMonth()];
+    this.resumen[3].label = `Ingresos de ${this.mesActual}`;
   }
 
   private cargarDatos(): void {
@@ -54,17 +65,8 @@ export class HomeComponent implements OnInit {
       this.resumen[2].value = paquetes.length;
     });
 
-    // 4️⃣ Ingresos totales del mes actual
-    this.reservaService.buscarTodas().subscribe(reservas => {
-      const mesActual = new Date().getMonth();
-      const ingresosMes = reservas
-        .filter(r =>
-          new Date(r.fechaReserva).getMonth() === mesActual &&
-          r.estadoReserva === 'CONFIRMADA'
-        )
-        .reduce((total, r) => total + (r.paquete?.precio || 0), 0);
-      this.resumen[3].value = ingresosMes.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
-    });
+    // 4️⃣ Ingresos del mes actual desde pagos
+    this.cargarIngresosUltimoMes();
 
     this.reservaService.buscarTodas().subscribe(reservas => {
     // Actualiza el contador del resumen

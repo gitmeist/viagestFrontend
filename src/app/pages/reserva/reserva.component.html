@@ -40,13 +40,34 @@
       <table class="table tabla-reservas align-middle mb-0">
         <thead>
           <tr>
-            <th>ID RESERVA</th>
-            <th>NOMBRE</th>
-            <th>PAQUETE</th>
-            <th>FECHA DE RESERVA</th>
-            <th>FECHA DE VIAJE</th>
-            <th>PERSONAS</th>
-            <th>ESTADO</th>
+            <th class="sortable" (click)="ordenarPor('idReserva')">
+              ID RESERVA 
+              <i class="bi" [ngClass]="columnaOrden === 'idReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('nombre')">
+              NOMBRE 
+              <i class="bi" [ngClass]="columnaOrden === 'nombre' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('paquete')">
+              PAQUETE 
+              <i class="bi" [ngClass]="columnaOrden === 'paquete' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('fechaReserva')">
+              FECHA DE RESERVA 
+              <i class="bi" [ngClass]="columnaOrden === 'fechaReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('fechaViaje')">
+              FECHA DE VIAJE 
+              <i class="bi" [ngClass]="columnaOrden === 'fechaViaje' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('numPersonas')">
+              PERSONAS 
+              <i class="bi" [ngClass]="columnaOrden === 'numPersonas' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+            <th class="sortable" (click)="ordenarPor('estadoReserva')">
+              ESTADO 
+              <i class="bi" [ngClass]="columnaOrden === 'estadoReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
             <th class="text-center">ACCIONES</th>
           </tr>
         </thead>
@@ -62,14 +83,13 @@
               <span class="estado" [ngClass]="estadoClass(r.estadoReserva)">
                 {{ r.estadoReserva | lowercase }}
               </span>
+              <span class="ms-2" [ngClass]="estadoPagoClass(obtenerEstadoPago(r.idReserva))">
+                <i class="bi bi-credit-card me-1"></i>{{ obtenerEstadoPago(r.idReserva) | lowercase }}
+              </span>
             </td>
             <td class="text-center">
-              <button class="btn btn-icon btn-outline-warning me-1" (click)="ver(r)" title="Ver">
-                <i class="bi bi-eye"></i>
-              </button>
-
-              <button class="btn btn-icon btn-outline-success me-1" (click)="editar(r)" title="Editar">
-                <i class="bi bi-pencil"></i>
+              <button class="btn btn-outline-primary me-1" (click)="ver(r)" title="Ver y editar reserva">
+                <i class="bi bi-card-text me-1"></i>Detalles
               </button>
 
               <button class="btn btn-icon btn-outline-danger" (click)="borrar(r)" title="Eliminar">
@@ -136,5 +156,184 @@
     <div class="small text-muted">RESERVAS CANCELADAS</div>
     <h3>{{ canceladas }}</h3>
     <i class="bi bi-x-circle resumen-icon"></i>
+  </div>
+</div>
+
+<!-- MODAL VER DETALLES RESERVA -->
+<div class="modal-overlay" *ngIf="mostrarModalVer">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button type="button" class="close-btn" (click)="cerrarModalVer()" aria-label="Cerrar modal">&times;</button>
+
+    <h4 class="fw-semibold mb-3">Detalles de la Reserva</h4>
+    <hr class="divider" />
+
+    <div *ngIf="reservaVer">
+      <!-- DATOS DE LA RESERVA -->
+      <h6 class="modal-title">Información de la Reserva</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>ID Reserva</label>
+          <input type="text" class="form-control" [value]="reservaVer.idReserva" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Estado</label>
+          <select *ngIf="modoEdicion" class="form-select" [(ngModel)]="reservaVer.estadoReserva">
+            <option value="PENDIENTE">Pendiente</option>
+            <option value="CONFIRMADA">Confirmada</option>
+            <option value="CANCELADA">Cancelada</option>
+          </select>
+          <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="reservaVer.estadoReserva" readonly />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Fecha de Reserva</label>
+          <input type="text" class="form-control" [value]="reservaVer.fechaReserva | date:'yyyy-MM-dd'" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Fecha de Viaje</label>
+          <input *ngIf="modoEdicion" type="date" class="form-control" [(ngModel)]="reservaVer.fechaViaje" />
+          <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="reservaVer.fechaViaje | date:'yyyy-MM-dd'" readonly />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Número de Personas</label>
+          <input *ngIf="modoEdicion" type="number" class="form-control" [(ngModel)]="reservaVer.numPersonas" min="1" />
+          <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="reservaVer.numPersonas" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Usuario</label>
+          <input type="text" class="form-control" [value]="reservaVer.usuario.nombre + ' ' + reservaVer.usuario.apellidos" readonly />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Observaciones</label>
+        <textarea *ngIf="modoEdicion" class="form-control" [(ngModel)]="reservaVer.observaciones" rows="3"></textarea>
+        <textarea *ngIf="!modoEdicion" class="form-control" [value]="reservaVer.observaciones" readonly rows="3"></textarea>
+      </div>
+
+      <!-- DATOS DEL CLIENTE -->
+      <h6 class="modal-title">Datos del Cliente</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>CIF</label>
+          <input type="text" class="form-control" [value]="reservaVer.cliente.cif" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [value]="reservaVer.cliente.nombre" readonly />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Email</label>
+          <input type="text" class="form-control" [value]="reservaVer.cliente.email" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Teléfono</label>
+          <input type="text" class="form-control" [value]="reservaVer.cliente.telefono" readonly />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Domicilio</label>
+        <input type="text" class="form-control" [value]="reservaVer.cliente.domicilio" readonly />
+      </div>
+
+      <!-- DATOS DEL PAQUETE -->
+      <h6 class="modal-title">Datos del Paquete</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Nombre del Paquete</label>
+          <input type="text" class="form-control" [value]="reservaVer.paquete.nombre" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Destino</label>
+          <input type="text" class="form-control" [value]="reservaVer.paquete.destino" readonly />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Duración (días)</label>
+          <input type="text" class="form-control" [value]="reservaVer.paquete.duracionDias" readonly />
+        </div>
+        <div class="col-md-6">
+          <label>Precio</label>
+          <input type="text" class="form-control" [value]="reservaVer.paquete.precio + ' €'" readonly />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Descripción</label>
+        <textarea class="form-control" [value]="reservaVer.paquete.descripcion" readonly rows="3"></textarea>
+      </div>
+
+      <!-- DATOS DEL PAGO (Solo visible en modo edición) -->
+      <div *ngIf="mostrarSeccionPago && pagoReserva" class="payment-edit-section">
+        <hr class="divider" />
+        <h6 class="modal-title"><i class="bi bi-credit-card me-2"></i>Información del Pago</h6>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label>ID Pago</label>
+            <input type="text" class="form-control" [value]="pagoReserva.idPago" readonly />
+          </div>
+          <div class="col-md-6">
+            <label>Estado del Pago</label>
+            <select class="form-select" [(ngModel)]="pagoReserva.estadoPago">
+              <option value="PENDIENTE">Pendiente</option>
+              <option value="COMPLETADO">Completado</option>
+              <option value="FALLIDO">Fallido</option>
+              <option value="CANCELADO">Cancelado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label>Monto (€)</label>
+            <input type="number" class="form-control" [(ngModel)]="pagoReserva.monto" min="0" step="0.01" />
+          </div>
+          <div class="col-md-6">
+            <label>Método de Pago</label>
+            <select class="form-select" [(ngModel)]="pagoReserva.metodoPago">
+              <option value="TARJETA">💳 Tarjeta</option>
+              <option value="TRANSFERENCIA">🏦 Transferencia</option>
+              <option value="EFECTIVO">💵 Efectivo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label>Fecha de Pago</label>
+            <input type="text" class="form-control" [value]="pagoReserva.fechaPago | date:'yyyy-MM-dd HH:mm'" readonly />
+          </div>
+          <div class="col-md-6">
+            <label>Referencia</label>
+            <input type="text" class="form-control" [(ngModel)]="pagoReserva.referencia" />
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+      <div class="text-end mt-3">
+        <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success me-2" (click)="toggleEdicion()">
+          <i class="bi bi-pencil me-1"></i>Editar Reserva
+        </button>
+        <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary me-2" (click)="toggleEdicion()">
+          <i class="bi bi-x-circle me-1"></i>Cancelar Edición
+        </button>
+        <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise me-2" (click)="actualizarReserva()">
+          <i class="bi bi-check-circle me-1"></i>Actualizar Reserva y Pago
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModalVer()">Cerrar</button>
+      </div>
+    </div>
   </div>
 </div>

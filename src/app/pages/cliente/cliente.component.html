@@ -19,21 +19,7 @@
       <div class="flex-grow-1 position-relative"> <label for="busqueda" class="visually-hidden">Buscar cliente</label>
         <i class="bi bi-search position-absolute search-icon"></i> <input id="busqueda" type="text"
           class="form-control ps-5" placeholder="Buscar por nombre, email, CIF..." [(ngModel)]="busqueda"
-          (input)="aplicarFiltros()" />
-      </div>
-      <div> <label for="fechaRegistro" class="visually-hidden">Filtrar por fecha</label>
-        <div class="dropdown"> <button class="btn btn-light border dropdown-toggle" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false"> Filtrar por Fecha </button>
-          <div class="dropdown-menu p-3"> <input id="fechaRegistro" type="date" class="form-control"
-              [(ngModel)]="filtroFechaRegistro" (change)="aplicarFiltros()" /> </div>
-        </div>
-      </div>
-      <div> <label for="emailFiltro" class="visually-hidden">Filtrar por email</label>
-        <div class="dropdown"> <button class="btn btn-light border dropdown-toggle" type="button"
-            data-bs-toggle="dropdown" aria-expanded="false"> Filtrar por Email </button>
-          <div class="dropdown-menu p-3"> <input id="emailFiltro" type="text" class="form-control"
-              placeholder="Escribe un correo..." [(ngModel)]="filtroEmail" (input)="aplicarFiltros()" /> </div>
-        </div>
+          (input)="aplicarFiltros(true)" />
       </div>
     </div>
 
@@ -59,11 +45,7 @@
             <td>{{ cliente.telefono }}</td>
             <td>{{ cliente.domicilio }}</td>
             <td>{{ cliente.fechaRegistro | date: 'yyyy-MM-dd' }}</td>
-            <td class="text-center"> <button class="btn btn-icon btn-outline-warning me-1" (click)="ver(cliente)"
-                aria-label="Ver cliente"> <i class="bi bi-eye"></i> </button> <button
-                class="btn btn-icon btn-outline-success me-1" (click)="editar(cliente)" aria-label="Editar cliente"> <i
-                  class="bi bi-pencil"></i> </button> <button class="btn btn-reservar btn-turquoise ms-3"
-                (click)="abrirModalReserva(cliente)" aria-label="Reservar cliente"> Reservar </button> </td>
+            <td class="text-center"> <button class="btn btn-icon btn-outline-success me-1" (click)="editar(cliente)" aria-label="Editar cliente"> <i class="bi bi-pencil"></i> </button> <button class="btn btn-reservar btn-turquoise ms-3" (click)="abrirModalReserva(cliente)" aria-label="Reservar cliente"> Reservar </button> </td>
           </tr>
           <tr *ngIf="clientesFiltrados.length === 0">
             <td colspan="7" class="text-center text-muted py-4"> No se encontraron clientes. </td>
@@ -75,14 +57,14 @@
 
   <!-- Paginación -->
   <div class="d-flex justify-content-between align-items-center mt-3 pt-2"> <small class="text-muted"> Mostrando {{
-      (paginaActual - 1) * clientesPorPagina + 1 }} - {{ Math.min(paginaActual * clientesPorPagina, clientes.length) }}
-      de {{ clientes.length }} </small>
+      (paginaActual - 1) * clientesPorPagina + 1 }} - {{ Math.min(paginaActual * clientesPorPagina, totalFiltrados) }}
+      de {{ totalFiltrados }} </small>
     <div class="paginacion"> <button class="btn-paginacion" [disabled]="paginaActual === 1"
         (click)="cambiarPagina(paginaActual - 1)"> Anterior </button> <!-- Números de página --> <ng-container
-        *ngFor="let num of [].constructor(Math.ceil(clientes.length / clientesPorPagina)); let i = index"> <button
+        *ngFor="let num of [].constructor(Math.ceil(totalFiltrados / clientesPorPagina)); let i = index"> <button
           class="btn-paginacion" [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)"> {{ i + 1 }}
         </button> </ng-container> <button class="btn-paginacion"
-        [disabled]="paginaActual >= Math.ceil(clientes.length / clientesPorPagina)"
+        [disabled]="paginaActual >= Math.ceil(totalFiltrados / clientesPorPagina)"
         (click)="cambiarPagina(paginaActual + 1)"> Siguiente </button> </div>
   </div>
 </div>
@@ -125,7 +107,7 @@
       <h6 class="modal-title">Paquete Turístico</h6>
       <div class="mb-3">
         <label>Selecciona un paquete</label>
-        <select class="form-select" [(ngModel)]="paqueteSeleccionado" name="paqueteSelect" required>
+        <select class="form-select" [(ngModel)]="paqueteSeleccionado" name="paqueteSelect" required (change)="onPaqueteChange()">
           <option value="" disabled selected>Selecciona un paquete</option>
           <option *ngFor="let paquete of paquetes" [ngValue]="paquete"> {{ paquete.nombre }} </option>
         </select>
@@ -151,43 +133,46 @@
       <h6 class="modal-title">Detalles de la Reserva</h6>
       <div class="row g-3 mb-3">
         <div class="col">
-          <label>Fecha de Reserva</label>
-          <input type="date" class="form-control" [(ngModel)]="fechaReserva" name="fechaReserva" required />
+          <label>Fecha de Inicio del Viaje</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaViaje" name="fechaViaje" [min]="fechaMinima" required (change)="onFechaViajeChange()" />
+          <small class="text-muted" *ngIf="paqueteSeleccionado">Duración: {{paqueteSeleccionado.duracionDias}} días</small>
         </div>
         <div class="col">
-          <label>Fecha de Viaje</label>
-          <input type="date" class="form-control" [(ngModel)]="fechaViaje" name="fechaViaje" required />
+          <label>Fecha de Reserva</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaReserva" name="fechaReserva" [min]="fechaMinima" required readonly />
         </div>
         <div class="col">
           <label>Nº Personas</label>
           <input type="number" class="form-control" [(ngModel)]="numeroPersonas" name="numeroPersonas" min="1" required
-            placeholder="Nº Personas" />
+            placeholder="Nº Personas" (change)="onPaqueteChange()" />
         </div>
       </div>
       <div class="mb-3">
-        <label>Observaciones</label>
+        <label>Observaciones (opcional)</label>
         <textarea class="form-control" rows="2" [(ngModel)]="observaciones" name="observaciones"
-          placeholder="Observaciones"></textarea>
+          placeholder="Observaciones adicionales"></textarea>
       </div>
 
       <hr class="divider" />
 
       <!-- DETALLES DEL PAGO -->
-      <h6 class="modal-title">Detalles del Pago</h6>
-      <div class="row g-3 mb-3">
-        <div class="col">
-          <label>Cantidad (€)</label>
-          <input type="number" class="form-control" [(ngModel)]="cantidadPago" name="cantidadPago" required
-            placeholder="Cantidad (€)" />
-        </div>
-        <div class="col">
-          <label>Método de Pago</label>
-          <select class="form-select" [(ngModel)]="metodoPago" name="metodoPago" required>
-            <option value="" disabled selected>Método de Pago</option>
-            <option value="Tarjeta">Tarjeta</option>
-            <option value="Transferencia">Transferencia</option>
-            <option value="Efectivo">Efectivo</option>
-          </select>
+      <div class="payment-section">
+        <h6 class="modal-title"><i class="bi bi-credit-card me-2"></i>Detalles del Pago</h6>
+        <div class="row g-3 mb-3">
+          <div class="col">
+            <label>Cantidad (€)</label>
+            <input type="number" class="form-control" [(ngModel)]="cantidadPago" name="cantidadPago" required
+              placeholder="Cantidad (€)" />
+          </div>
+          <div class="col">
+            <label>Método de Pago</label>
+            <select class="form-select" [(ngModel)]="metodoPago" name="metodoPago" required>
+              <option value="" disabled selected>Método de Pago</option>
+              <option value="TARJETA">💳 Tarjeta</option>
+              <option value="TRANSFERENCIA">🏦 Transferencia</option>
+              <option value="EFECTIVO">💵 Efectivo</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -195,7 +180,7 @@
       <!-- BOTONES -->
       <div class="text-end mt-3">
         <button type="button" class="btn-cancelar me-2" (click)="cerrarModalReserva()">Cancelar</button>
-        <button type="submit" class="btn btn-turquoise shadow-sm">Guardar Reserva</button>
+        <button type="submit" class="btn btn-pago shadow-sm"><i class="bi bi-check-circle me-2"></i>Procesar Pago y Reserva</button>
       </div>
 
     </form>
@@ -255,6 +240,64 @@
       <div class="text-end mt-3">
         <button type="button" class="btn-cancelar me-2" (click)="cerrarModalCliente()">Cancelar</button>
         <button type="submit" class="btn btn-turquoise shadow-sm" (click)="guardarCliente()">Guardar Cliente</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL EDITAR CLIENTE -->
+<div class="modal-overlay" *ngIf="mostrarModalEditar">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button type="button" class="close-btn" (click)="cerrarModalEditar()" aria-label="Cerrar modal">&times;</button>
+
+    <h4 class="fw-semibold mb-3">Editar Cliente</h4>
+    <hr class="divider" />
+
+    <form>
+      <!-- DATOS DEL CLIENTE -->
+      <h6 class="modal-title">Datos del Cliente</h6>
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>CIF</label>
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.cif" name="cif" readonly placeholder="CIF del cliente" />
+        </div>
+        <div class="col-md-6">
+          <label>Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.nombre" name="nombre" required placeholder="Nombre completo" />
+        </div>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Email</label>
+          <input type="email" class="form-control" [(ngModel)]="clienteEditar.email" name="email" required placeholder="Correo electrónico" />
+        </div>
+        <div class="col-md-6">
+          <label>Teléfono</label>
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.telefono" name="telefono" required placeholder="Teléfono de contacto" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Domicilio</label>
+        <input type="text" class="form-control" [(ngModel)]="clienteEditar.domicilio" name="domicilio" required placeholder="Dirección del cliente" />
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Fecha de Nacimiento</label>
+          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaNacimiento" name="fechaNacimiento" required />
+        </div>
+        <div class="col-md-6">
+          <label>Fecha de Registro</label>
+          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaRegistro" name="fechaRegistro" readonly />
+        </div>
+      </div>
+
+      <hr class="divider" />
+      <div class="text-end mt-3">
+        <button type="button" class="btn-cancelar me-2" (click)="cerrarModalEditar()">Cancelar</button>
+        <button type="submit" class="btn btn-turquoise shadow-sm" (click)="guardarCambios()">Guardar Cambios</button>
       </div>
     </form>
   </div>

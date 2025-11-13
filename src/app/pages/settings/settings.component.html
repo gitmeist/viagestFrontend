@@ -21,33 +21,27 @@
               <div class="row g-3">
                 <!-- Nombre completo -->
                 <div class="col-md-6">
-                  <label>Nombre completo</label>
-                  <input type="text" class="form-control" formControlName="nombre">
-                </div>
-
-                <!-- Dirección -->
-                <div class="col-md-6">
-                  <label>Dirección</label>
-                  <input type="text" class="form-control" formControlName="direccion">
+                  <label class="form-label">Nombre completo</label>
+                  <input type="text" class="form-control" formControlName="nombre" placeholder="Ingrese su nombre completo">
                 </div>
 
                 <!-- Email -->
                 <div class="col-md-6">
-                  <label>Email</label>
-                  <input type="email" class="form-control" formControlName="email">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" formControlName="email" placeholder="email@example.com">
                 </div>
 
                 <!-- Rol -->
-                <div class="col-md-3">
-                  <label>Rol</label>
-                  <span class="badge bg-primary d-block py-2">
+                <div class="col-md-6">
+                  <label class="form-label">Rol</label>
+                  <span class="badge bg-primary d-block py-2 fs-6">
                     {{ usuarioForm.get('rol')?.value }}
                   </span>
                 </div>
 
                 <!-- Estado de la cuenta -->
-                <div class="col-md-3">
-                  <label>Estado de la cuenta</label>
+                <div class="col-md-6">
+                  <label class="form-label">Estado de la cuenta</label>
                   <div class="form-check form-switch">
                     <input class="form-check-input"
                            type="checkbox"

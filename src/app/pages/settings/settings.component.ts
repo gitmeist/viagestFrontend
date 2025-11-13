@@ -39,7 +39,6 @@ export class SettingsComponent implements OnInit {
   initForm(usuario: Usuario) {
     this.usuarioForm = this.fb.group({
       nombre: [usuario.nombre || ''],
-      direccion: [usuario.direccion || ''],
       email: [{ value: usuario.email, disabled: true }],
       rol: [usuario.rol],
       enabled: [usuario.enabled === 1]

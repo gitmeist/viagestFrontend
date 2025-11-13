@@ -6,6 +6,14 @@ import { ClienteService } from '../../core/service/cliente.service';
 import { Cliente } from '../../shared/interfaces/cliente';
 import { Paquete } from '../../shared/interfaces/paquete';
 import { PaqueteService } from '../../core/service/paquete.service';
+import { ReservaService } from '../../core/service/reserva.service';
+import { PagoService } from '../../core/service/pago.service';
+import { AuthService } from '../../core/service/AuthService';
+import { Reserva } from '../../shared/interfaces/reserva';
+import { Pago } from '../../shared/interfaces/pago';
+import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
+import { MetodoPago } from '../../shared/interfaces/metodo-pago';
+import { EstadoPago } from '../../shared/interfaces/estado-pago';
 
 @Component({
   selector: 'app-cliente',
@@ -16,11 +24,10 @@ import { PaqueteService } from '../../core/service/paquete.service';
 export class ClienteComponent implements OnInit {
   clientes: Cliente[] = [];
   clientesFiltrados: Cliente[] = [];
+  totalFiltrados: number = 0;
 
   Math = Math;
   busqueda = '';
-  filtroFechaRegistro = '';
-  filtroEmail = '';
   paginaActual = 1;
   clientesPorPagina = 5;
 
@@ -35,10 +42,12 @@ export class ClienteComponent implements OnInit {
   fechaViaje: string = '';
   numeroPersonas: number = 1;
   observaciones: string = '';
+  estadoReserva: string = 'PENDIENTE';
 
   // Datos de pago
   cantidadPago: number = 0;
   metodoPago: string = '';
+  fechaMinima: string = '';
 
     //  modal de cliente
 mostrarModalCliente = false;
@@ -53,8 +62,24 @@ nuevoClienteData: Cliente = {
   fechaRegistro: ''
 };
 
-  constructor(private clienteService: ClienteService,
-    private paqueteService: PaqueteService
+  // Modal editar cliente
+  mostrarModalEditar = false;
+  clienteEditar: Cliente = {
+    cif: '',
+    nombre: '',
+    email: '',
+    telefono: '',
+    domicilio: '',
+    fechaNacimiento: '',
+    fechaRegistro: ''
+  };
+
+  constructor(
+    private clienteService: ClienteService,
+    private paqueteService: PaqueteService,
+    private reservaService: ReservaService,
+    private pagoService: PagoService,
+    private authService: AuthService
   ) { }
 
 
@@ -62,11 +87,14 @@ nuevoClienteData: Cliente = {
     this.cargarClientes();
     this.clienteService.buscarTodos().subscribe(data => this.clientes = data || []);
     this.paqueteService.buscarTodos().subscribe(data => this.paquetes = data || []);
+    this.fechaMinima = this.obtenerFechaLocal();
   }
 
   abrirModalReserva(cliente: Cliente) {
     this.clienteParaReserva = cliente;
     this.mostrarModalReserva = true;
+    this.fechaReserva = this.obtenerFechaLocal();
+    this.estadoReserva = 'PENDIENTE';
   }
 
   cerrarModalReserva() {
@@ -77,22 +105,102 @@ nuevoClienteData: Cliente = {
     this.fechaViaje = '';
     this.numeroPersonas = 1;
     this.observaciones = '';
+    this.estadoReserva = 'PENDIENTE';
     this.cantidadPago = 0;
     this.metodoPago = '';
   }
 
   guardarReserva() {
-    console.log('Datos de la reserva:', {
+    // Validaciones
+    if (!this.clienteParaReserva || !this.paqueteSeleccionado) {
+      alert('Debe seleccionar un cliente y un paquete');
+      return;
+    }
+    if (!this.fechaReserva || !this.fechaViaje || !this.numeroPersonas) {
+      alert('Debe completar todos los campos obligatorios');
+      return;
+    }
+    if (!this.cantidadPago || !this.metodoPago) {
+      alert('Debe ingresar el monto y método de pago');
+      return;
+    }
+
+    const user = this.authService.getUser();
+    if (!user || !user.username) {
+      alert('No se pudo obtener el usuario autenticado');
+      return;
+    }
+
+    // Crear objeto reserva
+    const nuevaReserva: any = {
+      fechaReserva: new Date(this.fechaReserva),
+      fechaViaje: new Date(this.fechaViaje),
+      numPersonas: this.numeroPersonas,
+      estadoReserva: this.estadoReserva as EstadoReserva,
+      observaciones: this.observaciones || '',
       cliente: this.clienteParaReserva,
       paquete: this.paqueteSeleccionado,
-      fechaReserva: this.fechaReserva,
-      fechaViaje: this.fechaViaje,
-      numeroPersonas: this.numeroPersonas,
-      observaciones: this.observaciones,
-      cantidadPago: this.cantidadPago,
-      metodoPago: this.metodoPago
+      usuario: { username: user.username }
+    };
+
+    // Crear reserva primero
+    this.reservaService.alta(nuevaReserva).subscribe({
+      next: (reservaCreada) => {
+        console.log('Reserva creada:', reservaCreada);
+        
+        // Crear pago asociado a la reserva
+        const nuevoPago: any = {
+          monto: this.cantidadPago,
+          metodoPago: this.convertirMetodoPago(this.metodoPago),
+          fechaPago: new Date(),
+          estadoPago: EstadoPago.COMPLETADO,
+          referencia: `PAG-${Date.now()}`,
+          reserva: reservaCreada
+        };
+
+        this.pagoService.alta(nuevoPago).subscribe({
+          next: (pagoCreado) => {
+            console.log('Pago creado:', pagoCreado);
+            this.cerrarModalReserva();
+            alert('✅ Reserva y pago registrados correctamente');
+          },
+          error: (err) => {
+            console.error('Error al crear pago:', err);
+            alert('⚠️ Reserva creada pero hubo un error al registrar el pago');
+            this.cerrarModalReserva();
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al crear reserva:', err);
+        alert('❌ Error al crear la reserva');
+      }
     });
-    this.cerrarModalReserva();
+  }
+
+  convertirMetodoPago(metodo: string): MetodoPago {
+    switch(metodo.toUpperCase()) {
+      case 'TARJETA': return MetodoPago.TARJETA;
+      case 'TRANSFERENCIA': return MetodoPago.TRANSFERENCIA;
+      case 'EFECTIVO': return MetodoPago.EFECTIVO;
+      default: return MetodoPago.TARJETA;
+    }
+  }
+
+  onPaqueteChange() {
+    if (this.paqueteSeleccionado) {
+      // Auto-fill cantidad de pago con el precio del paquete
+      this.cantidadPago = this.paqueteSeleccionado.precio * this.numeroPersonas;
+    }
+  }
+
+  onFechaViajeChange() {
+    if (this.fechaViaje && this.paqueteSeleccionado) {
+      const fechaInicio = new Date(this.fechaViaje);
+      const fechaFin = new Date(fechaInicio);
+      fechaFin.setDate(fechaFin.getDate() + this.paqueteSeleccionado.duracionDias);
+      // No need to set fechaReserva here, it's already set when modal opens
+    }
   }
 
 
@@ -149,6 +257,36 @@ guardarCliente() {
   });
 }
 
+// Cerrar modal editar
+cerrarModalEditar() {
+  this.mostrarModalEditar = false;
+}
+
+// Guardar cambios
+guardarCambios() {
+  const clienteParaActualizar = {
+    ...this.clienteEditar,
+    fechaNacimiento: new Date(this.clienteEditar.fechaNacimiento),
+    fechaRegistro: new Date(this.clienteEditar.fechaRegistro)
+  };
+  this.clienteService.modificar(this.clienteEditar.cif, clienteParaActualizar).subscribe({
+    next: (clienteActualizado) => {
+      console.log('Cliente actualizado:', clienteActualizado);
+      const index = this.clientes.findIndex(c => c.cif === clienteActualizado.cif);
+      if (index !== -1) {
+        this.clientes[index] = clienteActualizado;
+        this.aplicarFiltros();
+      }
+      this.cerrarModalEditar();
+      alert('✅ Cliente actualizado correctamente.');
+    },
+    error: (err) => {
+      console.error('Error al actualizar cliente:', err);
+      alert('❗ Error al actualizar el cliente.');
+    }
+  });
+}
+
 obtenerFechaLocal(): string {
   const hoy = new Date();
   // Convertir a formato yyyy-MM-dd compatible con el input date
@@ -161,7 +299,7 @@ obtenerFechaLocal(): string {
       next: (data) => {
         this.clientes = data || [];
         this.paginaActual = 1;
-        this.aplicarFiltros();
+        this.aplicarFiltros(false);
       },
       error: (err) => {
         console.error('Error al cargar clientes', err);
@@ -171,9 +309,10 @@ obtenerFechaLocal(): string {
     });
   }
 
-  aplicarFiltros(): void {
+  aplicarFiltros(resetPage: boolean = false): void {
     if (!this.clientes || this.clientes.length === 0) {
       this.clientesFiltrados = [];
+      this.totalFiltrados = 0;
       return;
     }
 
@@ -186,53 +325,31 @@ obtenerFechaLocal(): string {
           (c.email?.toLowerCase().includes(busquedaLower) || false) ||
           (c.cif?.toLowerCase().includes(busquedaLower) || false)
         );
-      })
-      .filter(c => {
-        if (!this.filtroFechaRegistro) return true;
-        if (!c.fechaRegistro) return false;
-        try {
-          return new Date(c.fechaRegistro).toISOString().startsWith(this.filtroFechaRegistro);
-        } catch {
-          return false;
-        }
-      })
-      .filter(c => {
-        if (!this.filtroEmail) return true;
-        return c.email?.toLowerCase().includes(this.filtroEmail.toLowerCase()) || false;
       });
 
+    this.totalFiltrados = filtrados.length;
+    if (resetPage) {
+      this.paginaActual = 1;
+    }
     const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
     this.clientesFiltrados = filtrados.slice(inicio, inicio + this.clientesPorPagina);
   }
 
   cambiarPagina(pagina: number): void {
-    const totalFiltrados = this.clientes.filter(c => {
-      if (!c) return false;
-      const busquedaLower = this.busqueda.toLowerCase();
-      const coincideBusqueda = (
-        (c.nombre?.toLowerCase().includes(busquedaLower) || false) ||
-        (c.email?.toLowerCase().includes(busquedaLower) || false) ||
-        (c.cif?.toLowerCase().includes(busquedaLower) || false)
-      );
-      const coincideFecha = !this.filtroFechaRegistro || (c.fechaRegistro && new Date(c.fechaRegistro).toISOString().startsWith(this.filtroFechaRegistro));
-      const coincideEmail = !this.filtroEmail || (c.email?.toLowerCase().includes(this.filtroEmail.toLowerCase()) || false);
-      return coincideBusqueda && coincideFecha && coincideEmail;
-    }).length;
-
-    const maxPaginas = Math.ceil(totalFiltrados / this.clientesPorPagina);
-
+    const maxPaginas = Math.ceil(this.totalFiltrados / this.clientesPorPagina);
     if (pagina < 1 || pagina > maxPaginas) return;
 
     this.paginaActual = pagina;
-    this.aplicarFiltros();
-  }
-
-  ver(cliente: Cliente): void {
-    console.log('Ver cliente', cliente);
+    this.aplicarFiltros(false);
   }
 
   editar(cliente: Cliente): void {
-    console.log('Editar cliente', cliente);
+    this.clienteEditar = {
+      ...cliente,
+      fechaNacimiento: cliente.fechaNacimiento ? new Date(cliente.fechaNacimiento).toISOString().split('T')[0] : '',
+      fechaRegistro: cliente.fechaRegistro ? new Date(cliente.fechaRegistro).toISOString().split('T')[0] : ''
+    };
+    this.mostrarModalEditar = true;
   }
 
   reservar(cliente: Cliente): void {
