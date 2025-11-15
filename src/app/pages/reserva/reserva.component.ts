@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
+  standalone: true,
   selector: 'app-reserva',
   imports: [CommonModule, FormsModule,  MatDatepickerModule,
     MatFormFieldModule,

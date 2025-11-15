@@ -1,25 +1,26 @@
-<div class="container">
-  <div class="login-box">
-
-    <div class="card-login">
-      <img src="assets/logo.png" alt="ViaGest Logo" class="logo">
-
-      <h2>Bienvenido a ViaGest</h2>
-
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
-
-        <label>Email o nombre de usuario:</label>
-        <input type="text" formControlName="username" placeholder="Introduce tu email o nombre de usuario">
-
-        <label>Contraseña:</label>
-        <input type="password" formControlName="password" placeholder="Introduce tu contraseña">
-
-        <button type="submit" [disabled]="loginForm.invalid">Iniciar Sesión</button>
-
-      </form>
+<div class="login-container">
+  <div class="right-side">
+    <div class="welcome-box">
+      <img src="assets/img/logoBlanco.png" alt="Logo" class="logo-img">
+      <div class="big-title">VIAGEST</div>
+      <div class="small-subtitle">PLATAFORMA DE GESTIÓN DE VIAJES</div>
+      <div class="separator"></div>
+      <div class="extra-text">Tu agencia, más organizada y eficiente que nunca.</div>
     </div>
-
   </div>
 
-  <div class="bg-panel"></div>
+  <div class="left-side">
+    <div class="form-box">
+      <h2>Bienvenido</h2>
+      <p class="subtitle">Inicia sesión en tu cuenta</p>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <label>Usuario o correo</label>
+        <input type="text" formControlName="username" placeholder="Usuario o correo">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="Contraseña">
+        <button type="submit" [disabled]="loginForm.invalid">Ingresar</button>
+      </form>
+      <div class="footer-text">© 2025 ViaGest. Todos los derechos reservados.</div>
+    </div>
+  </div>
 </div>

@@ -15,6 +15,7 @@ export const routes: Routes = [
     path: '',
     component: PublicLayoutComponent,
     children: [
+       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent }
     ]
   },

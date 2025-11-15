@@ -16,6 +16,7 @@ import { MetodoPago } from '../../shared/interfaces/metodo-pago';
 import { EstadoPago } from '../../shared/interfaces/estado-pago';
 
 @Component({
+  standalone: true,
   selector: 'app-cliente',
   imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './cliente.component.html',

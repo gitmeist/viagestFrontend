@@ -7,6 +7,7 @@ import { UsuarioService } from '../../core/service/usuario.service';
 import { AuthService } from '../../core/service/AuthService';
 
 @Component({
+  standalone: true,
   selector: 'app-settings',
   imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './settings.component.html',

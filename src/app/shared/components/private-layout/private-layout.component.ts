@@ -4,6 +4,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
+  standalone: true,
   selector: 'app-private-layout',
   imports: [RouterModule, NavbarComponent, SidebarComponent],
   templateUrl: './private-layout.component.html',

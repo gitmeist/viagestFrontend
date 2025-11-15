@@ -7,6 +7,7 @@ import { Paquete } from '../../shared/interfaces/paquete';
 import { Observable } from 'rxjs';
 
 @Component({
+  standalone: true,
   selector: 'app-paquetes',
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './paquetes.component.html',

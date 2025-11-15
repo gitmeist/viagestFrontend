@@ -173,13 +173,16 @@
   .col-md-2 {
     margin-bottom: 1rem;
   }
-} box-shadow: 0 4px 12px rgba(79, 169, 169, 0.2);
+
+  img.rounded-circle {
+  box-shadow: 0 4px 12px rgba(79, 169, 169, 0.2);
   transition: transform 0.3s ease;
 }
 
 img.rounded-circle:hover {
   transform: scale(1.05);
 }
+
 
 .btn-outline-secondary {
   border-radius: 8px;
@@ -192,4 +195,5 @@ img.rounded-circle:hover {
   background-color: #6c757d;
   color: white;
   transform: translateY(-1px);
+}
 }

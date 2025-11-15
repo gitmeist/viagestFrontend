@@ -9,6 +9,7 @@ import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
 import { PagoService } from '../../core/service/pago.service';
 
 @Component({
+  standalone: true,
   selector: 'app-home',
   imports: [CommonModule, RouterModule],
   templateUrl: './home.component.html',
