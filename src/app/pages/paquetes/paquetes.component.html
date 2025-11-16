@@ -1,164 +1,118 @@
 <!-- Cabecera -->
- <div class="content">
-<div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
-  <h2 class="fw-semibold text-dark mb-0">Gestión de Paquetes</h2>
-  <button
-    class="btn btn-turquoise d-flex align-items-center shadow-sm"
-    (click)="abrirModal()"
-  >
-    <i class="bi bi-plus-lg me-2"></i> Añadir Paquete
-  </button>
-</div>
+<div class="content">
+  <div class="d-flex justify-content-between mb-5 px-1 mt-3">
+    <h2 class="fw-semibold text-dark mb-0">Gestión de Paquetes Turísticos</h2>
+    <button class="btn btn-turquoise d-flex align-items-center shadow-sm" (click)="abrirModal()">
+      <i class="bi bi-plus-lg me-2"></i> Añadir Paquete
+    </button>
+  </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
-  <div class="modal-container" (click)="$event.stopPropagation()">
-    <h5 class="modal-title">Añadir Nuevo Paquete</h5>
-    <hr class="divider" />
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <h5 class="modal-title">Añadir Nuevo Paquete</h5>
+      <hr class="divider" />
 
-    <form (ngSubmit)="guardarPaquete()">
-      <div class="mb-3">
-        <label>Nombre del paquete</label>
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="nuevoPaquete.nombre"
-          name="nombre"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label>Destino</label>
-        <input
-          type="text"
-          class="form-control"
-          [(ngModel)]="nuevoPaquete.destino"
-          name="destino"
-          required
-        />
-      </div>
-
-      <div class="mb-3">
-        <label>Descripción</label>
-        <textarea
-          class="form-control"
-          rows="3"
-          [(ngModel)]="nuevoPaquete.descripcion"
-          name="descripcion"
-        ></textarea>
-      </div>
-
-      <div class="row g-3">
-        <div class="col">
-          <label>Duración (días)</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="nuevoPaquete.duracionDias"
-            name="duracionDias"
-          />
-        </div>
-        <div class="col">
-          <label>Precio (€)</label>
-          <input
-            type="number"
-            class="form-control"
-            [(ngModel)]="nuevoPaquete.precio"
-            name="precio"
-          />
-        </div>
-      </div>
-
-      <div class="mt-4 d-flex gap-4">
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input rounded-checkbox"
-            type="checkbox"
-            [(ngModel)]="nuevoPaquete.incluyeVuelo"
-            name="incluyeVuelo"
-            id="incluyeVuelo"
-          />
-          <label class="form-check-label" for="incluyeVuelo">Incluye vuelo</label>
+      <form (ngSubmit)="guardarPaquete()">
+        <div class="mb-3">
+          <label>Nombre del paquete</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoPaquete.nombre" name="nombre" required />
         </div>
 
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input rounded-checkbox"
-            type="checkbox"
-            [(ngModel)]="nuevoPaquete.incluyeHotel"
-            name="incluyeHotel"
-            id="incluyeHotel"
-          />
-          <label class="form-check-label" for="incluyeHotel">Incluye hotel</label>
+        <div class="mb-3">
+          <label>Destino</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoPaquete.destino" name="destino" required />
         </div>
-      </div>
 
-  <!-- Estado -->
-<div class="estado-section mt-4">
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="estado-label">Estado</div>
-    <div class="estado-line"></div>
+        <div class="mb-3">
+          <label>Descripción</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="nuevoPaquete.descripcion" name="descripcion"></textarea>
+        </div>
 
-    <div class="estado-opciones d-flex align-items-center">
-      <span class="estado-text-inactivo me-2">Inactivo</span>
-      <div class="form-switch d-flex align-items-center">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          [(ngModel)]="nuevoPaquete.activo"
-          name="activo"
-        />
-      </div>
-      <span class="estado-text-activo ms-2">Activo</span>
+        <div class="row g-3">
+          <div class="col">
+            <label>Duración (días)</label>
+            <input type="number" class="form-control" [(ngModel)]="nuevoPaquete.duracionDias" name="duracionDias" />
+          </div>
+          <div class="col">
+            <label>Precio (€)</label>
+            <input type="number" class="form-control" [(ngModel)]="nuevoPaquete.precio" name="precio" />
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-4">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input rounded-checkbox" type="checkbox" [(ngModel)]="nuevoPaquete.incluyeVuelo"
+              name="incluyeVuelo" id="incluyeVuelo" />
+            <label class="form-check-label" for="incluyeVuelo">Incluye vuelo</label>
+          </div>
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input rounded-checkbox" type="checkbox" [(ngModel)]="nuevoPaquete.incluyeHotel"
+              name="incluyeHotel" id="incluyeHotel" />
+            <label class="form-check-label" for="incluyeHotel">Incluye hotel</label>
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="estado-section mt-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="estado-label">Estado</div>
+            <div class="estado-line"></div>
+
+            <div class="estado-opciones d-flex align-items-center">
+              <span class="estado-text-inactivo me-2">Inactivo</span>
+              <div class="form-switch d-flex align-items-center">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="nuevoPaquete.activo" name="activo" />
+              </div>
+              <span class="estado-text-activo ms-2">Activo</span>
+            </div>
+          </div>
+        </div>
+
+
+        <hr class="divider mt-4" />
+
+        <div class="text-end mt-4">
+          <button type="button" class="btn btn-cancelar me-2" (click)="cerrarModal()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-guardar">
+            Guardar Paquete
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
 
-      <hr class="divider mt-4" />
+  <!-- BARRA DE BUSQUEDA FILTROS -->
+  <div class="toolbar-filtros mb-4">
+    <div class="filtros-flex">
+      <div class="search-wrapper">
+        <span class="icono-search"><i class="bi bi-search"></i></span>
+        <input type="text" class="input-buscador search-grow" placeholder="Buscar paquetes por nombre o destino"
+          [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
+      </div>
 
-      <div class="text-end mt-4">
-        <button type="button" class="btn btn-cancelar me-2" (click)="cerrarModal()">
-          Cancelar
-        </button>
-        <button type="submit" class="btn btn-guardar">
-          Guardar Paquete
+      <!-- FILTROS DERECHA -->
+      <div class="filters-right">
+        <select class="filtro-select" [(ngModel)]="mostrarSoloActivos" (change)="aplicarFiltros()">
+          <option [ngValue]="false">Estados</option>
+          <option [ngValue]="true">Activos</option>
+        </select>
+
+        <select class="filtro-select" [(ngModel)]="destinoSeleccionado" (change)="aplicarFiltros()">
+          <option value="">Filtrar por destino</option>
+          <option *ngFor="let destino of destinosDisponibles" [value]="destino">{{ destino }}</option>
+        </select>
+
+        <!-- BOTÓN RESETEAR -->
+        <button class="reset-btn" (click)="resetearFiltros()">
+          <i class="bi bi-x-circle"></i> Resetear Filtros
         </button>
       </div>
-    </form>
-  </div>
-</div>
-
-
-  <!-- Filtros -->
-  <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
-
-    <!-- Buscador por nombre o destino -->
-    <div class="input-group search-input">
-      <span class="input-group-text bg-white border-end-0">
-        <i class="bi bi-search"></i>
-      </span>
-      <input
-        type="text"
-        class="form-control border-start-0"
-        placeholder="Buscar paquetes por nombre o destino"
-        [(ngModel)]="busqueda"
-        (input)="aplicarFiltros()"
-      />
     </div>
-
-    <!-- Filtro de activos -->
-    <select class="form-select w-auto" [(ngModel)]="mostrarSoloActivos" (change)="aplicarFiltros()">
-      <option [ngValue]="false">Todos</option>
-      <option [ngValue]="true">Activos</option>
-    </select>
-
-    <!-- Filtro de destino -->
-    <select class="form-select w-auto" [(ngModel)]="destinoSeleccionado" (change)="aplicarFiltros()">
-      <option value="">Todos los destinos</option>
-      <option *ngFor="let destino of destinosDisponibles" [value]="destino">{{ destino }}</option>
-    </select>
   </div>
 
   <!-- Cards de paquetes -->
@@ -172,13 +126,17 @@
           <p class="card-text text-secondary small flex-grow-1">{{ paquete.descripcion }}</p>
 
           <div class="mb-3 d-flex flex-wrap gap-2">
-            <span class="paquete-tag d-flex align-items-center">
+
+            <span *ngIf="paquete.incluyeVuelo" class="paquete-tag d-flex align-items-center">
               <i class="bi bi-airplane me-1 text-white"></i> Incluye vuelo
             </span>
-            <span class="paquete-tag d-flex align-items-center">
+
+            <span *ngIf="paquete.incluyeHotel" class="paquete-tag d-flex align-items-center">
               <i class="bi bi-hospital me-1 text-white"></i> Incluye hotel
             </span>
+
           </div>
+
 
           <div class="d-flex justify-content-between align-items-center mt-auto">
             <p class="fw-semibold mb-0">{{ paquete.precio }}€ <span class="text-muted">/persona</span></p>
@@ -187,33 +145,186 @@
               {{ paquete.activo ? 'Activa' : 'Inactiva' }}
             </span>
           </div>
-        </div>
 
-        <div class="card-footer bg-white border-0 pt-0 pb-3 text-center">
-          <button class="btn btn-sm btn-outline-success me-2">
-            <i class="bi bi-pencil"></i> Editar
-          </button>
-          <button class="btn btn-sm btn-outline-warning me-2">
-            <i class="bi bi-eye"></i> Ver
-          </button>
-          <button class="btn btn-sm btn-outline-danger" (click)="eliminarPaquete(paquete.idPaquete)">
-            <i class="bi bi-trash"></i> Eliminar
-          </button>
+          <hr class="paquete-divider">
+
+          <div class="card-footer bg-white border-0 pt-0 pb-3 text-center">
+            <button class="btn btn-sm btn-outline-success me-2" (click)="abrirModalEditar(paquete)">
+              <i class="bi bi-pencil"></i> Editar
+            </button>
+            <button class="btn btn-sm btn-outline-warning me-2" (click)="abrirModalVer(paquete)">
+              <i class="bi bi-eye"></i> Ver
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="eliminarPaquete(paquete.idPaquete)">
+              <i class="bi bi-trash"></i> Eliminar
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Paginación -->
-  <div class="d-flex justify-content-between align-items-center mt-3 text-muted small">
-    <p class="mb-0">Mostrando 1–3 de {{ paquetesFiltrados.length }}</p>
-    <nav>
-      <ul class="pagination pagination-sm mb-0">
-        <li class="page-item disabled"><a class="page-link">Anterior</a></li>
-        <li class="page-item active"><a class="page-link">1</a></li>
-        <li class="page-item"><a class="page-link">2</a></li>
-        <li class="page-item"><a class="page-link">Siguiente</a></li>
-      </ul>
-    </nav>
+  <!-- PAGINACIÓN -->
+  <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+    <small class="text-muted">
+      Mostrando {{ (paginaActual - 1) * paquetesPorPagina + 1 }} -
+      {{ paquetesFiltrados.length ? ((paginaActual - 1) * paquetesPorPagina + paquetesFiltrados.length) : 0 }} de {{
+      totalFiltrados }}
+    </small>
+    <div class="paginacion">
+      <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
+        Anterior
+      </button>
+      <ng-container *ngFor="let p of pageNumbers(); let i = index">
+        <button class="btn-paginacion" [class.activa]="paginaActual === p" (click)="cambiarPagina(p)">{{ p }}</button>
+      </ng-container>
+      <button class="btn-paginacion" [disabled]="paginaActual === totalPages()"
+        (click)="cambiarPagina(paginaActual + 1)">
+        Siguiente
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Ver Paquete -->
+<div class="modal-overlay" *ngIf="mostrarModalVer" (click)="cerrarModalVer()">
+  <div class="modal-container modal-ver" (click)="$event.stopPropagation()">
+
+    <!-- Encabezado -->
+    <div class="modal-header-ver">
+      <h2 class="modal-title-ver">{{ paqueteVer?.nombre }}</h2>
+      <span class="estado-badge-ver position-absolute top-0 end-0 mt-2 me-2 px-3 py-1 fs-7"
+        [ngClass]="paqueteVer?.activo ? 'estado-activo' : 'estado-inactivo'">
+        {{ paqueteVer?.activo ? 'Disponible' : 'No Disponible' }}
+      </span>
+    </div>
+
+    <div class="modal-body-ver">
+
+      <!-- Destino -->
+      <div class="info-section-ver">
+        <i class="bi bi-geo-alt icono-section-ver"></i>
+        <div>
+          <h5 class="section-title-ver">Destino</h5>
+          <p class="section-text-ver">{{ paqueteVer?.destino }}</p>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="info-section-ver">
+        <i class="bi bi-card-text icono-section-ver"></i>
+        <div>
+          <h5 class="section-title-ver">Descripción</h5>
+          <p class="section-text-ver">{{ paqueteVer?.descripcion }}</p>
+        </div>
+      </div>
+
+      <!-- Duración y precio -->
+      <div class="info-grid-ver">
+        <div class="info-box-ver">
+          <p class="info-box-title-ver">Duración</p>
+          <i class="bi bi-calendar-week icono-box-ver"></i>
+          <p>{{ paqueteVer?.duracionDias }} días</p>
+        </div>
+        <div class="info-box-ver">
+          <p class="info-box-title-ver">Precio</p>
+          <i class="bi bi-cash-coin icono-box-ver"></i>
+          <p>{{ paqueteVer?.precio }} €</p>
+        </div>
+      </div>
+
+      <!-- Servicios incluidos -->
+      <h5 class="section-title-ver mt-3">Servicios Incluidos</h5>
+      <div class="tags-container-ver">
+        <span *ngIf="paqueteVer?.incluyeVuelo" class="paquete-tag">
+          <i class="bi bi-airplane"></i> Vuelo
+        </span>
+        <span *ngIf="paqueteVer?.incluyeHotel" class="paquete-tag">
+          <i class="bi bi-hospital"></i> Hotel
+        </span>
+        <span *ngIf="!paqueteVer?.incluyeHotel && !paqueteVer?.incluyeVuelo" class="tag-empty-ver">
+          Ninguno
+        </span>
+      </div>
+
+      <!-- Botón cerrar -->
+      <div class="text-end mt-4">
+        <button type="button" class="btn btn-cancelar" (click)="cerrarModalVer()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Editar Paquete -->
+<div class="modal-overlay" *ngIf="mostrarModalEditar" (click)="cerrarModalEditar()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <h5 class="modal-title">Editar Paquete</h5>
+    <hr class="divider" />
+    <form *ngIf="paqueteEditar" (ngSubmit)="guardarEdicionPaquete()">
+      <div class="mb-3">
+        <label>Nombre del paquete</label>
+        <input type="text" class="form-control" [(ngModel)]="paqueteEditar.nombre" name="nombreEditar" required />
+      </div>
+      <div class="mb-3">
+        <label>Destino</label>
+        <input type="text" class="form-control" [(ngModel)]="paqueteEditar.destino" name="destinoEditar" required />
+      </div>
+      <div class="mb-3">
+        <label>Descripción</label>
+        <textarea class="form-control" rows="3" [(ngModel)]="paqueteEditar.descripcion"
+          name="descripcionEditar"></textarea>
+      </div>
+      <div class="row g-3">
+        <div class="col">
+          <label>Duración (días)</label>
+          <input type="number" class="form-control" [(ngModel)]="paqueteEditar.duracionDias"
+            name="duracionDiasEditar" />
+        </div>
+        <div class="col">
+          <label>Precio (€)</label>
+          <input type="number" class="form-control" [(ngModel)]="paqueteEditar.precio" name="precioEditar" />
+        </div>
+      </div>
+      <div class="mt-4 d-flex gap-4">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input rounded-checkbox" type="checkbox" [(ngModel)]="paqueteEditar.incluyeVuelo"
+            name="vueloEditar" id="vueloEditar" />
+          <label class="form-check-label" for="vueloEditar">Incluye vuelo</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input rounded-checkbox" type="checkbox" [(ngModel)]="paqueteEditar.incluyeHotel"
+            name="hotelEditar" id="hotelEditar" />
+          <label class="form-check-label" for="hotelEditar">Incluye hotel</label>
+        </div>
+      </div>
+      <div class="estado-section mt-4">
+        <div class="d-flex justify-content-between align-items-center">
+
+          <div class="estado-label">Estado</div>
+          <div class="estado-line"></div>
+
+          <div class="estado-opciones d-flex align-items-center">
+            <span class="estado-text-inactivo me-2">Inactivo</span>
+
+            <div class="form-switch d-flex align-items-center">
+              <input class="form-check-input" type="checkbox" [(ngModel)]="paqueteEditar.activo" name="activoEditar" />
+            </div>
+
+            <span class="estado-text-activo ms-2">Activo</span>
+          </div>
+
+        </div>
+      </div>
+
+      <hr class="divider mt-4" />
+      <div class="text-end mt-4">
+        <button type="button" class="btn btn-cancelar me-2" (click)="cerrarModalEditar()">Cancelar</button>
+        <button type="submit" class="btn btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
   </div>
 </div>
