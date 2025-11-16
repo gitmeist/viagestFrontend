@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   standalone: true,
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule,  MatDatepickerModule,
+  imports: [CommonModule, FormsModule, MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
@@ -26,10 +26,10 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './reserva.component.css'
 })
 export class ReservaComponent implements OnInit {
- reservas: Reserva[] = [];
+  reservas: Reserva[] = [];
   reservasFiltradas: Reserva[] = [];
-Math = Math;
-  
+  Math = Math;
+
   // filtros
   busqueda = '';
   filtroEstado = '';
@@ -60,7 +60,7 @@ Math = Math;
   // Payment statuses map
   pagosEstados: Map<number, string> = new Map();
 
-  constructor(private reservaService: ReservaService, private pagoService: PagoService) {}
+  constructor(private reservaService: ReservaService, private pagoService: PagoService) { }
 
   ngOnInit(): void {
     this.cargarReservas();
@@ -102,7 +102,7 @@ Math = Math;
   }
 
   estadoPagoClass(estado: string): string {
-    switch(estado.toUpperCase()) {
+    switch (estado.toUpperCase()) {
       case 'COMPLETADO': return 'badge bg-success';
       case 'PENDIENTE': return 'badge bg-warning text-dark';
       case 'FALLIDO': return 'badge bg-danger';
@@ -149,6 +149,13 @@ Math = Math;
     this.reservasFiltradas = filtradas.slice(inicio, inicio + this.reservasPorPagina);
   }
 
+  resetearFiltros(): void {
+    this.busqueda = '';
+    this.filtroEstado = '';
+    this.rangoFecha = { desde: '', hasta: '' };
+    this.paginaActual = 1;
+    this.aplicarFiltros();
+  }
   ordenarPor(columna: string): void {
     if (this.columnaOrden === columna) {
       this.ordenAscendente = !this.ordenAscendente;
@@ -164,7 +171,7 @@ Math = Math;
       let valorA: any;
       let valorB: any;
 
-      switch(columna) {
+      switch (columna) {
         case 'idReserva':
           valorA = a.idReserva;
           valorB = b.idReserva;
@@ -193,6 +200,11 @@ Math = Math;
           valorA = a.estadoReserva;
           valorB = b.estadoReserva;
           break;
+        case 'estadoPago':
+          valorA = this.obtenerEstadoPago(a.idReserva);
+          valorB = this.obtenerEstadoPago(b.idReserva);
+          break;
+
         default:
           return 0;
       }
@@ -225,7 +237,7 @@ Math = Math;
   estadoClass(estado: string | undefined): string {
     if (!estado) return '';
     return estado.toLowerCase() === 'confirmada' ? 'confirmada' :
-           estado.toLowerCase() === 'pendiente' ? 'pendiente' : 'cancelada';
+      estado.toLowerCase() === 'pendiente' ? 'pendiente' : 'cancelada';
   }
 
   actualizarResumen(): void {
@@ -291,7 +303,7 @@ Math = Math;
     this.reservaService.modificar(this.reservaVer.idReserva, this.reservaVer).subscribe({
       next: (reservaActualizada) => {
         console.log('Reserva actualizada', reservaActualizada);
-        
+
         // Update payment if exists
         if (this.pagoReserva) {
           this.pagoService.modificar(this.pagoReserva.idPago, this.pagoReserva).subscribe({

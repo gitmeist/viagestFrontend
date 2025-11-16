@@ -8,10 +8,10 @@
   display: flex;
   flex-direction: column;
   overflow: visible;
-  margin-bottom: 2rem; 
+  margin-bottom: 2rem;
 }
 
-.reservas-container > div:first-child {
+.reservas-container>div:first-child {
   display: flex;
   flex-direction: column;
 }
@@ -21,11 +21,13 @@
   background-color: #4fa9a9 !important;
   border: none !important;
   color: #fff;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 500;
-  padding: 10px 18px;
+  padding: 5px 10px;
+  font-size: 0.85rem;
   transition: all 0.2s ease-in-out;
 }
+
 .btn-turquoise:hover {
   background-color: #449696 !important;
   transform: translateY(-1px);
@@ -39,6 +41,7 @@
   font-size: 0.9rem;
   padding: 8px 10px;
 }
+
 .search-icon {
   position: absolute;
   left: 12px;
@@ -48,17 +51,43 @@
   font-size: 1rem;
 }
 
+/* Botón Resetear Filtros */
+.reset-btn {
+  background: #e57373;
+  color: #fff;
+  border: none;
+  padding: 7px 15px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.2s;
+  height: 40px;
+}
+
+.reset-btn:hover {
+  background: #d9534f;
+}
+
+.reset-btn i {
+  font-size: 1rem;
+}
+
 /* TABLA */
 .table-responsive {
   flex: 1;
   overflow-y: auto;
   min-height: 0;
 }
+
 .table.tabla-reservas {
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.9rem;
 }
+
 .table.tabla-reservas thead th {
   background-color: #f8f9fa;
   color: #555;
@@ -67,7 +96,6 @@
   text-transform: uppercase;
   font-size: 0.8rem;
   cursor: default;
-  user-select: none;
 }
 
 .table.tabla-reservas thead th.sortable {
@@ -88,6 +116,7 @@
 .table.tabla-reservas thead th.sortable:hover i {
   opacity: 1;
 }
+
 .table.tabla-reservas tbody tr:hover {
   background-color: #f9f9f9;
   transition: background-color 0.2s ease;
@@ -101,14 +130,17 @@
   font-weight: 700;
   text-transform: capitalize;
 }
+
 .estado.confirmada {
   background: #e6f7ee;
   color: #2ea043;
 }
+
 .estado.pendiente {
   background: #fff9e6;
   color: #d79b00;
 }
+
 .estado.cancelada {
   background: #fff0f0;
   color: #d93b3b;
@@ -116,18 +148,19 @@
 
 /* BOTONES ACCIÓN */
 .btn-icon {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
   display: inline-flex;
-  align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  align-items: center;
   padding: 0;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 }
+
 .btn-icon:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 /* VER */
@@ -135,6 +168,7 @@
   border-color: #d1b039;
   color: #d1b039;
 }
+
 .btn-outline-warning:hover {
   background-color: #d1b039;
   color: #fff;
@@ -145,6 +179,7 @@
   border-color: #45ac37;
   color: #45ac37;
 }
+
 .btn-outline-success:hover {
   background-color: #45ac37;
   color: #fff;
@@ -155,6 +190,7 @@
   border-color: #d05337;
   color: #d05337;
 }
+
 .btn-outline-danger:hover {
   background-color: #d05337;
   color: #fff;
@@ -205,6 +241,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
+
 .resumen-card {
   background: #fff;
   border-radius: 14px;
@@ -215,16 +252,19 @@
   min-height: 150px;
   transition: all 0.2s ease-in-out;
 }
+
 .resumen-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
+
 .resumen-card h3 {
   font-size: 24px;
   margin: 16px 0 0;
   font-weight: 800;
   color: #111827;
 }
+
 .resumen-card .small {
   font-weight: 600;
   color: #7a7f86;
@@ -232,6 +272,7 @@
   letter-spacing: 0.4px;
   font-size: 1.2rem;
 }
+
 .resumen-icon {
   position: absolute;
   right: 18px;
@@ -243,24 +284,31 @@
 .resumen-card.total {
   border-left: 5px solid #4FA9A9;
 }
+
 .resumen-card.total .resumen-icon {
   color: #4FA9A9;
 }
+
 .resumen-card.pendientes {
   border-left: 5px solid #EECF8C;
 }
+
 .resumen-card.pendientes .resumen-icon {
   color: #EECF8C;
 }
+
 .resumen-card.confirmadas {
   border-left: 5px solid #6ED736;
 }
+
 .resumen-card.confirmadas .resumen-icon {
   color: #6ED736;
 }
+
 .resumen-card.canceladas {
   border-left: 5px solid #FF5C5C;
 }
+
 .resumen-card.canceladas .resumen-icon {
   color: #FF5C5C;
 }
@@ -271,6 +319,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
 @media (max-width: 576px) {
   .resumen {
     grid-template-columns: 1fr;
@@ -351,6 +400,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -361,6 +411,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);

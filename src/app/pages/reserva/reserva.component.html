@@ -24,15 +24,24 @@
         </select>
       </div>
 
-      <mat-form-field class="date-range-picker" appearance="fill">
-        <mat-label>Rango de Fecha</mat-label>
-            <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="Desde" [(ngModel)]="rangoFecha.desde" (dateChange)="aplicarFiltros()">
-              <input matEndDate placeholder="Hasta" [(ngModel)]="rangoFecha.hasta" (dateChange)="aplicarFiltros()">
-            </mat-date-range-input>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+      <!-- Filtro de rango de fecha mejorado -->
+      <div class="date-range-wrapper">
+        <mat-form-field class="date-range-picker" appearance="fill"
+          [class.has-range]="rangoFecha.desde || rangoFecha.hasta">
+          <mat-label>Rango de Fecha</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Desde" [(ngModel)]="rangoFecha.desde" (dateChange)="aplicarFiltros()">
+            <input matEndDate placeholder="Hasta" [(ngModel)]="rangoFecha.hasta" (dateChange)="aplicarFiltros()">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+
+      <!-- Botón Resetear Filtros -->
+      <button class="reset-btn" (click)="resetearFiltros()">
+        <i class="bi bi-x-circle"></i> Resetear Filtros
+      </button>
     </div>
 
     <!-- TABLA -->
@@ -41,33 +50,46 @@
         <thead>
           <tr>
             <th class="sortable" (click)="ordenarPor('idReserva')">
-              ID RESERVA 
-              <i class="bi" [ngClass]="columnaOrden === 'idReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              ID RESERVA
+              <i class="bi"
+                [ngClass]="columnaOrden === 'idReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('nombre')">
-              NOMBRE 
-              <i class="bi" [ngClass]="columnaOrden === 'nombre' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              NOMBRE
+              <i class="bi"
+                [ngClass]="columnaOrden === 'nombre' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('paquete')">
-              PAQUETE 
-              <i class="bi" [ngClass]="columnaOrden === 'paquete' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              PAQUETE
+              <i class="bi"
+                [ngClass]="columnaOrden === 'paquete' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('fechaReserva')">
-              FECHA DE RESERVA 
-              <i class="bi" [ngClass]="columnaOrden === 'fechaReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              FECHA DE RESERVA
+              <i class="bi"
+                [ngClass]="columnaOrden === 'fechaReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('fechaViaje')">
-              FECHA DE VIAJE 
-              <i class="bi" [ngClass]="columnaOrden === 'fechaViaje' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              FECHA DE VIAJE
+              <i class="bi"
+                [ngClass]="columnaOrden === 'fechaViaje' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('numPersonas')">
-              PERSONAS 
-              <i class="bi" [ngClass]="columnaOrden === 'numPersonas' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              PERSONAS
+              <i class="bi"
+                [ngClass]="columnaOrden === 'numPersonas' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
             <th class="sortable" (click)="ordenarPor('estadoReserva')">
-              ESTADO 
-              <i class="bi" [ngClass]="columnaOrden === 'estadoReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+              ESTADO RESERVA
+              <i class="bi"
+                [ngClass]="columnaOrden === 'estadoReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
             </th>
+            <th class="sortable" (click)="ordenarPor('estadoPago')">
+              ESTADO PAGO
+              <i class="bi"
+                [ngClass]="columnaOrden === 'estadoPago' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
+            </th>
+
             <th class="text-center">ACCIONES</th>
           </tr>
         </thead>
@@ -83,12 +105,15 @@
               <span class="estado" [ngClass]="estadoClass(r.estadoReserva)">
                 {{ r.estadoReserva | lowercase }}
               </span>
-              <span class="ms-2" [ngClass]="estadoPagoClass(obtenerEstadoPago(r.idReserva))">
-                <i class="bi bi-credit-card me-1"></i>{{ obtenerEstadoPago(r.idReserva) | lowercase }}
+            </td>
+            <td>
+              <span class="badge" [ngClass]="estadoPagoClass(obtenerEstadoPago(r.idReserva))">
+                {{ obtenerEstadoPago(r.idReserva) | lowercase }}
               </span>
             </td>
+
             <td class="text-center">
-              <button class="btn btn-outline-primary me-1" (click)="ver(r)" title="Ver y editar reserva">
+              <button class="btn btn-turquoise me-1" (click)="ver(r)" title="Ver y editar reserva">
                 <i class="bi bi-card-text me-1"></i>Detalles
               </button>
 
@@ -194,7 +219,8 @@
         <div class="col-md-6">
           <label>Fecha de Viaje</label>
           <input *ngIf="modoEdicion" type="date" class="form-control" [(ngModel)]="reservaVer.fechaViaje" />
-          <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="reservaVer.fechaViaje | date:'yyyy-MM-dd'" readonly />
+          <input *ngIf="!modoEdicion" type="text" class="form-control"
+            [value]="reservaVer.fechaViaje | date:'yyyy-MM-dd'" readonly />
         </div>
       </div>
 
@@ -206,14 +232,16 @@
         </div>
         <div class="col-md-6">
           <label>Usuario</label>
-          <input type="text" class="form-control" [value]="reservaVer.usuario.nombre + ' ' + reservaVer.usuario.apellidos" readonly />
+          <input type="text" class="form-control"
+            [value]="reservaVer.usuario.nombre + ' ' + reservaVer.usuario.apellidos" readonly />
         </div>
       </div>
 
       <div class="mb-3">
         <label>Observaciones</label>
         <textarea *ngIf="modoEdicion" class="form-control" [(ngModel)]="reservaVer.observaciones" rows="3"></textarea>
-        <textarea *ngIf="!modoEdicion" class="form-control" [value]="reservaVer.observaciones" readonly rows="3"></textarea>
+        <textarea *ngIf="!modoEdicion" class="form-control" [value]="reservaVer.observaciones" readonly
+          rows="3"></textarea>
       </div>
 
       <!-- DATOS DEL CLIENTE -->
@@ -312,7 +340,8 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label>Fecha de Pago</label>
-            <input type="text" class="form-control" [value]="pagoReserva.fechaPago | date:'yyyy-MM-dd HH:mm'" readonly />
+            <input type="text" class="form-control" [value]="pagoReserva.fechaPago | date:'yyyy-MM-dd HH:mm'"
+              readonly />
           </div>
           <div class="col-md-6">
             <label>Referencia</label>
