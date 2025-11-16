@@ -14,14 +14,35 @@
 <div class="clientes-container mx-3">
   <div>
 
-    <!-- Filtros -->
-    <div class="filtros d-flex flex-wrap align-items-center gap-2 mb-4">
-      <div class="flex-grow-1 position-relative"> <label for="busqueda" class="visually-hidden">Buscar cliente</label>
-        <i class="bi bi-search position-absolute search-icon"></i> <input id="busqueda" type="text"
-          class="form-control ps-5" placeholder="Buscar por nombre, email, CIF..." [(ngModel)]="busqueda"
-          (input)="aplicarFiltros(true)" />
-      </div>
-    </div>
+<!-- Filtros -->
+<div class="filtros d-flex flex-wrap align-items-center gap-2 mb-4">
+  <!-- Búsqueda -->
+  <div class="flex-grow-1 position-relative">
+    <label for="busqueda" class="visually-hidden">Buscar cliente</label>
+    <i class="bi bi-search position-absolute search-icon"></i>
+    <input id="busqueda" type="text"
+           class="form-control ps-5"
+           placeholder="Buscar por nombre, email, CIF..."
+           [(ngModel)]="busqueda"
+           (input)="aplicarFiltros(true)" />
+  </div>
+
+  <!-- Filtro por fecha de registro -->
+  <div>
+    <label for="fechaRegistro" class="visually-hidden">Fecha de Registro</label>
+    <input id="fechaRegistro" type="date"
+           class="form-control"
+           [(ngModel)]="fechaRegistroFiltro"
+           (change)="aplicarFiltros(true)" />
+  </div>
+
+  <!-- Botón Resetear Filtros -->
+  <div>
+    <button class="reset-btn" (click)="resetearFiltros()">
+      <i class="bi bi-x-circle"></i> Resetear Filtros
+    </button>
+  </div>
+</div>
 
     <!-- Tabla -->
     <div class="table-responsive flex-grow-1">

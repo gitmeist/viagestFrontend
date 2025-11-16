@@ -26,6 +26,7 @@ export class ClienteComponent implements OnInit {
   clientes: Cliente[] = [];
   clientesFiltrados: Cliente[] = [];
   totalFiltrados: number = 0;
+  fechaRegistroFiltro: string = '';
 
   Math = Math;
   busqueda = '';
@@ -311,30 +312,32 @@ obtenerFechaLocal(): string {
   }
 
   aplicarFiltros(resetPage: boolean = false): void {
-    if (!this.clientes || this.clientes.length === 0) {
-      this.clientesFiltrados = [];
-      this.totalFiltrados = 0;
-      return;
-    }
+    let filtrados = this.clientes.filter(c => {
+    const busquedaLower = this.busqueda.toLowerCase();
+    const coincideTexto =
+      (c.nombre?.toLowerCase().includes(busquedaLower) || false) ||
+      (c.email?.toLowerCase().includes(busquedaLower) || false) ||
+      (c.cif?.toLowerCase().includes(busquedaLower) || false);
 
-    let filtrados = this.clientes
-      .filter(c => {
-        if (!c) return false;
-        const busquedaLower = this.busqueda.toLowerCase();
-        return (
-          (c.nombre?.toLowerCase().includes(busquedaLower) || false) ||
-          (c.email?.toLowerCase().includes(busquedaLower) || false) ||
-          (c.cif?.toLowerCase().includes(busquedaLower) || false)
-        );
-      });
+    const coincideFecha =
+      !this.fechaRegistroFiltro || 
+      (c.fechaRegistro ? new Date(c.fechaRegistro).toISOString().split('T')[0] === this.fechaRegistroFiltro : false);
 
-    this.totalFiltrados = filtrados.length;
-    if (resetPage) {
-      this.paginaActual = 1;
-    }
-    const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
-    this.clientesFiltrados = filtrados.slice(inicio, inicio + this.clientesPorPagina);
+    return coincideTexto && coincideFecha;
+  });
+
+  this.totalFiltrados = filtrados.length;
+  if (resetPage) this.paginaActual = 1;
+
+  const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
+  this.clientesFiltrados = filtrados.slice(inicio, inicio + this.clientesPorPagina);
   }
+
+  resetearFiltros() {
+  this.busqueda = '';
+  this.fechaRegistroFiltro = '';
+  this.aplicarFiltros(true);
+}
 
   cambiarPagina(pagina: number): void {
     const maxPaginas = Math.ceil(this.totalFiltrados / this.clientesPorPagina);

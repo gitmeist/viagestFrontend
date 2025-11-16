@@ -55,6 +55,24 @@
   color: #aaa;
 }
 
+.reset-btn {
+  background: #e57373;
+  color: #fff;
+  border: none;
+  padding: 7px 15px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reset-btn:hover {
+  background: #d9534f;
+}
+
+
 /* TABLA */
 .table-responsive {
   flex: 1;
