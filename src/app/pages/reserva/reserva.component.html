@@ -159,28 +159,38 @@
 
 <!-- RESUMEN  -->
 <div class="resumen mt-4 px-4 mb-4">
-  <div class="card resumen-card total">
-    <div class="small text-muted">TOTAL RESERVAS</div>
+  <div class="resumen-card total">
+    <div class="resumen-content">
+      <i class="bi bi-file-text resumen-icon"></i>
+      <span class="resumen-text">TOTAL RESERVAS</span>
+    </div>
     <h3>{{ total }}</h3>
-    <i class="bi bi-file-text resumen-icon"></i>
   </div>
 
-  <div class="card resumen-card pendientes">
-    <div class="small text-muted">RESERVAS PENDIENTES</div>
+
+  <div class="resumen-card pendientes">
+    <div class="resumen-content">
+      <i class="bi bi-hourglass-split resumen-icon"></i>
+      <span class="resumen-text">RESERVAS PENDIENTES</span>
+    </div>
     <h3>{{ pendientes }}</h3>
-    <i class="bi bi-hourglass-split resumen-icon"></i>
   </div>
 
-  <div class="card resumen-card confirmadas">
-    <div class="small text-muted">RESERVAS CONFIRMADAS</div>
+
+  <div class="resumen-card confirmadas">
+    <div class="resumen-content">
+      <i class="bi bi-check-circle resumen-icon"></i>
+      <span class="resumen-text">RESERVAS CONFIRMADAS</span>
+    </div>
     <h3>{{ confirmadas }}</h3>
-    <i class="bi bi-check-circle resumen-icon"></i>
   </div>
 
-  <div class="card resumen-card canceladas">
-    <div class="small text-muted">RESERVAS CANCELADAS</div>
+  <div class="resumen-card canceladas">
+    <div class="resumen-content">
+      <i class="bi bi-x-circle resumen-icon"></i>
+      <span class="resumen-text">RESERVAS CANCELADAS</span>
+    </div>
     <h3>{{ canceladas }}</h3>
-    <i class="bi bi-x-circle resumen-icon"></i>
   </div>
 </div>
 

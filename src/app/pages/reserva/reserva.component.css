@@ -244,13 +244,14 @@
 
 .resumen-card {
   background: #fff;
-  border-radius: 14px;
-  padding: 22px 20px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  border: 1px solid #eef2f3;
-  position: relative;
-  min-height: 150px;
-  transition: all 0.2s ease-in-out;
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-height: auto;
+  height: 70px; /* cards mas pequeñas */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .resumen-card:hover {
@@ -259,10 +260,23 @@
 }
 
 .resumen-card h3 {
-  font-size: 24px;
-  margin: 16px 0 0;
-  font-weight: 800;
+  font-size: 22px;
+  margin: 0;
+  font-weight: 600;
   color: #111827;
+}
+
+.resumen-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.resumen-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7a7f86;
+  text-transform: uppercase;
 }
 
 .resumen-card .small {
@@ -274,10 +288,9 @@
 }
 
 .resumen-icon {
-  position: absolute;
-  right: 18px;
-  bottom: 14px;
-  font-size: 34px;
+  position: static !important;
+  font-size: 22px;
+  margin-right: 5px;
 }
 
 /* COLORES PERSONALIZADOS */
