@@ -1,100 +1,120 @@
 <!-- Cabecera -->
 <div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
-  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2> 
-  <button
-  class="btn btn-turquoise d-flex align-items-center shadow-sm"
-  (click)="abrirModalCliente()"
-  aria-label="Añadir cliente">
-  <i class="bi bi-plus-lg me-2"></i> Añadir Cliente
-</button>
-
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Clientes</h2>
+  <button class="btn btn-turquoise d-flex align-items-center shadow-sm" (click)="abrirModalCliente()"
+    aria-label="Añadir cliente">
+    <i class="bi bi-plus-lg me-2"></i> Añadir Cliente
+  </button>
 </div>
 
-<!-- Contenedor principal -->
+<!-- Contenedor filtros -->
 <div class="clientes-container mx-3">
-  <div>
 
-<!-- Filtros -->
-<div class="filtros d-flex flex-wrap align-items-center gap-2 mb-4">
-  <!-- Búsqueda -->
-  <div class="flex-grow-1 position-relative">
-    <label for="busqueda" class="visually-hidden">Buscar cliente</label>
-    <i class="bi bi-search position-absolute search-icon"></i>
-    <input id="busqueda" type="text"
-           class="form-control ps-5"
-           placeholder="Buscar por nombre, email, CIF..."
-           [(ngModel)]="busqueda"
-           (input)="aplicarFiltros(true)" />
+  <!-- Filtros -->
+  <div class="filtros d-flex flex-wrap align-items-center gap-2 ">
+
+    <!-- Búsqueda -->
+    <div class="flex-grow-1 position-relative">
+      <label for="busqueda" class="visually-hidden">Buscar cliente</label>
+      <i class="bi bi-search position-absolute search-icon"></i>
+      <input id="busqueda" type="text" class="form-control ps-5" placeholder="Buscar por nombre, email, CIF..."
+        [(ngModel)]="busqueda" (input)="aplicarFiltros(true)" />
+    </div>
+
+    <!-- Filtro por fecha -->
+    <div>
+      <label for="fechaRegistro" class="visually-hidden">Fecha de Registro</label>
+      <input id="fechaRegistro" type="date" class="form-control-fecha" [(ngModel)]="fechaRegistroFiltro"
+        (change)="aplicarFiltros(true)" />
+    </div>
+
+    <!-- Reset filtros -->
+    <div>
+      <button class="reset-btn" (click)="resetearFiltros()">
+        <i class="bi bi-x-circle"></i> Resetear Filtros
+      </button>
+    </div>
+
   </div>
 
-  <!-- Filtro por fecha de registro -->
-  <div>
-    <label for="fechaRegistro" class="visually-hidden">Fecha de Registro</label>
-    <input id="fechaRegistro" type="date"
-           class="form-control"
-           [(ngModel)]="fechaRegistroFiltro"
-           (change)="aplicarFiltros(true)" />
-  </div>
+</div> <!-- FIN CONTENEDOR FILTROS -->
 
-  <!-- Botón Resetear Filtros -->
-  <div>
-    <button class="reset-btn" (click)="resetearFiltros()">
-      <i class="bi bi-x-circle"></i> Resetear Filtros
-    </button>
+<!-- 🔥 GRID DE CLIENTES FUERA DEL CONTENEDOR -->
+<div class="clientes-grid mx-3">
+  <div class="cliente-card" *ngFor="let cliente of clientesFiltrados">
+
+    <!-- CABECERA -->
+    <div class="card-header">
+      <div class="cliente-iniciales">
+        {{ obtenerIniciales(cliente.nombre) }}
+      </div>
+
+
+      <div class="header-info">
+        <h5 class="cliente-nombre">{{ cliente.nombre }}</h5>
+        <p class="cliente-cif">CIF: {{ cliente.cif }}</p>
+      </div>
+    </div>
+
+    <!-- INFORMACIÓN DETALLADA -->
+    <div class="card-info">
+      <p><strong>Email:</strong> <span class="azul"> {{ cliente.email }}</span></p>
+      <p><strong>Teléfono:</strong> <span class="azul"> {{ cliente.telefono }}</span></p>
+      <p><strong>Domicilio:</strong> <span class="azul"> {{ cliente.domicilio }}</span></p>
+      <p><strong>Fecha de Registro:</strong> <span class="azul"> {{ cliente.fechaRegistro | date:'yyyy-MM-dd' }}</span>
+      </p>
+    </div>
+
+    <!-- BOTONES -->
+    <div class="card-actions">
+      <button class="btn btn-icon btn-outline-success" (click)="editar(cliente)">
+        <i class="bi bi-pencil"></i> Editar
+      </button>
+
+      <button class="btn btn-reservar btn-turquoise" (click)="abrirModalReserva(cliente)">
+        Reservar
+      </button>
+    </div>
+
   </div>
 </div>
 
-    <!-- Tabla -->
-    <div class="table-responsive flex-grow-1">
-      <table class="table align-middle table-hover">
-        <thead>
-          <tr>
-            <th>CIF</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Teléfono</th>
-            <th>Domicilio</th>
-            <th>Fecha de Registro</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let cliente of clientesFiltrados">
-            <td>{{ cliente.cif }}</td>
-            <td>{{ cliente.nombre }}</td>
-            <td>{{ cliente.email }}</td>
-            <td>{{ cliente.telefono }}</td>
-            <td>{{ cliente.domicilio }}</td>
-            <td>{{ cliente.fechaRegistro | date: 'yyyy-MM-dd' }}</td>
-            <td class="text-center"> <button class="btn btn-icon btn-outline-success me-1" (click)="editar(cliente)" aria-label="Editar cliente"> <i class="bi bi-pencil"></i> </button> <button class="btn btn-reservar btn-turquoise ms-3" (click)="abrirModalReserva(cliente)" aria-label="Reservar cliente"> Reservar </button> </td>
-          </tr>
-          <tr *ngIf="clientesFiltrados.length === 0">
-            <td colspan="7" class="text-center text-muted py-4"> No se encontraron clientes. </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<!-- Mensaje sin resultados -->
+<p *ngIf="clientesFiltrados.length === 0" class="text-center text-muted mt-4">
+  No se encontraron clientes.
+</p>
 
-  <!-- Paginación -->
-  <div class="d-flex justify-content-between align-items-center mt-3 pt-2"> <small class="text-muted"> Mostrando {{
-      (paginaActual - 1) * clientesPorPagina + 1 }} - {{ Math.min(paginaActual * clientesPorPagina, totalFiltrados) }}
-      de {{ totalFiltrados }} </small>
-    <div class="paginacion"> <button class="btn-paginacion" [disabled]="paginaActual === 1"
-        (click)="cambiarPagina(paginaActual - 1)"> Anterior </button> <!-- Números de página --> <ng-container
-        *ngFor="let num of [].constructor(Math.ceil(totalFiltrados / clientesPorPagina)); let i = index"> <button
-          class="btn-paginacion" [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)"> {{ i + 1 }}
-        </button> </ng-container> <button class="btn-paginacion"
-        [disabled]="paginaActual >= Math.ceil(totalFiltrados / clientesPorPagina)"
-        (click)="cambiarPagina(paginaActual + 1)"> Siguiente </button> </div>
+<!-- PAGINACIÓN -->
+<div class="d-flex justify-content-between align-items-center mt-3 pt-2 mx-3">
+  <small class="text-muted">
+    Mostrando {{ (paginaActual - 1) * clientesPorPagina + 1 }} -
+    {{ Math.min(paginaActual * clientesPorPagina, totalFiltrados) }}
+    de {{ totalFiltrados }}
+  </small>
+
+  <div class="paginacion">
+    <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
+      Anterior
+    </button>
+
+    <ng-container *ngFor="let num of [].constructor(Math.ceil(totalFiltrados / clientesPorPagina)); let i = index">
+      <button class="btn-paginacion" [class.activa]="paginaActual === i + 1" (click)="cambiarPagina(i + 1)">
+        {{ i + 1 }}
+      </button>
+    </ng-container>
+
+    <button class="btn-paginacion" [disabled]="paginaActual >= Math.ceil(totalFiltrados / clientesPorPagina)"
+      (click)="cambiarPagina(paginaActual + 1)">
+      Siguiente
+    </button>
   </div>
 </div>
 
 <!-- MODAL -->
 
-<div class="modal-overlay" *ngIf="mostrarModalReserva" >
+<div class="modal-overlay" *ngIf="mostrarModalReserva">
   <div class="modal-container" (click)="$event.stopPropagation()">
-  <button type="button" class="close-btn" (click)="cerrarModalReserva()" aria-label="Cerrar modal">&times;</button>
+    <button type="button" class="close-btn" (click)="cerrarModalReserva()" aria-label="Cerrar modal">&times;</button>
     <h4 class="fw-semibold mb-3">Nueva Reserva</h4>
     <form (ngSubmit)="guardarReserva()">
 
@@ -128,7 +148,8 @@
       <h6 class="modal-title">Paquete Turístico</h6>
       <div class="mb-3">
         <label>Selecciona un paquete</label>
-        <select class="form-select" [(ngModel)]="paqueteSeleccionado" name="paqueteSelect" required (change)="onPaqueteChange()">
+        <select class="form-select" [(ngModel)]="paqueteSeleccionado" name="paqueteSelect" required
+          (change)="onPaqueteChange()">
           <option value="" disabled selected>Selecciona un paquete</option>
           <option *ngFor="let paquete of paquetes" [ngValue]="paquete"> {{ paquete.nombre }} </option>
         </select>
@@ -155,12 +176,15 @@
       <div class="row g-3 mb-3">
         <div class="col">
           <label>Fecha de Inicio del Viaje</label>
-          <input type="date" class="form-control" [(ngModel)]="fechaViaje" name="fechaViaje" [min]="fechaMinima" required (change)="onFechaViajeChange()" />
-          <small class="text-muted" *ngIf="paqueteSeleccionado">Duración: {{paqueteSeleccionado.duracionDias}} días</small>
+          <input type="date" class="form-control" [(ngModel)]="fechaViaje" name="fechaViaje" [min]="fechaMinima"
+            required (change)="onFechaViajeChange()" />
+          <small class="text-muted" *ngIf="paqueteSeleccionado">Duración: {{paqueteSeleccionado.duracionDias}}
+            días</small>
         </div>
         <div class="col">
           <label>Fecha de Reserva</label>
-          <input type="date" class="form-control" [(ngModel)]="fechaReserva" name="fechaReserva" [min]="fechaMinima" required readonly />
+          <input type="date" class="form-control" [(ngModel)]="fechaReserva" name="fechaReserva" [min]="fechaMinima"
+            required readonly />
         </div>
         <div class="col">
           <label>Nº Personas</label>
@@ -201,7 +225,8 @@
       <!-- BOTONES -->
       <div class="text-end mt-3">
         <button type="button" class="btn-cancelar me-2" (click)="cerrarModalReserva()">Cancelar</button>
-        <button type="submit" class="btn btn-pago shadow-sm"><i class="bi bi-check-circle me-2"></i>Procesar Pago y Reserva</button>
+        <button type="submit" class="btn btn-pago shadow-sm"><i class="bi bi-check-circle me-2"></i>Procesar Pago y
+          Reserva</button>
       </div>
 
     </form>
@@ -222,38 +247,40 @@
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>CIF</label>
-          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.cif" name="cif" required placeholder="CIF del cliente" />
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.cif" name="cif" required
+            placeholder="CIF del cliente" />
         </div>
         <div class="col-md-6">
           <label>Nombre</label>
-          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.nombre" name="nombre" required placeholder="Nombre completo" />
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.nombre" name="nombre" required
+            placeholder="Nombre completo" />
         </div>
       </div>
 
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>Email</label>
-          <input type="email" class="form-control" [(ngModel)]="nuevoClienteData.email" name="email" required placeholder="Correo electrónico" />
+          <input type="email" class="form-control" [(ngModel)]="nuevoClienteData.email" name="email" required
+            placeholder="Correo electrónico" />
         </div>
         <div class="col-md-6">
           <label>Teléfono</label>
-          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.telefono" name="telefono" required placeholder="Teléfono de contacto" />
+          <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.telefono" name="telefono" required
+            placeholder="Teléfono de contacto" />
         </div>
       </div>
 
       <div class="mb-3">
         <label>Domicilio</label>
-        <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.domicilio" name="domicilio" required placeholder="Dirección del cliente" />
+        <input type="text" class="form-control" [(ngModel)]="nuevoClienteData.domicilio" name="domicilio" required
+          placeholder="Dirección del cliente" />
       </div>
 
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>Fecha de Nacimiento</label>
-          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaNacimiento" name="fechaNacimiento" required />
-        </div>
-        <div class="col-md-6">
-          <label>Fecha de Registro</label>
-          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaRegistro" name="fechaRegistro" [readonly]="true"/>
+          <input type="date" class="form-control" [(ngModel)]="nuevoClienteData.fechaNacimiento" name="fechaNacimiento"
+            required />
         </div>
       </div>
 
@@ -280,38 +307,45 @@
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>CIF</label>
-          <input type="text" class="form-control" [(ngModel)]="clienteEditar.cif" name="cif" readonly placeholder="CIF del cliente" />
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.cif" name="cif" readonly
+            placeholder="CIF del cliente" />
         </div>
         <div class="col-md-6">
           <label>Nombre</label>
-          <input type="text" class="form-control" [(ngModel)]="clienteEditar.nombre" name="nombre" required placeholder="Nombre completo" />
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.nombre" name="nombre" required
+            placeholder="Nombre completo" />
         </div>
       </div>
 
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>Email</label>
-          <input type="email" class="form-control" [(ngModel)]="clienteEditar.email" name="email" required placeholder="Correo electrónico" />
+          <input type="email" class="form-control" [(ngModel)]="clienteEditar.email" name="email" required
+            placeholder="Correo electrónico" />
         </div>
         <div class="col-md-6">
           <label>Teléfono</label>
-          <input type="text" class="form-control" [(ngModel)]="clienteEditar.telefono" name="telefono" required placeholder="Teléfono de contacto" />
+          <input type="text" class="form-control" [(ngModel)]="clienteEditar.telefono" name="telefono" required
+            placeholder="Teléfono de contacto" />
         </div>
       </div>
 
       <div class="mb-3">
         <label>Domicilio</label>
-        <input type="text" class="form-control" [(ngModel)]="clienteEditar.domicilio" name="domicilio" required placeholder="Dirección del cliente" />
+        <input type="text" class="form-control" [(ngModel)]="clienteEditar.domicilio" name="domicilio" required
+          placeholder="Dirección del cliente" />
       </div>
 
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label>Fecha de Nacimiento</label>
-          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaNacimiento" name="fechaNacimiento" required />
+          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaNacimiento" name="fechaNacimiento"
+            required />
         </div>
         <div class="col-md-6">
           <label>Fecha de Registro</label>
-          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaRegistro" name="fechaRegistro" readonly />
+          <input type="date" class="form-control" [(ngModel)]="clienteEditar.fechaRegistro" name="fechaRegistro"
+            readonly />
         </div>
       </div>
 

@@ -1,22 +1,28 @@
-/* CONTENEDOR PRINCIPAL */
-.clientes-container {
-  background: #fff;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  font-family: "Inter", "Poppins", sans-serif;
-  height: calc(100vh - 180px);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+/* CABECERA PRINCIPAL */
+.d-flex h2 {
+  font-weight: 1200;
+  font-size: 2rem; 
+  background: linear-gradient(90deg, #429898, #3d8b8b, #4fa9a9); /* degradado azul */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; 
 }
 
-.clientes-container>div:first-child {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
+
+/* CONTENEDOR PRINCIPAL */
+.clientes-container {
+  background: linear-gradient(135deg, #4fa9a9 0%, #f5f7fa 100%);
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 20px rgba(79, 169, 169, 0.15);
+  font-family: "Inter", "Poppins", sans-serif;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+/* HOVER SUAVE */
+.clientes-container:hover {
+  box-shadow: 0 8px 25px rgba(79, 169, 169, 0.25);
 }
 
 /*  TÍTULO Y BOTÓN PRINCIPAL */
@@ -36,11 +42,29 @@
 }
 
 /*FILTROS */
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+}
+
 .filtros .form-control {
   border-radius: 10px;
-  border: 1px solid #dee2e6;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid #ffffff;
   font-size: 0.9rem;
-  padding: 8px 10px;
+  padding: 6px 10px;
+}
+
+.filtros .form-control-fecha {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.323);
+  border: 1px solid #ffffff;
+  font-size: 0.9rem;
+  padding: 6px 10px;
 }
 
 .filtros .form-control:focus {
@@ -48,18 +72,24 @@
   box-shadow: 0 0 0 0.15rem rgba(79, 169, 169, 0.25);
 }
 
+#busqueda::placeholder {
+  color:white;
+  font-weight: 500;
+  opacity: 1; 
+}
+
 .search-icon {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa;
+  color:white;
 }
 
 .reset-btn {
-  background: #e57373;
-  color: #fff;
-  border: none;
-  padding: 7px 15px;
+  background: #4fa9a9;
+  color: #ffffff;
+   border: none;
+  padding: 6px 12px;
   font-size: 0.9rem;
   border-radius: 6px;
   cursor: pointer;
@@ -69,108 +99,125 @@
 }
 
 .reset-btn:hover {
-  background: #d9534f;
+   background-color: #96d5d5;
 }
 
-
-/* TABLA */
-.table-responsive {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
+.clientes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 25px;
+  padding: 10px;
 }
 
-.table {
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 0.9rem;
+/* TARJETA */
+.cliente-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ececec;
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: space-between;
+}
+
+.cliente-card:hover {
+  transform: translateY(-3px);
+}
+
+/* CABECERA*/
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.header-info {
+  margin-left: 12px; 
+}
+
+.cliente-iniciales {
+  width: 40px;
+  height: 40px;
+  background-color: #4fa9a9;
+  color: #fff;              
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 50%;      
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+/* NOMBRE Y CIF */
+.header-info h5 {
+  margin: 0;
+   font-size: 1.2rem;
+  font-weight: 600;
   color: #333;
 }
 
-.table thead th {
-  background-color: #f8f9fa;
-  color: #555;
-  font-weight: 600;
-  border-bottom: 2px solid #e3e6e9;
-  text-transform: uppercase;
+.header-info .cliente-cif {
+  margin: 0;
   font-size: 0.8rem;
+  color: #4fa9a9;
 }
 
-.table tbody tr:hover {
-  background-color: #f9f9f9;
-  transition: background-color 0.2s ease;
+/* INFORMACIÓN A LA DERECHA */
+.card-info {
+  text-align: left;     /* se alinean a la derecha */
+  margin-top: 10px;
+  flex-grow: 1; 
 }
 
-.table td {
-  vertical-align: middle;
-  padding: 10px 12px;
-}
-
-/*  BOTONES DE ACCIÓN  */
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+.card-info p {
+  margin: 6px 0;
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+}
+.card-info p + p {
+  margin-top: 10px;   
 }
 
-.btn-icon:hover {
-  transform: translateY(-1px);
+/* COLOR AZUL PARA LA INFORMACIÓN */
+.azul {
+  color:  #4fa9a9;
+  font-weight: 500;
 }
 
-/*  COLORES PERSONALIZADOS  */
-.btn-outline-warning {
-  border-color: #d1b039;
-  color: #d1b039;
+/* BOTONES */
+.card-actions {
+  display: flex;
+  justify-content: flex-end;   /* Botones a la derecha */
+  gap: 10px;                   /* Espacio entre los botones */
+  margin-top: 15px;
 }
 
-.btn-outline-warning:hover {
-  background-color: #d1b039;
-  color: #fff;
-}
-
-.btn-outline-success {
-  border-color: #45ac37;
-  color: #45ac37;
-}
-
-.btn-outline-success:hover {
-  background-color: #45ac37;
-  color: #fff;
-}
-
-
-/* BOTÓN RESERVAR */
-.btn-reservar {
-  height: 34px;
-  min-width: 34px;
-  padding: 0 10px;
-  border-radius: 8px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+.card-actions button {
+ padding: 4px 10px;
   font-size: 0.75rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  white-space: nowrap;
+  border-radius: 20px;        /* Botón tipo píldora */
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.btn-icon {
+  border-radius: 20px !important;
 }
 
-.btn-reservar.btn-turquoise {
-  background-color: #4fa9a9 !important;
-  border: none !important;
-  color: #fff !important;
+/* Botón reservar */
+.btn-reservar {
+  border-radius: 20px !important;
+}
+.btn-icon {
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
-.btn-reservar.btn-turquoise:hover {
-  background-color: #449696 !important;
-  color: #fff !important;
-  transform: translateY(-1px);
-}
 
 /*Paginación*/
 .paginacion {

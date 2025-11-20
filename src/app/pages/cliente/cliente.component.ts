@@ -31,7 +31,7 @@ export class ClienteComponent implements OnInit {
   Math = Math;
   busqueda = '';
   paginaActual = 1;
-  clientesPorPagina = 5;
+  clientesPorPagina = 10;
 
   mostrarModalReserva = false;
   paquetes: Paquete[] = [];
@@ -310,6 +310,14 @@ obtenerFechaLocal(): string {
       }
     });
   }
+
+  obtenerIniciales(nombreCompleto: string): string {
+  if (!nombreCompleto) return '';
+  const palabras = nombreCompleto.trim().split(' ');
+  const iniciales = palabras.map(p => p[0].toUpperCase()).slice(0, 2).join('');
+  return iniciales;
+}
+
 
   aplicarFiltros(resetPage: boolean = false): void {
     let filtrados = this.clientes.filter(c => {

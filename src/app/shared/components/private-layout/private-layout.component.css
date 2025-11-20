@@ -17,6 +17,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: #F8FAFF;
 }
 
 @media (max-width: 900px) {
