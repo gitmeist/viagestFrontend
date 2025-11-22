@@ -36,6 +36,14 @@ export class NavbarComponent implements OnInit {
   this.router.navigate(['login']); // ruta relativa a PublicLayout
 }
 
+obtenerIniciales(nombreCompleto: string | null): string {
+  if (!nombreCompleto) return '';
+  const nombres = nombreCompleto.trim().split(' ');
+  const iniciales = nombres.map(n => n[0]).join('');
+  return iniciales.substring(0, 2).toUpperCase(); // solo las dos primeras letras
+}
+
+
 }
 
 
