@@ -7,11 +7,12 @@
 <div class="reservas-container mx-3">
   <div>
     <!-- BUSCADOR Y FILTROS -->
-    <div class="acciones d-flex flex-wrap align-items-center gap-2 mb-3">
-      <div class="position-relative flex-grow-1" style="min-width:260px;">
+    <div class="acciones d-flex flex-wrap align-items-center gap-2">
+      <div class="position-relative flex-grow-1 buscador-wrapper" style="min-width:260px;">
         <i class="bi bi-search search-icon"></i>
-        <input type="text" class="form-control ps-5" placeholder="Buscar por cliente o paquete" [(ngModel)]="busqueda"
-          (input)="aplicarFiltros()" aria-label="Buscar" />
+        <input id="busqueda" type="text" class="form-control buscador-input ps-5"
+          placeholder="Buscar por cliente o paquete" [(ngModel)]="busqueda" (input)="aplicarFiltros()"
+          aria-label="Buscar" />
       </div>
 
       <div>
@@ -23,136 +24,15 @@
           <option value="CANCELADA">Cancelada</option>
         </select>
       </div>
-
-      <!-- Filtro de rango de fecha mejorado -->
-      <div class="date-range-wrapper">
-        <mat-form-field class="date-range-picker" appearance="fill"
-          [class.has-range]="rangoFecha.desde || rangoFecha.hasta">
-          <mat-label>Rango de Fecha</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Desde" [(ngModel)]="rangoFecha.desde" (dateChange)="aplicarFiltros()">
-            <input matEndDate placeholder="Hasta" [(ngModel)]="rangoFecha.hasta" (dateChange)="aplicarFiltros()">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
+      <!-- Filtro por fecha exacta de reserva -->
+      <div>
+        <input type="date" class="form-control" [(ngModel)]="filtroFechaReserva" (change)="aplicarFiltros()">
       </div>
 
       <!-- Botón Resetear Filtros -->
       <button class="reset-btn" (click)="resetearFiltros()">
         <i class="bi bi-x-circle"></i> Resetear Filtros
       </button>
-    </div>
-
-    <!-- TABLA -->
-    <div class="table-responsive flex-grow-1">
-      <table class="table tabla-reservas align-middle mb-0">
-        <thead>
-          <tr>
-            <th class="sortable" (click)="ordenarPor('idReserva')">
-              ID RESERVA
-              <i class="bi"
-                [ngClass]="columnaOrden === 'idReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('nombre')">
-              NOMBRE
-              <i class="bi"
-                [ngClass]="columnaOrden === 'nombre' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('paquete')">
-              PAQUETE
-              <i class="bi"
-                [ngClass]="columnaOrden === 'paquete' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('fechaReserva')">
-              FECHA DE RESERVA
-              <i class="bi"
-                [ngClass]="columnaOrden === 'fechaReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('fechaViaje')">
-              FECHA DE VIAJE
-              <i class="bi"
-                [ngClass]="columnaOrden === 'fechaViaje' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('numPersonas')">
-              PERSONAS
-              <i class="bi"
-                [ngClass]="columnaOrden === 'numPersonas' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('estadoReserva')">
-              ESTADO RESERVA
-              <i class="bi"
-                [ngClass]="columnaOrden === 'estadoReserva' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-            <th class="sortable" (click)="ordenarPor('estadoPago')">
-              ESTADO PAGO
-              <i class="bi"
-                [ngClass]="columnaOrden === 'estadoPago' ? (ordenAscendente ? 'bi-arrow-up' : 'bi-arrow-down') : 'bi-arrow-down-up'"></i>
-            </th>
-
-            <th class="text-center">ACCIONES</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let r of reservasFiltradas">
-            <td class="text-muted">{{ r.idReserva }}</td>
-            <td>{{ r.cliente.nombre }}</td>
-            <td>{{ r.paquete.nombre }}</td>
-            <td>{{ r.fechaReserva | date:'yyyy-MM-dd' }}</td>
-            <td>{{ r.fechaViaje | date:'yyyy-MM-dd' }}</td>
-            <td>{{ r.numPersonas }}</td>
-            <td>
-              <span class="estado" [ngClass]="estadoClass(r.estadoReserva)">
-                {{ r.estadoReserva | lowercase }}
-              </span>
-            </td>
-            <td>
-              <span class="badge" [ngClass]="estadoPagoClass(obtenerEstadoPago(r.idReserva))">
-                {{ obtenerEstadoPago(r.idReserva) | lowercase }}
-              </span>
-            </td>
-
-            <td class="text-center">
-              <button class="btn btn-turquoise me-1" (click)="ver(r)" title="Ver y editar reserva">
-                <i class="bi bi-card-text me-1"></i>Detalles
-              </button>
-
-              <button class="btn btn-icon btn-outline-danger" (click)="borrar(r)" title="Eliminar">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-
-          <tr *ngIf="reservasFiltradas.length === 0">
-            <td colspan="8" class="text-center text-muted py-4">No se encontraron reservas.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- PAGINACIÓN -->
-    <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
-      <small class="text-muted">
-        Mostrando {{ (paginaActual - 1) * reservasPorPagina + 1 }} -
-        {{ Math.min(paginaActual * reservasPorPagina, totalFiltradas) }} de {{ totalFiltradas }}
-      </small>
-
-      <div class="paginacion">
-        <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
-          Anterior
-        </button>
-
-        <ng-container *ngFor="let p of pageNumbers(); let i = index">
-          <button class="btn-paginacion" [class.activa]="paginaActual === p" (click)="cambiarPagina(p)">
-            {{ p }}
-          </button>
-        </ng-container>
-
-        <button class="btn-paginacion" [disabled]="paginaActual === totalPages"
-          (click)="cambiarPagina(paginaActual + 1)">
-          Siguiente
-        </button>
-      </div>
     </div>
   </div>
 </div>
@@ -191,6 +71,94 @@
       <span class="resumen-text">RESERVAS CANCELADAS</span>
     </div>
     <h3>{{ canceladas }}</h3>
+  </div>
+</div>
+<!-- LISTA DE RESERVAS EN FORMATO CARD -->
+<div class="reservas-grid">
+
+  <div class="reserva-card" *ngFor="let r of reservasFiltradas" [ngClass]="estadoClass(r.estadoReserva)">
+
+    <!-- ENCABEZADO -->
+    <div class="card-header">
+      <span class="id">ID #{{ r.idReserva }}</span>
+      <span class="estado-pill" [ngClass]="estadoClass(r.estadoReserva)">
+        {{ r.estadoReserva | uppercase }}
+      </span>
+    </div>
+
+    <!-- NOMBRE Y PAQUETE -->
+    <h3 class="nombre">{{ r.cliente.nombre }}</h3>
+    <p class="paquete">
+      <i class="bi bi-binoculars"></i> {{ r.paquete.nombre }}
+    </p>
+
+    <hr class="divider-card">
+
+    <!-- FECHAS -->
+    <div class="fechas">
+      <div>
+        <label>Fecha de Reserva</label>
+        <span><i class="bi bi-calendar"></i> {{ r.fechaReserva | date:'dd/MM/yyyy' }}</span>
+      </div>
+
+      <div>
+        <label>Fecha de Viaje</label>
+        <span><i class="bi bi-airplane"></i> {{ r.fechaViaje | date:'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+
+
+    <!-- ESTADO DE PAGO -->
+    <div class="pago">
+      <span class="pago-pill" [ngClass]="estadoPagoClass(obtenerEstadoPago(r.idReserva))">
+        {{ formatearEstadoPago(obtenerEstadoPago(r.idReserva)) }}
+      </span>
+    </div>
+
+
+    <hr class="divider-card">
+
+    <!-- ACCIONES -->
+    <div class="acciones-card">
+      <button class="btn-accion detalles" (click)="ver(r)">
+        <i class="bi bi-card-text me-1"></i> Detalles
+      </button>
+
+      <button class="btn-accion eliminar" (click)="borrar(r)">
+        <i class="bi bi-trash me-1"></i> Eliminar
+      </button>
+    </div>
+
+
+  </div>
+
+  <div *ngIf="reservasFiltradas.length === 0" class="sin-reservas">
+    No se encontraron reservas.
+  </div>
+</div>
+
+
+<!-- PAGINACIÓN -->
+<div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+  <small class="text-muted">
+    Mostrando {{ (paginaActual - 1) * reservasPorPagina + 1 }} -
+    {{ Math.min(paginaActual * reservasPorPagina, totalFiltradas) }} de {{ totalFiltradas }}
+  </small>
+
+  <div class="paginacion">
+    <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
+      Anterior
+    </button>
+
+    <ng-container *ngFor="let p of pageNumbers(); let i = index">
+      <button class="btn-paginacion" [class.activa]="paginaActual === p" (click)="cambiarPagina(p)">
+        {{ p }}
+      </button>
+    </ng-container>
+
+    <button class="btn-paginacion" [disabled]="paginaActual === totalPages" (click)="cambiarPagina(paginaActual + 1)">
+      Siguiente
+    </button>
   </div>
 </div>
 

@@ -220,6 +220,15 @@
 
 
 /*Paginación*/
+
+.paginacion,
+.d-flex.justify-content-between.mt-3.pt-2 {
+  margin-bottom: 10px;
+  /* Separado del final */
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 .paginacion {
   display: flex;
   gap: 5px;

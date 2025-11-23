@@ -87,11 +87,12 @@
 
 
   <!-- BARRA DE BUSQUEDA FILTROS -->
+   
   <div class="toolbar-filtros mb-4">
     <div class="filtros-flex">
       <div class="search-wrapper">
         <span class="icono-search"><i class="bi bi-search"></i></span>
-        <input type="text" class="input-buscador search-grow" placeholder="Buscar paquetes por nombre o destino"
+        <input type="text" id="busqueda" class="input-buscador search-grow" placeholder="Buscar paquetes por nombre o destino"
           [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
       </div>
 

@@ -1,25 +1,41 @@
-/* CONTENEDOR PRINCIPAL */
-.reservas-container {
-  background: #fff;
-  border-radius: 16px;
-  padding: 40px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
-  font-family: "Inter", "Poppins", sans-serif;
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
-  margin-bottom: 2rem;
+.d-flex h2 {
+  font-weight: 1200;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #429898, #3d8b8b, #4fa9a9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.reservas-container>div:first-child {
-  display: flex;
-  flex-direction: column;
+/* Padding uniforme */
+.reservas-container,
+.reservas-grid,
+.resumen,
+.paginacion,
+.d-flex.justify-content-between.mt-3.pt-2 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.reservas-container {
+  background: linear-gradient(135deg, #4fa9a9 0%, #f5f7fa 100%);
+  border-radius: 16px;
+  padding: 10px 14px;
+  box-shadow: 0 6px 20px rgba(79, 169, 169, 0.15);
+  font-family: "Inter", "Poppins", sans-serif;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.reservas-container:hover {
+  box-shadow: 0 8px 25px rgba(79, 169, 169, 0.25);
 }
 
 /* BOTÓN PRINCIPAL */
 .btn-turquoise {
-  background-color: #4fa9a9 !important;
-  border: none !important;
+  background-color: #4fa9a9;
+  border: none;
   color: #fff;
   border-radius: 6px;
   font-weight: 500;
@@ -29,17 +45,40 @@
 }
 
 .btn-turquoise:hover {
-  background-color: #449696 !important;
+  background-color: #449696;
   transform: translateY(-1px);
 }
 
 /* FILTROS */
+.buscador-wrapper {
+  position: relative;
+}
+
 .acciones .form-control {
   border-radius: 10px;
-  border: 1px solid #dee2e6;
-  height: 40px;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid #ffffff;
   font-size: 0.9rem;
-  padding: 8px 10px;
+  padding: 6px 10px;
+}
+
+.acciones .form-control:focus {
+  border-color: #4fa9a9;
+  box-shadow: 0 0 0 0.15rem rgba(79, 169, 169, 0.25);
+}
+
+.form-select {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.323);
+  border: 1px solid #ffffff;
+  font-size: 0.9rem;
+  padding: 6px 30px;
+}
+
+#busqueda::placeholder {
+  color: white;
+  font-weight: 500;
+  opacity: 1;
 }
 
 .search-icon {
@@ -47,161 +86,241 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #9aa0a6;
-  font-size: 1rem;
+  color: white;
+  pointer-events: none;
 }
 
 /* Botón Resetear Filtros */
 .reset-btn {
-  background: #e57373;
-  color: #fff;
+  background: #4fa9a9;
+  color: #ffffff;
   border: none;
-  padding: 7px 15px;
+  padding: 6px 12px;
   font-size: 0.9rem;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: background-color 0.2s;
-  height: 40px;
 }
 
 .reset-btn:hover {
-  background: #d9534f;
+  background-color: #96d5d5;
 }
 
 .reset-btn i {
   font-size: 1rem;
 }
 
-/* TABLA */
-.table-responsive {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
+/* GRID */
+.reservas-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  margin-top: 4px;
 }
 
-.table.tabla-reservas {
-  border-collapse: separate;
-  border-spacing: 0;
-  font-size: 0.9rem;
+/* CARD */
+.reserva-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent;
+  transition: 0.2s;
 }
 
-.table.tabla-reservas thead th {
-  background-color: #f8f9fa;
-  color: #555;
-  font-weight: 600;
-  border-bottom: 2px solid #e3e6e9;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  cursor: default;
+.reserva-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
 }
 
-.table.tabla-reservas thead th.sortable {
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+/* HEADER */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
 }
 
-.table.tabla-reservas thead th.sortable:hover {
-  background-color: #e9ecef;
-}
-
-.table.tabla-reservas thead th.sortable i {
+.card-header .id {
   font-size: 0.75rem;
-  margin-left: 4px;
-  opacity: 0.5;
+  font-weight: 600;
+  padding: 4px;
+  color: #636363;
+  display: inline-block;
 }
 
-.table.tabla-reservas thead th.sortable:hover i {
-  opacity: 1;
-}
-
-.table.tabla-reservas tbody tr:hover {
-  background-color: #f9f9f9;
-  transition: background-color 0.2s ease;
+.estado-pill {
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: bold;
 }
 
 /* ESTADOS */
-.estado {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: capitalize;
+.reserva-card.confirmada {
+  border-top: 4px solid #6ED736;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
 }
 
-.estado.confirmada {
-  background: #e6f7ee;
+.estado-pill.confirmada {
+  background: #eaffea;
   color: #2ea043;
 }
 
-.estado.pendiente {
-  background: #fff9e6;
+.reserva-card.pendiente {
+  border-top: 4px solid #FFD980;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+}
+
+.estado-pill.pendiente {
+  background: #fff6da;
   color: #d79b00;
 }
 
-.estado.cancelada {
-  background: #fff0f0;
+.reserva-card.cancelada {
+  border-top: 4px solid #FF5C5C;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+}
+
+.estado-pill.cancelada {
+  background: #ffe6e6;
   color: #d93b3b;
 }
 
-/* BOTONES ACCIÓN */
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+/* NOMBRE */
+.nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 12px 0 4px;
+}
+
+/* PAQUETE */
+.paquete {
   font-size: 0.9rem;
-  transition: all 0.2s ease;
+  color: #666;
+  margin-top: -4px;
 }
 
-.btn-icon:hover {
-  transform: translateY(-1px);
+/* FECHAS */
+.fechas {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
 }
 
-/* VER */
-.btn-outline-warning {
-  border-color: #d1b039;
-  color: #d1b039;
+.fechas div label {
+  font-size: 0.7rem;
+  color: #888;
+  display: block;
+  font-weight: 600;
 }
 
-.btn-outline-warning:hover {
-  background-color: #d1b039;
-  color: #fff;
+.fechas span {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-/* EDITAR */
-.btn-outline-success {
-  border-color: #45ac37;
-  color: #45ac37;
+/* DIVISOR */
+.divider-card {
+  border: none;
+  border-top: 1px solid #e6e6e6;
+  margin: 12px 0;
 }
 
-.btn-outline-success:hover {
-  background-color: #45ac37;
-  color: #fff;
+/* PILL PAGO */
+.pago-pill {
+  padding: 4px 10px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: capitalize;
+  display: inline-block;
 }
 
-/* ELIMINAR */
-.btn-outline-danger {
-  border-color: #d05337;
-  color: #d05337;
+.pago-pill.completado {
+  background: #e6f7ee;
+  color: #1e7a32;
 }
 
-.btn-outline-danger:hover {
-  background-color: #d05337;
-  color: #fff;
+.pago-pill.pendiente {
+  background: #fff7d5;
+  color: #b88600;
 }
 
-/* HOVER GENERAL */
-.btn-icon:hover {
-  transform: translateY(-2px);
+.pago-pill.reembolsado {
+  background: #ffebeb;
+  color: #b12e2e;
 }
 
-/*Paginación*/
+.pago-pill.sin-pago {
+  background: #e9ecef;
+  color: #6c757d;
+}
+
+/* ACCIONES */
+.acciones-card {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.btn-accion {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-accion.detalles {
+  background: #4fa9a9;
+}
+
+.btn-accion.detalles:hover {
+  background: #3e8f8f;
+}
+
+.btn-accion.eliminar {
+  background: #e57373;
+}
+
+.btn-accion.eliminar:hover {
+  background: #d9534f;
+}
+
+.sin-reservas {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #888;
+  padding: 30px 0;
+}
+
+/* PAGINACIÓN */
+.paginacion,
+.d-flex.justify-content-between.mt-3.pt-2 {
+  margin-bottom: 10px;
+  /* Separado del final */
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
 .paginacion {
   display: flex;
   gap: 5px;
@@ -231,7 +350,6 @@
   background-color: #4fa9a9;
   color: #fff;
   font-weight: 600;
-  border: none;
   border-radius: 6px;
 }
 
@@ -240,14 +358,16 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  padding-top: 10px;
+  padding-bottom: 8px;
+  margin-top: 6px;
 }
 
 .resumen-card {
   background: #fff;
   border-radius: 12px;
   padding: 16px 18px;
-  min-height: auto;
-  height: 70px; /* cards mas pequeñas */
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -288,12 +408,12 @@
 }
 
 .resumen-icon {
-  position: static !important;
+  position: static;
   font-size: 22px;
   margin-right: 5px;
 }
 
-/* COLORES PERSONALIZADOS */
+/* COLORES */
 .resumen-card.total {
   border-left: 5px solid #4FA9A9;
 }
@@ -339,7 +459,7 @@
   }
 }
 
-/* MODAL OVERLAY */
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;

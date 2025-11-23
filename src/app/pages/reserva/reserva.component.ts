@@ -6,22 +6,19 @@ import { Reserva } from '../../shared/interfaces/reserva';
 import { ReservaService } from '../../core/service/reserva.service';
 import { PagoService } from '../../core/service/pago.service';
 import { Pago } from '../../shared/interfaces/pago';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 
 
 
 @Component({
   standalone: true,
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule, MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatNativeDateModule,
-    MatButtonModule,],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.css'
 })
@@ -33,7 +30,7 @@ export class ReservaComponent implements OnInit {
   // filtros
   busqueda = '';
   filtroEstado = '';
-  rangoFecha = { desde: '', hasta: '' };
+   filtroFechaReserva: string | null = null; 
 
   // paginacion
   paginaActual = 1;
@@ -66,21 +63,26 @@ export class ReservaComponent implements OnInit {
     this.cargarReservas();
   }
 
-  cargarReservas(): void {
-    this.reservaService.buscarTodas().subscribe({
-      next: (data) => {
-        this.reservas = data || [];
-        this.actualizarResumen();
-        this.cargarEstadosPagos();
-        this.aplicarFiltros();
-      },
-      error: (err) => {
-        console.error('Error cargando reservas', err);
-        this.reservas = [];
-        this.reservasFiltradas = [];
-      }
-    });
-  }
+cargarReservas(): void {
+  this.reservaService.buscarTodas().subscribe({
+    next: data => {
+      this.reservas = (data || []).map(r => ({
+        ...r,
+        fechaReserva: new Date(r.fechaReserva),
+        fechaViaje: new Date(r.fechaViaje)
+      }));
+      this.aplicarFiltros();
+
+      // Actualizar resumen
+      this.actualizarResumen();
+
+      // Cargar estados de pagos
+      this.cargarEstadosPagos();
+    },
+    error: err => console.error(err)
+  });
+}
+
 
   cargarEstadosPagos(): void {
     this.reservas.forEach(reserva => {
@@ -102,60 +104,79 @@ export class ReservaComponent implements OnInit {
   }
 
   estadoPagoClass(estado: string): string {
-    switch (estado.toUpperCase()) {
-      case 'COMPLETADO': return 'badge bg-success';
-      case 'PENDIENTE': return 'badge bg-warning text-dark';
-      case 'FALLIDO': return 'badge bg-danger';
-      case 'CANCELADO': return 'badge bg-secondary';
-      default: return 'badge bg-light text-dark';
-    }
+    const normalizado = estado.trim().toLowerCase();
+
+    if (normalizado.includes('complet') || normalizado === 'pagado')
+      return 'completado';
+
+    if (normalizado.includes('pend'))
+      return 'pendiente';
+
+    if (normalizado.includes('reemb') || normalizado.includes('dev'))
+      return 'reembolsado';
+
+    return 'sin-pago';
+  }
+
+  formatearEstadoPago(estado: string): string {
+    const normalizado = estado.trim().toLowerCase();
+
+    if (normalizado.includes('complet') || normalizado === 'pagado')
+      return 'Pago completado';
+
+    if (normalizado.includes('pend'))
+      return 'Pago pendiente';
+
+    if (normalizado.includes('reemb') || normalizado.includes('dev'))
+      return 'Pago reembolsado';
+
+    return 'Sin pago';
   }
 
   aplicarFiltros(): void {
-    let filtradas = (this.reservas || []).filter(r => !!r);
+    let filtradas = [...this.reservas];
 
-    // búsqueda por cliente o paquete
-    if (this.busqueda && this.busqueda.trim() !== '') {
+    // Buscar por cliente o paquete
+    if (this.busqueda.trim()) {
       const b = this.busqueda.toLowerCase();
       filtradas = filtradas.filter(r =>
-        (r.cliente?.nombre || '').toLowerCase().includes(b) ||
-        (r.paquete?.nombre || '').toLowerCase().includes(b)
+        r.cliente.nombre.toLowerCase().includes(b) ||
+        r.paquete.nombre.toLowerCase().includes(b)
       );
     }
 
-    // estado
+    // Filtrar por estado
     if (this.filtroEstado) {
       filtradas = filtradas.filter(r => r.estadoReserva === this.filtroEstado);
     }
 
-    // rango fecha (fechaViaje)
-    if (this.rangoFecha.desde) {
-      const desde = new Date(this.rangoFecha.desde);
-      filtradas = filtradas.filter(r => new Date(r.fechaViaje) >= desde);
-    }
-    if (this.rangoFecha.hasta) {
-      const hasta = new Date(this.rangoFecha.hasta);
-      filtradas = filtradas.filter(r => new Date(r.fechaViaje) <= hasta);
+    // ❗ NUEVO: Filtrar por fecha EXACTA de reserva
+    if (this.filtroFechaReserva) {
+      const fechaSeleccion = new Date(this.filtroFechaReserva);
+      fechaSeleccion.setHours(0, 0, 0, 0);
+
+      filtradas = filtradas.filter(r => {
+        const fechaReserva = new Date(r.fechaReserva);
+        fechaReserva.setHours(0, 0, 0, 0);
+        return fechaReserva.getTime() === fechaSeleccion.getTime();
+      });
     }
 
-    // Apply sorting
-    if (this.columnaOrden) {
-      filtradas = this.ordenarReservas(filtradas, this.columnaOrden, this.ordenAscendente);
-    }
-
-    // actualizar totales y paginar
+    // --------------------------------------------
     this.totalFiltradas = filtradas.length;
     const inicio = (this.paginaActual - 1) * this.reservasPorPagina;
+
     this.reservasFiltradas = filtradas.slice(inicio, inicio + this.reservasPorPagina);
   }
 
-  resetearFiltros(): void {
+   resetearFiltros(): void {
     this.busqueda = '';
     this.filtroEstado = '';
-    this.rangoFecha = { desde: '', hasta: '' };
+    this.filtroFechaReserva = null;
     this.paginaActual = 1;
     this.aplicarFiltros();
   }
+
   ordenarPor(columna: string): void {
     if (this.columnaOrden === columna) {
       this.ordenAscendente = !this.ordenAscendente;
