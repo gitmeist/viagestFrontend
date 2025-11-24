@@ -2,17 +2,17 @@
 .dashboard {
   padding: 30px;
   min-height: 100vh;
-  overflow-x: hidden; /* evita scroll horizontal */
-  box-sizing: border-box; /* asegura que padding no haga overflow */
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .dashboard h1 {
   font-weight: 1200;
-  font-size: 2rem; 
+  font-size: 2rem;
   background: linear-gradient(90deg, #429898, #3d8b8b, #4fa9a9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text; 
+  background-clip: text;
 }
 
 /* TARJETAS DE RESUMEN */
@@ -60,7 +60,7 @@
 }
 
 .icon-circle {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.25);
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -74,13 +74,23 @@
   color: rgba(110, 117, 126, 0.85);
 }
 
-/* Degradados exactos */
-.card-1 { background: linear-gradient(135deg, #b9e5f69a, #a1d2f78f); }
-.card-2 { background: linear-gradient(135deg, #b5f3e8ac, #91ded48e); }
-.card-3 { background: linear-gradient(135deg, #d0d9ff8d, #b7c8ff9f); }
-.card-4 { background: linear-gradient(135deg, #c0f2c89e, #a3e8ad9c); }
+.card-1 {
+  background: linear-gradient(135deg, #b9e5f69a, #a1d2f78f);
+}
 
-/* QUICK ACTIONS */
+.card-2 {
+  background: linear-gradient(135deg, #b5f3e8ac, #91ded48e);
+}
+
+.card-3 {
+  background: linear-gradient(135deg, #d0d9ff8d, #b7c8ff9f);
+}
+
+.card-4 {
+  background: linear-gradient(135deg, #c0f2c89e, #a3e8ad9c);
+}
+
+/* ACCESOS DIRECTOS */
 .quick-actions {
   display: flex;
   justify-content: center;
@@ -98,7 +108,7 @@
   gap: 18px;
   max-width: 420px;
   width: 100%;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: transform 0.15s ease;
 }
@@ -170,7 +180,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -208,12 +218,26 @@
   font-size: 13px;
 }
 
-.status.confirmed { background: #c8f3d5; color: #0b5c29; }
-.status.pending { background: #f9ecb4; color: #8b6b02; }
-.status.completed { background: #d5e7fb; color: #254a96; }
-.status.canceled { background: #fbd5d5; color: #962525; }
+.status.confirmed {
+  background: #c8f3d5;
+  color: #0b5c29;
+}
 
-/* Evitar overflow en todos los elementos */
+.status.pending {
+  background: #f9ecb4;
+  color: #8b6b02;
+}
+
+.status.completed {
+  background: #d5e7fb;
+  color: #254a96;
+}
+
+.status.canceled {
+  background: #fbd5d5;
+  color: #962525;
+}
+
 * {
   max-width: 100%;
   box-sizing: border-box;

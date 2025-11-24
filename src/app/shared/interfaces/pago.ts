@@ -1,15 +1,10 @@
-// src/app/entities/pago.ts
 
 import { MetodoPago } from './metodo-pago';
 import { EstadoPago } from './estado-pago';
 import { Reserva } from './reserva';
 
-/**
- * Representa un pago realizado por un cliente.
- * Equivalente a la entidad Java: viagest.entidades.Pago
- */
 export interface Pago {
-  /** Identificador único del pago (autogenerado en backend) */
+  /** Identificador único del pago */
   idPago: number;
 
   /** Monto total del pago */
@@ -24,9 +19,9 @@ export interface Pago {
   /** Estado actual del pago */
   estadoPago: EstadoPago;
 
-  /** Referencia o código del pago (ej: número de transacción) */
+  /** Referencia o código del pago  */
   referencia: string;
 
-  /** Reserva asociada (relación muchos a uno con Reserva) */
+  /** Reserva asociada*/
   reserva: Reserva;
 }

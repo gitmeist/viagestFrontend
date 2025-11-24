@@ -24,9 +24,8 @@
   .layout {
     flex-direction: column;
   }
-  
+
   .main {
     margin-left: 0;
   }
 }
-

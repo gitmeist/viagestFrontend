@@ -5,7 +5,7 @@ import { Cliente } from '../../shared/interfaces/cliente';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root' // Singleton global
+  providedIn: 'root' 
 })
 export class ClienteService {
 

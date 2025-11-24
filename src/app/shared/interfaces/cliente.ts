@@ -1,7 +1,7 @@
 // src/app/entities/cliente.ts
 
 export interface Cliente {
-  /** Identificador único del cliente (equivale a @Id en JPA) */
+  /** Identificador único del cliente*/
   cif: string;
 
   /** Nombre completo del cliente */
@@ -16,9 +16,9 @@ export interface Cliente {
   /** Dirección o domicilio */
   domicilio: string;
 
-  /** Fecha de nacimiento (Date o string ISO) */
+  /** Fecha de nacimiento  */
   fechaNacimiento: Date | string;
 
-  /** Fecha de registro en el sistema */
+  /** Fecha de registro  */
   fechaRegistro: Date | string;
 }

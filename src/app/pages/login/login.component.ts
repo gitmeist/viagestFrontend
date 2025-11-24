@@ -18,7 +18,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router // <-- necesario para redirigir
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -27,7 +27,7 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-      console.log('Formulario enviado', this.loginForm.value); // 👈 esto debería aparecer
+    console.log('Formulario enviado', this.loginForm.value);
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       this.authService.login(username, password).subscribe({

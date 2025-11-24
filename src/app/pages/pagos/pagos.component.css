@@ -1,19 +1,19 @@
-/* ===== CONTENEDOR GENERAL ===== */
+/* CONTENEDOR GENERAL */
 .pagos-container {
   background: #fff;
   padding: 25px;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* ===== TÍTULO ===== */
+/* TÍTULO */
 .pagos-container h2 {
   margin-bottom: 20px;
   font-size: 22px;
   font-weight: 600;
 }
 
-/* ===== BUSCADOR Y FILTROS ===== */
+/* BUSCADOR Y FILTROS */
 .acciones {
   display: flex;
   gap: 12px;
@@ -34,7 +34,7 @@
   width: 160px;
 }
 
-/* ===== TABLA ===== */
+/* TABLA */
 .tabla-pagos {
   width: 100%;
   border-collapse: collapse;
@@ -59,7 +59,7 @@
   background: #f9fafb;
 }
 
-/* ===== ESTADO BADGES ===== */
+/* ESTADO BADGES */
 .estado {
   padding: 4px 10px;
   border-radius: 12px;
@@ -87,7 +87,7 @@
   border: 1px solid #d93b3b;
 }
 
-/* ===== BOTONES ACCIÓN ===== */
+/* BOTONES ACCIÓN */
 .acciones-btns button {
   background: none;
   border: none;
@@ -118,7 +118,7 @@
   transform: scale(1.05);
 }
 
-/* ===== PAGINACIÓN ===== */
+/* PAGINACIÓN */
 .paginacion {
   display: flex;
   gap: 10px;
@@ -140,7 +140,7 @@
   cursor: not-allowed;
 }
 
-/* ===== TARJETAS DE RESUMEN ===== */
+/* TARJETAS DE RESUMEN */
 .resumen {
   margin-top: 22px;
   display: grid;
@@ -153,7 +153,7 @@
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   padding: 12px 18px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   font-size: 13px;
   font-weight: 600;
   color: #555;
@@ -165,47 +165,18 @@
   margin-top: 8px;
 }
 
-.card.total { border-left: 4px solid #007bff; }
-.card.pendientes { border-left: 4px solid #f0a500; }
-.card.confirmadas { border-left: 4px solid #2ea043; }
-.card.canceladas { border-left: 4px solid #d93b3b; }
-
-/* ===== PAGINACIÓN (mejorada) ===== */
-.paginacion {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  align-items: center;
+.card.total {
+  border-left: 4px solid #007bff;
 }
 
-.paginacion button {
-  padding: 6px 12px;
-  background: #e7e7e7;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
+.card.pendientes {
+  border-left: 4px solid #f0a500;
 }
 
-/* Efecto hover */
-.paginacion button:hover:not(:disabled) {
-  background: #007bff;
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+.card.confirmadas {
+  border-left: 4px solid #2ea043;
 }
 
-/* Botón deshabilitado */
-.paginacion button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Página activa */
-.paginacion .activo {
-  background: #007bff;
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+.card.canceladas {
+  border-left: 4px solid #d93b3b;
 }

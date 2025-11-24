@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Usuario } from '../../shared/interfaces/usuario';
 
 @Injectable({
-  providedIn: 'root' // Singleton global
+  providedIn: 'root' 
 })
 export class UsuarioService {
 

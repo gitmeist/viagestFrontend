@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
   font-family: "Inter", "Poppins", sans-serif;
   height: calc(100vh - 180px);
   display: flex;
@@ -10,7 +10,7 @@
   overflow: hidden;
 }
 
-.settings-container > div:first-child {
+.settings-container>div:first-child {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
 }
 
 .card:hover {
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
 .card-title {
@@ -36,7 +36,7 @@
   font-size: 1.2rem;
 }
 
-/* Form styling */
+/* Formulario */
 .form-label {
   font-weight: 600;
   color: #495057;
@@ -160,40 +160,40 @@
   border-radius: 50%;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
   .settings-container {
     padding: 20px;
   }
-  
+
   .card-body {
     padding: 1rem;
   }
-  
+
   .col-md-2 {
     margin-bottom: 1rem;
   }
 
   img.rounded-circle {
-  box-shadow: 0 4px 12px rgba(79, 169, 169, 0.2);
-  transition: transform 0.3s ease;
-}
+    box-shadow: 0 4px 12px rgba(79, 169, 169, 0.2);
+    transition: transform 0.3s ease;
+  }
 
-img.rounded-circle:hover {
-  transform: scale(1.05);
-}
+  img.rounded-circle:hover {
+    transform: scale(1.05);
+  }
 
 
-.btn-outline-secondary {
-  border-radius: 8px;
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  transition: all 0.2s ease;
-}
+  .btn-outline-secondary {
+    border-radius: 8px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+  }
 
-.btn-outline-secondary:hover {
-  background-color: #6c757d;
-  color: white;
-  transform: translateY(-1px);
-}
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: translateY(-1px);
+  }
 }

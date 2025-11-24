@@ -21,7 +21,7 @@ export class PaquetesComponent implements OnInit {
   mostrarModal = false;
   nuevoPaquete: Paquete = this.crearNuevoPaquete();
 
-  destinoSeleccionado: string = ''; // Guarda el destino elegido
+  destinoSeleccionado: string = '';
   destinos: string[] = [];
   destinosDisponibles: string[] = [];
 
@@ -59,7 +59,6 @@ export class PaquetesComponent implements OnInit {
       next: (data) => {
         this.paquetes = data;
 
-        // Obtener todos los destinos únicos
         this.destinosDisponibles = [...new Set(this.paquetes.map(p => p.destino))];
 
         this.aplicarFiltros();

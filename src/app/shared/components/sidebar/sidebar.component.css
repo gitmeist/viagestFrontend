@@ -1,4 +1,3 @@
-/* --- dimensiones y fondo --- */
 .sb {
   position: sticky;
   top: 0;
@@ -6,14 +5,13 @@
   min-height: 100dvh;
   padding: 18px 14px;
   background: #0b2a3c;
-  /* azul petróleo */
   color: #e9f1f7;
   display: flex;
   flex-direction: column;
 }
 
 
-/* --- cabecera / brand --- */
+/*cabecera*/
 .sb__brand {
   display: flex;
   align-items: center;
@@ -39,7 +37,7 @@
 }
 
 
-/* --- menú --- */
+/*  menú  */
 .sb__menu {
   list-style: none;
   margin: 0;
@@ -65,7 +63,6 @@
   padding: 10px 12px;
   border-radius: 10px;
   font-weight: 600;
-  transition: background .15s ease, transform .02s;
 }
 
 

@@ -7,7 +7,6 @@
   background-clip: text;
 }
 
-/* Padding uniforme */
 .reservas-container,
 .reservas-grid,
 .resumen,
@@ -237,7 +236,7 @@
   margin: 12px 0;
 }
 
-/* PILL PAGO */
+/* PAGO */
 .pago-pill {
   padding: 4px 10px;
   border-radius: 40px;
@@ -316,7 +315,6 @@
 .paginacion,
 .d-flex.justify-content-between.mt-3.pt-2 {
   margin-bottom: 10px;
-  /* Separado del final */
   padding-top: 6px;
   padding-bottom: 6px;
 }
@@ -551,7 +549,7 @@
   }
 }
 
-/* PAYMENT EDIT SECTION */
+/* Seccion de editar pago */
 .payment-edit-section {
   background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
   padding: 20px;

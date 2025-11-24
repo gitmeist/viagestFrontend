@@ -51,18 +51,18 @@ export class ClienteComponent implements OnInit {
   metodoPago: string = '';
   fechaMinima: string = '';
 
-    //  modal de cliente
-mostrarModalCliente = false;
+  //  modal de cliente
+  mostrarModalCliente = false;
 
-nuevoClienteData: Cliente = {
-  cif: '',
-  nombre: '',
-  email: '',
-  telefono: '',
-  domicilio: '',
-  fechaNacimiento: '',
-  fechaRegistro: ''
-};
+  nuevoClienteData: Cliente = {
+    cif: '',
+    nombre: '',
+    email: '',
+    telefono: '',
+    domicilio: '',
+    fechaNacimiento: '',
+    fechaRegistro: ''
+  };
 
   // Modal editar cliente
   mostrarModalEditar = false;
@@ -133,7 +133,7 @@ nuevoClienteData: Cliente = {
       return;
     }
 
-    // Crear objeto reserva
+    // Crear reserva
     const nuevaReserva: any = {
       fechaReserva: new Date(this.fechaReserva),
       fechaViaje: new Date(this.fechaViaje),
@@ -145,11 +145,10 @@ nuevoClienteData: Cliente = {
       usuario: { username: user.username }
     };
 
-    // Crear reserva primero
     this.reservaService.alta(nuevaReserva).subscribe({
       next: (reservaCreada) => {
         console.log('Reserva creada:', reservaCreada);
-        
+
         // Crear pago asociado a la reserva
         const nuevoPago: any = {
           monto: this.cantidadPago,
@@ -164,24 +163,24 @@ nuevoClienteData: Cliente = {
           next: (pagoCreado) => {
             console.log('Pago creado:', pagoCreado);
             this.cerrarModalReserva();
-            alert('✅ Reserva y pago registrados correctamente');
+            alert('Reserva y pago registrados correctamente');
           },
           error: (err) => {
             console.error('Error al crear pago:', err);
-            alert('⚠️ Reserva creada pero hubo un error al registrar el pago');
+            alert('Reserva creada pero hubo un error al registrar el pago');
             this.cerrarModalReserva();
           }
         });
       },
       error: (err) => {
         console.error('Error al crear reserva:', err);
-        alert('❌ Error al crear la reserva');
+        alert('Error al crear la reserva');
       }
     });
   }
 
   convertirMetodoPago(metodo: string): MetodoPago {
-    switch(metodo.toUpperCase()) {
+    switch (metodo.toUpperCase()) {
       case 'TARJETA': return MetodoPago.TARJETA;
       case 'TRANSFERENCIA': return MetodoPago.TRANSFERENCIA;
       case 'EFECTIVO': return MetodoPago.EFECTIVO;
@@ -191,7 +190,6 @@ nuevoClienteData: Cliente = {
 
   onPaqueteChange() {
     if (this.paqueteSeleccionado) {
-      // Auto-fill cantidad de pago con el precio del paquete
       this.cantidadPago = this.paqueteSeleccionado.precio * this.numeroPersonas;
     }
   }
@@ -201,99 +199,97 @@ nuevoClienteData: Cliente = {
       const fechaInicio = new Date(this.fechaViaje);
       const fechaFin = new Date(fechaInicio);
       fechaFin.setDate(fechaFin.getDate() + this.paqueteSeleccionado.duracionDias);
-      // No need to set fechaReserva here, it's already set when modal opens
     }
   }
 
 
-// Abrir modal cliente
-abrirModalCliente() {
-  this.mostrarModalCliente = true;
-  this.nuevoClienteData = {
-    cif: '',
-    nombre: '',
-    email: '',
-    telefono: '',
-    domicilio: '',
-    fechaNacimiento: '',
-    fechaRegistro: this.obtenerFechaLocal()
-  };
-}
+  // Abrir modal cliente
+  abrirModalCliente() {
+    this.mostrarModalCliente = true;
+    this.nuevoClienteData = {
+      cif: '',
+      nombre: '',
+      email: '',
+      telefono: '',
+      domicilio: '',
+      fechaNacimiento: '',
+      fechaRegistro: this.obtenerFechaLocal()
+    };
+  }
 
-// Cerrar modal
-cerrarModalCliente() {
-  this.mostrarModalCliente = false;
-  this.nuevoClienteData = {
-    cif: '',
-    nombre: '',
-    email: '',
-    telefono: '',
-    domicilio: '',
-    fechaNacimiento: '',
-    fechaRegistro: this.obtenerFechaLocal()
-  };
-}
+  // Cerrar modal
+  cerrarModalCliente() {
+    this.mostrarModalCliente = false;
+    this.nuevoClienteData = {
+      cif: '',
+      nombre: '',
+      email: '',
+      telefono: '',
+      domicilio: '',
+      fechaNacimiento: '',
+      fechaRegistro: this.obtenerFechaLocal()
+    };
+  }
 
-// Guardar cliente
-guardarCliente() {
-  this.nuevoClienteData.fechaRegistro = new Date();
+  // Guardar cliente
+  guardarCliente() {
+    this.nuevoClienteData.fechaRegistro = new Date();
 
-  this.clienteService.alta(this.nuevoClienteData).subscribe({
-    next: (clienteGuardado) => {
-      console.log('Cliente creado:', clienteGuardado);
-      this.clientes.push(clienteGuardado);
-      this.aplicarFiltros();
-      this.cerrarModalCliente();
-      alert('✅ Cliente registrado correctamente.');
-    },
-    error: (err) => {
-      console.error('Error al guardar cliente:', err);
-      if (err.status === 409) {
-        alert('⚠️ Ya existe un cliente con ese CIF.');
-      } else if (err.status === 500) {
-        alert('❌ Error interno del servidor. Inténtalo más tarde.');
-      } else {
-        alert('❗ Error al guardar el cliente.');
-      }
-    }
-  });
-}
-
-// Cerrar modal editar
-cerrarModalEditar() {
-  this.mostrarModalEditar = false;
-}
-
-// Guardar cambios
-guardarCambios() {
-  const clienteParaActualizar = {
-    ...this.clienteEditar,
-    fechaNacimiento: new Date(this.clienteEditar.fechaNacimiento),
-    fechaRegistro: new Date(this.clienteEditar.fechaRegistro)
-  };
-  this.clienteService.modificar(this.clienteEditar.cif, clienteParaActualizar).subscribe({
-    next: (clienteActualizado) => {
-      console.log('Cliente actualizado:', clienteActualizado);
-      const index = this.clientes.findIndex(c => c.cif === clienteActualizado.cif);
-      if (index !== -1) {
-        this.clientes[index] = clienteActualizado;
+    this.clienteService.alta(this.nuevoClienteData).subscribe({
+      next: (clienteGuardado) => {
+        console.log('Cliente creado:', clienteGuardado);
+        this.clientes.push(clienteGuardado);
         this.aplicarFiltros();
+        this.cerrarModalCliente();
+        alert('Cliente registrado correctamente.');
+      },
+      error: (err) => {
+        console.error('Error al guardar cliente:', err);
+        if (err.status === 409) {
+          alert('Ya existe un cliente con ese CIF.');
+        } else if (err.status === 500) {
+          alert('Error interno del servidor. Inténtalo más tarde.');
+        } else {
+          alert('Error al guardar el cliente.');
+        }
       }
-      this.cerrarModalEditar();
-      alert('✅ Cliente actualizado correctamente.');
-    },
-    error: (err) => {
-      console.error('Error al actualizar cliente:', err);
-      alert('❗ Error al actualizar el cliente.');
-    }
-  });
-}
+    });
+  }
 
-obtenerFechaLocal(): string {
-  const hoy = new Date();
-  // Convertir a formato yyyy-MM-dd compatible con el input date
-  return hoy.toISOString().split('T')[0];
-}
+  // Cerrar modal editar
+  cerrarModalEditar() {
+    this.mostrarModalEditar = false;
+  }
+
+  // Guardar cambios
+  guardarCambios() {
+    const clienteParaActualizar = {
+      ...this.clienteEditar,
+      fechaNacimiento: new Date(this.clienteEditar.fechaNacimiento),
+      fechaRegistro: new Date(this.clienteEditar.fechaRegistro)
+    };
+    this.clienteService.modificar(this.clienteEditar.cif, clienteParaActualizar).subscribe({
+      next: (clienteActualizado) => {
+        console.log('Cliente actualizado:', clienteActualizado);
+        const index = this.clientes.findIndex(c => c.cif === clienteActualizado.cif);
+        if (index !== -1) {
+          this.clientes[index] = clienteActualizado;
+          this.aplicarFiltros();
+        }
+        this.cerrarModalEditar();
+        alert('Cliente actualizado correctamente.');
+      },
+      error: (err) => {
+        console.error('Error al actualizar cliente:', err);
+        alert('Error al actualizar el cliente.');
+      }
+    });
+  }
+
+  obtenerFechaLocal(): string {
+    const hoy = new Date();
+    return hoy.toISOString().split('T')[0];
+  }
 
 
   cargarClientes(): void {
@@ -312,40 +308,40 @@ obtenerFechaLocal(): string {
   }
 
   obtenerIniciales(nombreCompleto: string): string {
-  if (!nombreCompleto) return '';
-  const palabras = nombreCompleto.trim().split(' ');
-  const iniciales = palabras.map(p => p[0].toUpperCase()).slice(0, 2).join('');
-  return iniciales;
-}
+    if (!nombreCompleto) return '';
+    const palabras = nombreCompleto.trim().split(' ');
+    const iniciales = palabras.map(p => p[0].toUpperCase()).slice(0, 2).join('');
+    return iniciales;
+  }
 
 
   aplicarFiltros(resetPage: boolean = false): void {
     let filtrados = this.clientes.filter(c => {
-    const busquedaLower = this.busqueda.toLowerCase();
-    const coincideTexto =
-      (c.nombre?.toLowerCase().includes(busquedaLower) || false) ||
-      (c.email?.toLowerCase().includes(busquedaLower) || false) ||
-      (c.cif?.toLowerCase().includes(busquedaLower) || false);
+      const busquedaLower = this.busqueda.toLowerCase();
+      const coincideTexto =
+        (c.nombre?.toLowerCase().includes(busquedaLower) || false) ||
+        (c.email?.toLowerCase().includes(busquedaLower) || false) ||
+        (c.cif?.toLowerCase().includes(busquedaLower) || false);
 
-    const coincideFecha =
-      !this.fechaRegistroFiltro || 
-      (c.fechaRegistro ? new Date(c.fechaRegistro).toISOString().split('T')[0] === this.fechaRegistroFiltro : false);
+      const coincideFecha =
+        !this.fechaRegistroFiltro ||
+        (c.fechaRegistro ? new Date(c.fechaRegistro).toISOString().split('T')[0] === this.fechaRegistroFiltro : false);
 
-    return coincideTexto && coincideFecha;
-  });
+      return coincideTexto && coincideFecha;
+    });
 
-  this.totalFiltrados = filtrados.length;
-  if (resetPage) this.paginaActual = 1;
+    this.totalFiltrados = filtrados.length;
+    if (resetPage) this.paginaActual = 1;
 
-  const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
-  this.clientesFiltrados = filtrados.slice(inicio, inicio + this.clientesPorPagina);
+    const inicio = (this.paginaActual - 1) * this.clientesPorPagina;
+    this.clientesFiltrados = filtrados.slice(inicio, inicio + this.clientesPorPagina);
   }
 
   resetearFiltros() {
-  this.busqueda = '';
-  this.fechaRegistroFiltro = '';
-  this.aplicarFiltros(true);
-}
+    this.busqueda = '';
+    this.fechaRegistroFiltro = '';
+    this.aplicarFiltros(true);
+  }
 
   cambiarPagina(pagina: number): void {
     const maxPaginas = Math.ceil(this.totalFiltrados / this.clientesPorPagina);

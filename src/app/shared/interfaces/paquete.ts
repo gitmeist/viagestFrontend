@@ -1,11 +1,5 @@
-// src/app/entities/paquete.ts
-
-/**
- * Representa un paquete de viaje ofrecido por el sistema.
- * Equivalente a la entidad Java: viagest.entidades.Paquete
- */
 export interface Paquete {
-  /** Identificador único del paquete (autogenerado en backend) */
+  /** Identificador único del paquete */
   idPaquete: number;
 
   /** Nombre del paquete */

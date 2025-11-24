@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Paquete } from '../../shared/interfaces/paquete';
 
 @Injectable({
-  providedIn: 'root' // Singleton global
+  providedIn: 'root' 
 })
 export class PaqueteService {
 

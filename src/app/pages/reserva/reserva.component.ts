@@ -53,11 +53,10 @@ export class ReservaComponent implements OnInit {
   pagoReserva: Pago | null = null;
   mostrarSeccionPago = false;
 
-  // Sorting
   columnaOrden: string = '';
   ordenAscendente: boolean = true;
 
-  // Payment statuses map
+  // Estado pago
   pagosEstados: Map<number, string> = new Map();
 
   constructor(private reservaService: ReservaService, private pagoService: PagoService) { }
@@ -75,11 +74,7 @@ export class ReservaComponent implements OnInit {
           fechaViaje: new Date(r.fechaViaje)
         }));
         this.aplicarFiltros();
-
-        // Actualizar resumen
         this.actualizarResumen();
-
-        // Cargar estados de pagos
         this.cargarEstadosPagos();
       },
       error: err => console.error(err)
@@ -122,14 +117,14 @@ export class ReservaComponent implements OnInit {
   }
 
 
-estadoPagoClass(estado: string): string {
-  switch (estado.toUpperCase()) {
-    case 'COMPLETADO': return 'completado';
-    case 'PENDIENTE': return 'pendiente';
-    case 'REEMBOLSADO': return 'reembolsado';
-    default: return 'sin-pago';
+  estadoPagoClass(estado: string): string {
+    switch (estado.toUpperCase()) {
+      case 'COMPLETADO': return 'completado';
+      case 'PENDIENTE': return 'pendiente';
+      case 'REEMBOLSADO': return 'reembolsado';
+      default: return 'sin-pago';
+    }
   }
-}
 
 
   aplicarFiltros(): void {
@@ -149,7 +144,7 @@ estadoPagoClass(estado: string): string {
       filtradas = filtradas.filter(r => r.estadoReserva === this.filtroEstado);
     }
 
-    // ❗ NUEVO: Filtrar por fecha EXACTA de reserva
+    // Filtrar por fecha de reserva
     if (this.filtroFechaReserva) {
       const fechaSeleccion = new Date(this.filtroFechaReserva);
       fechaSeleccion.setHours(0, 0, 0, 0);
@@ -245,7 +240,6 @@ estadoPagoClass(estado: string): string {
     return Math.max(1, Math.ceil(this.totalFiltradas / this.reservasPorPagina));
   }
 
-  // Genera array de números de página
   pageNumbers(): number[] {
     const pages = [];
     const max = this.totalPages;
@@ -285,7 +279,7 @@ estadoPagoClass(estado: string): string {
     this.pagoService.buscarPorReserva(idReserva).subscribe({
       next: (pagos) => {
         if (pagos && pagos.length > 0) {
-          this.pagoReserva = pagos[0]; // Get first payment
+          this.pagoReserva = pagos[0];
         } else {
           this.pagoReserva = null;
         }
@@ -323,7 +317,6 @@ estadoPagoClass(estado: string): string {
       next: (reservaActualizada) => {
         console.log('Reserva actualizada', reservaActualizada);
 
-        // Update payment if exists
         if (this.pagoReserva) {
           this.pagoService.modificar(this.pagoReserva.idPago, this.pagoReserva).subscribe({
             next: (pagoActualizado) => {

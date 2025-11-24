@@ -1,16 +1,11 @@
-// src/app/entities/factura.ts
 
 import { Pago } from "./pago";
 
-/**
- * Representa una factura emitida por el sistema.
- * Equivalente a la entidad Java: viagest.entidades.Factura
- */
 export interface Factura {
-  /** Identificador único de la factura (auto-generado en backend) */
+  /** Identificador único de la factura  */
   idFactura: number;
 
-  /** Número de factura visible para el cliente */
+  /** Número de factura visible  */
   numeroFactura: string;
 
   /** Fecha de emisión de la factura */
@@ -25,9 +20,9 @@ export interface Factura {
   /** Total final de la factura */
   total: number;
 
-  /** Detalles o notas adicionales (texto largo) */
+  /** Detalles o notas adicionales */
   detalles: string;
 
-  /** Pago asociado (relación uno a uno con Pago) */
+  /** Pago asociado */
   pago: Pago;
 }

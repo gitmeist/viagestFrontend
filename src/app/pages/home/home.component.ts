@@ -18,7 +18,7 @@ import { Reserva } from '../../shared/interfaces/reserva';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
- resumen = [
+  resumen = [
     { label: 'Clientes Activos', value: 0 },
     { label: 'Reservas Mensuales', value: 0 },
     { label: 'Pendientes', value: 0 },
@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit {
 
   reservasActivas: Reserva[] = [];
 
-  // 🔑 Hacer el enum accesible en el template
   EstadoReserva = EstadoReserva;
 
   constructor(
@@ -35,7 +34,7 @@ export class HomeComponent implements OnInit {
     private reservaService: ReservaService,
     private pagoService: PagoService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.cargarDatos();

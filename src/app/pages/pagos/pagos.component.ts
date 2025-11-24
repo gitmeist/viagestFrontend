@@ -25,12 +25,12 @@ export class PagosComponent implements OnInit {
   filtroMetodo = '';
   rangoFecha = { desde: '', hasta: '' };
 
-  // 🔹 Paginación
+  // Paginación
   paginaActual = 1;
   elementosPorPagina = 5;
   paginasTotales: number[] = [];
 
-  constructor(private pagoService: PagoService) {}
+  constructor(private pagoService: PagoService) { }
 
   ngOnInit(): void {
     this.cargarPagos();
@@ -41,7 +41,7 @@ export class PagosComponent implements OnInit {
     this.pagoService.buscarTodos().subscribe({
       next: (data) => {
         this.pagos = data;
-        this.aplicarFiltros(); // Filtra y pagina al cargar
+        this.aplicarFiltros();
       },
       error: (err) => console.error('Error al cargar pagos', err)
     });

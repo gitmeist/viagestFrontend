@@ -73,7 +73,7 @@
     <h3>{{ canceladas }}</h3>
   </div>
 </div>
-<!-- LISTA DE RESERVAS EN FORMATO CARD -->
+<!-- LISTA DE RESERVAS -->
 <div class="reservas-grid">
 
   <div class="reserva-card" *ngFor="let r of reservasFiltradas" [ngClass]="estadoClass(r.estadoReserva)">
@@ -281,7 +281,7 @@
         <textarea class="form-control" [value]="reservaVer.paquete.descripcion" readonly rows="3"></textarea>
       </div>
 
-      <!-- DATOS DEL PAGO (Solo visible en modo edición) -->
+      <!-- DATOS DEL PAGO -->
       <div *ngIf="mostrarSeccionPago && pagoReserva" class="payment-edit-section">
         <hr class="divider" />
         <h6 class="modal-title"><i class="bi bi-credit-card me-2"></i>Información del Pago</h6>

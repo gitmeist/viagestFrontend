@@ -3,12 +3,8 @@
 
   <!-- BUSCADOR Y FILTROS -->
   <div class="acciones">
-    <input
-      type="text"
-      placeholder="Buscar por cliente o referencia"
-      [(ngModel)]="filtroTexto"
-      (input)="aplicarFiltros()"
-    />
+    <input type="text" placeholder="Buscar por cliente o referencia" [(ngModel)]="filtroTexto"
+      (input)="aplicarFiltros()" />
 
     <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
       <option value="">Estados</option>
@@ -66,25 +62,19 @@
     </tbody>
   </table>
 
-  <!-- PAGINACIÓN DINÁMICA -->
+  <!-- PAGINACIÓN -->
   <div class="paginacion" *ngIf="paginasTotales.length > 1">
     <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
       Anterior
     </button>
 
     <ng-container *ngFor="let num of paginasTotales">
-      <button
-        [ngClass]="{ activo: num === paginaActual }"
-        (click)="cambiarPagina(num)"
-      >
+      <button [ngClass]="{ activo: num === paginaActual }" (click)="cambiarPagina(num)">
         {{ num }}
       </button>
     </ng-container>
 
-    <button
-      (click)="cambiarPagina(paginaActual + 1)"
-      [disabled]="paginaActual === paginasTotales.length"
-    >
+    <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === paginasTotales.length">
       Siguiente
     </button>
   </div>

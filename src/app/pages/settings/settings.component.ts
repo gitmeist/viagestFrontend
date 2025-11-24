@@ -15,7 +15,7 @@ import { AuthService } from '../../core/service/AuthService';
 })
 export class SettingsComponent implements OnInit {
 
-    usuarioForm!: FormGroup;
+  usuarioForm!: FormGroup;
   usuarioActual!: Usuario;
   usuarios: Usuario[] = [];
 
@@ -23,7 +23,7 @@ export class SettingsComponent implements OnInit {
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const loggedUser = this.authService.getUser();

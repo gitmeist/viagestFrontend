@@ -1,4 +1,4 @@
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/service/AuthService';
@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router  // 🔹 inyectamos Router aquí
+    private router: Router
   ) {
     const user = this.authService.getUser();
     this.username = user?.username || null;
@@ -32,16 +32,16 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-  localStorage.removeItem('user');
-  this.router.navigate(['login']); // ruta relativa a PublicLayout
-}
+    localStorage.removeItem('user');
+    this.router.navigate(['login']);
+  }
 
-obtenerIniciales(nombreCompleto: string | null): string {
-  if (!nombreCompleto) return '';
-  const nombres = nombreCompleto.trim().split(' ');
-  const iniciales = nombres.map(n => n[0]).join('');
-  return iniciales.substring(0, 2).toUpperCase(); // solo las dos primeras letras
-}
+  obtenerIniciales(nombreCompleto: string | null): string {
+    if (!nombreCompleto) return '';
+    const nombres = nombreCompleto.trim().split(' ');
+    const iniciales = nombres.map(n => n[0]).join('');
+    return iniciales.substring(0, 2).toUpperCase();
+  }
 
 
 }

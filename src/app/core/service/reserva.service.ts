@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Reserva } from '../../shared/interfaces/reserva';
 
 @Injectable({
-  providedIn: 'root' // Singleton global
+  providedIn: 'root' 
 })
 export class ReservaService {
 

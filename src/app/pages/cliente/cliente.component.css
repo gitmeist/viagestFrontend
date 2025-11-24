@@ -1,11 +1,11 @@
 /* CABECERA PRINCIPAL */
 .d-flex h2 {
   font-weight: 1200;
-  font-size: 2rem; 
-  background: linear-gradient(90deg, #429898, #3d8b8b, #4fa9a9); /* degradado azul */
+  font-size: 2rem;
+  background: linear-gradient(90deg, #429898, #3d8b8b, #4fa9a9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text; 
+  background-clip: text;
 }
 
 
@@ -73,22 +73,22 @@
 }
 
 #busqueda::placeholder {
-  color:white;
+  color: white;
   font-weight: 500;
-  opacity: 1; 
+  opacity: 1;
 }
 
 .search-icon {
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color:white;
+  color: white;
 }
 
 .reset-btn {
   background: #4fa9a9;
   color: #ffffff;
-   border: none;
+  border: none;
   padding: 6px 12px;
   font-size: 0.9rem;
   border-radius: 6px;
@@ -99,7 +99,7 @@
 }
 
 .reset-btn:hover {
-   background-color: #96d5d5;
+  background-color: #96d5d5;
 }
 
 .clientes-grid {
@@ -135,17 +135,17 @@
 }
 
 .header-info {
-  margin-left: 12px; 
+  margin-left: 12px;
 }
 
 .cliente-iniciales {
   width: 40px;
   height: 40px;
   background-color: #4fa9a9;
-  color: #fff;              
+  color: #fff;
   font-weight: 600;
   font-size: 1rem;
-  border-radius: 50%;      
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -156,7 +156,7 @@
 /* NOMBRE Y CIF */
 .header-info h5 {
   margin: 0;
-   font-size: 1.2rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #333;
 }
@@ -167,44 +167,45 @@
   color: #4fa9a9;
 }
 
-/* INFORMACIÓN A LA DERECHA */
+/* INFORMACIÓN */
 .card-info {
-  text-align: left;     /* se alinean a la derecha */
+  text-align: left;
   margin-top: 10px;
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .card-info p {
   margin: 6px 0;
   font-size: 0.9rem;
 }
-.card-info p + p {
-  margin-top: 10px;   
+
+.card-info p+p {
+  margin-top: 10px;
 }
 
-/* COLOR AZUL PARA LA INFORMACIÓN */
 .azul {
-  color:  #4fa9a9;
+  color: #4fa9a9;
   font-weight: 500;
 }
 
 /* BOTONES */
 .card-actions {
   display: flex;
-  justify-content: flex-end;   /* Botones a la derecha */
-  gap: 10px;                   /* Espacio entre los botones */
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 15px;
 }
 
 .card-actions button {
- padding: 4px 10px;
+  padding: 4px 10px;
   font-size: 0.75rem;
-  border-radius: 20px;        /* Botón tipo píldora */
+  border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 5px;
   cursor: pointer;
 }
+
 .btn-icon {
   border-radius: 20px !important;
 }
@@ -213,6 +214,7 @@
 .btn-reservar {
   border-radius: 20px !important;
 }
+
 .btn-icon {
   padding: 6px 12px;
   border-radius: 8px;
@@ -224,7 +226,6 @@
 .paginacion,
 .d-flex.justify-content-between.mt-3.pt-2 {
   margin-bottom: 10px;
-  /* Separado del final */
   padding-top: 6px;
   padding-bottom: 6px;
 }
@@ -521,6 +522,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -531,13 +533,14 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* PAYMENT SECTION STYLING */
+/* SECCION DE PAGO */
 .payment-section {
   background: linear-gradient(135deg, #f5f7fa 0%, #e8f0f7 100%);
   padding: 20px;

@@ -1,16 +1,10 @@
-// src/app/entities/reserva.ts
-
 import { EstadoReserva } from './estado-reserva';
 import { Cliente } from './cliente';
 import { Paquete } from './paquete';
 import { Usuario } from './usuario';
 
-/**
- * Representa una reserva realizada por un cliente.
- * Equivalente a la entidad Java: viagest.entidades.Reserva
- */
 export interface Reserva {
-  /** Identificador único de la reserva (autogenerado en backend) */
+  /** Identificador único de la reserva  */
   idReserva: number;
 
   /** Fecha en que se realizó la reserva */

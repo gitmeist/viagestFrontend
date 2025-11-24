@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Factura } from '../../shared/interfaces/factura';
 
 @Injectable({
-  providedIn: 'root' // Singleton global
+  providedIn: 'root' 
 })
 export class FacturaService {
 

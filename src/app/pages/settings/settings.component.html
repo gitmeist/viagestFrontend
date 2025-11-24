@@ -22,7 +22,8 @@
                 <!-- Nombre completo -->
                 <div class="col-md-6">
                   <label class="form-label">Nombre completo</label>
-                  <input type="text" class="form-control" formControlName="nombre" placeholder="Ingrese su nombre completo">
+                  <input type="text" class="form-control" formControlName="nombre"
+                    placeholder="Ingrese su nombre completo">
                 </div>
 
                 <!-- Email -->
@@ -43,10 +44,7 @@
                 <div class="col-md-6">
                   <label class="form-label">Estado de la cuenta</label>
                   <div class="form-check form-switch">
-                    <input class="form-check-input"
-                           type="checkbox"
-                           id="estadoCuenta"
-                           formControlName="enabled">
+                    <input class="form-check-input" type="checkbox" id="estadoCuenta" formControlName="enabled">
                     <label class="form-check-label" for="estadoCuenta">
                       {{ usuarioForm.get('enabled')?.value ? 'Activo' : 'Inactivo' }}
                     </label>
@@ -57,7 +55,8 @@
               <!-- Botones -->
               <div class="text-end mt-4">
                 <button class="btn-cancelar me-2" type="button">Cancelar</button>
-                <button class="btn btn-turquoise shadow-sm" type="button" (click)="guardarCambios()">Guardar Cambios</button>
+                <button class="btn btn-turquoise shadow-sm" type="button" (click)="guardarCambios()">Guardar
+                  Cambios</button>
               </div>
             </form>
           </div>
@@ -92,8 +91,7 @@
                 <td>{{ u.username }}</td>
                 <td>{{ u.nombre }}</td>
                 <td>
-                  <span class="badge"
-                        [ngClass]="{
+                  <span class="badge" [ngClass]="{
                           'bg-success': u.rol === 'AGENTE',
                           'bg-warning text-dark': u.rol === 'ADMIN',
                           'bg-secondary': u.rol === 'EMPLEADO'
@@ -103,8 +101,7 @@
                 </td>
                 <td>
                   <span class="d-flex align-items-center">
-                    <span class="status-dot me-2"
-                          [ngClass]="{
+                    <span class="status-dot me-2" [ngClass]="{
                             'bg-success': u.enabled === 1,
                             'bg-danger': u.enabled === 0
                           }">
@@ -115,7 +112,8 @@
                 <td>{{ u.email }}</td>
                 <td class="text-center">
                   <button class="btn btn-icon btn-outline-success me-1"><i class="bi bi-pencil"></i></button>
-                  <button class="btn btn-icon btn-outline-danger" (click)="eliminarUsuario(u.username)"><i class="bi bi-trash"></i></button>
+                  <button class="btn btn-icon btn-outline-danger" (click)="eliminarUsuario(u.username)"><i
+                      class="bi bi-trash"></i></button>
                 </td>
               </tr>
             </tbody>
