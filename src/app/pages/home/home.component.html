@@ -1,41 +1,135 @@
-<!-- Tarjetas de resumen -->
-<div class="cards">
-  <div class="card" *ngFor="let item of resumen">
-    <div class="icon">{{ item.icon }}</div>
-    <p>{{ item.label }}</p>
-    <h2>{{ item.value }}</h2> <!-- Ingresos ahora mostrarán el total del último mes -->
+<div class="dashboard">
+
+  <h1>Panel de Actividad</h1>
+  <p class="subtitle">Bienvenido, aquí tienes un resumen de tu actividad</p>
+
+  <!-- TARJETAS DE RESUMEN -->
+  <div class="cards">
+
+    <div class="card card-1">
+      <div class="top-row">
+        <div class="left-group">
+          <div class="icon-circle"><i class="ph ph-users"></i></div>
+          <span class="label">Clientes Activos</span>
+        </div>
+        <span class="value">{{ resumen[0].value }}</span>
+      </div>
+    </div>
+
+    <div class="card card-2">
+      <div class="top-row">
+        <div class="left-group">
+          <div class="icon-circle"><i class="ph ph-calendar-check"></i></div>
+          <span class="label">Reservas Mensuales</span>
+        </div>
+        <span class="value">{{ resumen[1].value }}</span>
+      </div>
+    </div>
+
+    <div class="card card-3">
+      <div class="top-row">
+        <div class="left-group">
+          <div class="icon-circle"><i class="ph ph-money"></i></div>
+          <span class="label">Ingresos Mensuales</span>
+        </div>
+        <span class="value">
+          <!-- Aquí podrías poner un pipe o variable dinámica si quieres calcularlo -->
+          25,480€
+        </span>
+      </div>
+    </div>
+
+    <div class="card card-4">
+      <div class="top-row">
+        <div class="left-group">
+          <div class="icon-circle"><i class="ph ph-clock"></i></div>
+          <span class="label">Pagos Pendientes</span>
+        </div>
+        <span class="value">{{ resumen[2].value }}</span>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<!-- Sección de reservas activas -->
-<div class="section">
-  <h3>Últimas reservas</h3>
+  <!-- ACCIONES RÁPIDAS -->
+  <div class="quick-actions">
+    <div class="action-card" (click)="navigateToClientes()">
+      <div class="action-icon"><i class="ph ph-plus-circle"></i></div>
+      <div class="action-texts">
+        <h3>Crear nueva reserva</h3>
+        <p>Añadir una reserva para un cliente.</p>
+      </div>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Cliente</th>
-        <th>Paquete</th>
-        <th>Fecha de viaje</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
+    <div class="action-card" (click)="navigateToReservas()">
+      <div class="action-icon"><i class="ph ph-magnifying-glass"></i></div>
+      <div class="action-texts">
+        <h3>Buscar reservas</h3>
+        <p>Encuentra reservas existentes.</p>
+      </div>
+    </div>
 
-    <tbody>
-      <tr *ngFor="let r of reservasActivas">
-        <td>{{ r.cliente?.nombre }}</td>
-        <td>{{ r.paquete?.nombre }}</td>
-        <td>{{ r.fechaViaje | date: 'dd/MM/yyyy' }}</td>
-        <td>
-          <span class="estado {{ r.estadoReserva | lowercase }}">
+    <div class="action-card" (click)="navigateToClientes()">
+      <div class="action-icon"><i class="ph ph-users-three"></i></div>
+      <div class="action-texts">
+        <h3>Gestionar clientes</h3>
+        <p>Ver y editar perfiles de clientes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÚLTIMAS RESERVAS -->
+  <h2 class="section-title">Últimas Reservas</h2>
+
+  <div class="reservations-list">
+    <div class="reservation-item" *ngFor="let r of reservasActivas">
+
+      <div class="reservation-row">
+
+        <!-- Cliente -->
+        <div class="reservation-section">
+          <div class="section-icon"><i class="ph ph-user"></i></div>
+          <div class="section-text">
+            <span class="section-label">Cliente</span>
+            <span class="section-value">{{ r.cliente?.nombre }}</span>
+          </div>
+        </div>
+
+        <!-- Paquete -->
+        <div class="reservation-section">
+          <div class="section-icon"><i class="ph ph-package"></i></div>
+          <div class="section-text">
+            <span class="section-label">Paquete</span>
+            <span class="section-value">{{ r.paquete?.nombre }}</span>
+          </div>
+        </div>
+
+        <!-- Fecha -->
+        <div class="reservation-section">
+          <div class="section-icon"><i class="ph ph-calendar-blank"></i></div>
+          <div class="section-text">
+            <span class="section-label">Fecha Reserva</span>
+            <span class="section-value">{{ r.fechaReserva | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <!-- Estado -->
+        <div class="reservation-section status-section">
+          <span class="status" [ngClass]="{
+      'confirmed': r.estadoReserva === EstadoReserva.CONFIRMADA,
+      'pending': r.estadoReserva === EstadoReserva.PENDIENTE,
+      'canceled': r.estadoReserva === EstadoReserva.CANCELADA
+    }">
             {{ r.estadoReserva }}
           </span>
-        </td>
-      </tr>
+        </div>
 
-      <tr *ngIf="reservasActivas.length === 0">
-        <td colspan="4" class="sin-datos">No hay reservas activas</td>
-      </tr>
-    </tbody>
-  </table>
+      </div>
+
+    </div>
+    <div *ngIf="reservasActivas.length === 0" class="no-reservas">
+      No hay reservas recientes.
+    </div>
+  </div>
+
 </div>

@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { ClienteService } from '../../core/service/cliente.service';
 import { ReservaService } from '../../core/service/reserva.service';
 import { PaqueteService } from '../../core/service/paquete.service';
 import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
 import { PagoService } from '../../core/service/pago.service';
+import { EstadoPago } from '../../shared/interfaces/estado-pago';
+import { Reserva } from '../../shared/interfaces/reserva';
 
 @Component({
   standalone: true,
@@ -16,85 +18,65 @@ import { PagoService } from '../../core/service/pago.service';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  mesActual: string = '';
-  
-  resumen = [
-    { label: 'Clientes', value: 0, icon: '👥' },
-    { label: 'Reservas Activas', value: 0, icon: '📅' },
-    { label: 'Paquetes Disponibles', value: 0, icon: '📦' },
-    { label: '', value: '0€', icon: '💶' } // Label will be set dynamically
+ resumen = [
+    { label: 'Clientes Activos', value: 0 },
+    { label: 'Reservas Mensuales', value: 0 },
+    { label: 'Pendientes', value: 0 },
+    { label: 'Viajes Completados', value: 0 }
   ];
 
-  reservas: any[] = [];
-  reservasActivas: any[] = [];
+  reservasActivas: Reserva[] = [];
+
+  // 🔑 Hacer el enum accesible en el template
+  EstadoReserva = EstadoReserva;
 
   constructor(
     private clienteService: ClienteService,
     private reservaService: ReservaService,
-    private paqueteService: PaqueteService,
-    private pagoService: PagoService
+    private pagoService: PagoService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.establecerMesActual();
     this.cargarDatos();
   }
 
-  private establecerMesActual(): void {
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const fecha = new Date();
-    this.mesActual = meses[fecha.getMonth()];
-    this.resumen[3].label = `Ingresos de ${this.mesActual}`;
+  navigateToClientes(): void {
+    this.router.navigate(['/clientes']);
+  }
+
+  navigateToReservas(): void {
+    this.router.navigate(['/reservas']);
   }
 
   private cargarDatos(): void {
-    // 1️⃣ Total de clientes
+    // Clientes activos
     this.clienteService.buscarTodos().subscribe(clientes => {
       this.resumen[0].value = clientes.length;
     });
 
-    // 2️⃣ Reservas activas
+    // Reservas del mes actual y últimas reservas
     this.reservaService.buscarTodas().subscribe(reservas => {
-      this.resumen[1].value = reservas.filter(r =>
-      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
-      ).length;
+      const ahora = new Date();
+      const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+
+      const reservasEsteMes = reservas.filter(r => new Date(r.fechaReserva) >= inicioMes);
+      this.resumen[1].value = reservasEsteMes.length;
+
+      this.cargarUltimasReservas(reservas);
     });
 
-    // 3️⃣ Paquetes activos
-    this.paqueteService.buscarActivos().subscribe(paquetes => {
-      this.resumen[2].value = paquetes.length;
+    // Pagos pendientes
+    this.pagoService.buscarTodos().subscribe(pagos => {
+      const pendientes = pagos.filter(p => p.estadoPago === EstadoPago.PENDIENTE);
+      this.resumen[2].value = pendientes.length;
     });
-
-    // 4️⃣ Ingresos del mes actual desde pagos
-    this.cargarIngresosUltimoMes();
-
-    this.reservaService.buscarTodas().subscribe(reservas => {
-    // Actualiza el contador del resumen
-    this.resumen[1].value = reservas.filter(r =>
-      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
-    ).length;
-
-    // Filtra las activas
-    const activas = reservas.filter(r =>
-      r.estadoReserva === 'CONFIRMADA' || r.estadoReserva === 'PENDIENTE'
-    );
-
-    // Ordena por fechaReserva (más recientes primero)
-    activas.sort((a, b) =>
-      new Date(b.fechaReserva).getTime() - new Date(a.fechaReserva).getTime()
-    );
-
-    // Guarda las 10 más recientes
-    this.reservasActivas = activas.slice(0, 10);
-    });
-
   }
 
-  private cargarIngresosUltimoMes(): void {
-    this.pagoService.pagosUltimoMes().subscribe(pagos => {
-      const total = pagos.reduce((acc, pago) => acc + (pago.monto || 0), 0);
-      this.resumen[3].value = total.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
-    });
+  private cargarUltimasReservas(todasReservas: Reserva[]): void {
+    const ordenadas = [...todasReservas].sort(
+      (a, b) => new Date(b.fechaViaje).getTime() - new Date(a.fechaViaje).getTime()
+    );
+    this.reservasActivas = ordenadas.slice(0, 4);
   }
 }

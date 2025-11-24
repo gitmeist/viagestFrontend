@@ -6,19 +6,22 @@ import { Reserva } from '../../shared/interfaces/reserva';
 import { ReservaService } from '../../core/service/reserva.service';
 import { PagoService } from '../../core/service/pago.service';
 import { Pago } from '../../shared/interfaces/pago';
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
 @Component({
   standalone: true,
   selector: 'app-reserva',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatButtonModule,],
   templateUrl: './reserva.component.html',
   styleUrl: './reserva.component.css'
 })
@@ -30,7 +33,7 @@ export class ReservaComponent implements OnInit {
   // filtros
   busqueda = '';
   filtroEstado = '';
-   filtroFechaReserva: string | null = null; 
+  filtroFechaReserva: string | null = null;
 
   // paginacion
   paginaActual = 1;
@@ -63,25 +66,25 @@ export class ReservaComponent implements OnInit {
     this.cargarReservas();
   }
 
-cargarReservas(): void {
-  this.reservaService.buscarTodas().subscribe({
-    next: data => {
-      this.reservas = (data || []).map(r => ({
-        ...r,
-        fechaReserva: new Date(r.fechaReserva),
-        fechaViaje: new Date(r.fechaViaje)
-      }));
-      this.aplicarFiltros();
+  cargarReservas(): void {
+    this.reservaService.buscarTodas().subscribe({
+      next: data => {
+        this.reservas = (data || []).map(r => ({
+          ...r,
+          fechaReserva: new Date(r.fechaReserva),
+          fechaViaje: new Date(r.fechaViaje)
+        }));
+        this.aplicarFiltros();
 
-      // Actualizar resumen
-      this.actualizarResumen();
+        // Actualizar resumen
+        this.actualizarResumen();
 
-      // Cargar estados de pagos
-      this.cargarEstadosPagos();
-    },
-    error: err => console.error(err)
-  });
-}
+        // Cargar estados de pagos
+        this.cargarEstadosPagos();
+      },
+      error: err => console.error(err)
+    });
+  }
 
 
   cargarEstadosPagos(): void {
@@ -103,21 +106,6 @@ cargarReservas(): void {
     return this.pagosEstados.get(idReserva) || 'SIN PAGO';
   }
 
-  estadoPagoClass(estado: string): string {
-    const normalizado = estado.trim().toLowerCase();
-
-    if (normalizado.includes('complet') || normalizado === 'pagado')
-      return 'completado';
-
-    if (normalizado.includes('pend'))
-      return 'pendiente';
-
-    if (normalizado.includes('reemb') || normalizado.includes('dev'))
-      return 'reembolsado';
-
-    return 'sin-pago';
-  }
-
   formatearEstadoPago(estado: string): string {
     const normalizado = estado.trim().toLowerCase();
 
@@ -132,6 +120,17 @@ cargarReservas(): void {
 
     return 'Sin pago';
   }
+
+
+estadoPagoClass(estado: string): string {
+  switch (estado.toUpperCase()) {
+    case 'COMPLETADO': return 'completado';
+    case 'PENDIENTE': return 'pendiente';
+    case 'REEMBOLSADO': return 'reembolsado';
+    default: return 'sin-pago';
+  }
+}
+
 
   aplicarFiltros(): void {
     let filtradas = [...this.reservas];
@@ -169,14 +168,13 @@ cargarReservas(): void {
     this.reservasFiltradas = filtradas.slice(inicio, inicio + this.reservasPorPagina);
   }
 
-   resetearFiltros(): void {
+  resetearFiltros(): void {
     this.busqueda = '';
     this.filtroEstado = '';
     this.filtroFechaReserva = null;
     this.paginaActual = 1;
     this.aplicarFiltros();
   }
-
   ordenarPor(columna: string): void {
     if (this.columnaOrden === columna) {
       this.ordenAscendente = !this.ordenAscendente;
