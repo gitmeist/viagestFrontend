@@ -9,6 +9,7 @@ import { PagosComponent } from './pages/pagos/pagos.component';
 import { ClienteComponent } from './pages/cliente/cliente.component';
 import { PaquetesComponent } from './pages/paquetes/paquetes.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -24,13 +25,22 @@ export const routes: Routes = [
     component: PrivateLayoutComponent,
     canActivate: [authGuard], 
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'clientes', component: ClienteComponent },
-      { path: 'paquetes', component: PaquetesComponent },
-      { path: 'reservas', component: ReservaComponent },
-      { path: 'pagos', component: PagosComponent },
-      { path: 'settings', component: SettingsComponent }
+      { 
+        path: 'clientes', component: ClienteComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'AGENTE', 'EMPLEADO'] }
+      },
+      { 
+        path: 'paquetes', component: PaquetesComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'AGENTE'] }
+      },
+      { 
+        path: 'reservas', component: ReservaComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'AGENTE', 'EMPLEADO'] }
+      },
+      { 
+        path: 'pagos', component: PagosComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'EMPLEADO'] }
+      },
+      { 
+        path: 'settings', component: SettingsComponent, canActivate: [roleGuard], data: { roles: ['ADMON'] }
+      }
     ]
   },
   { path: '**', redirectTo: 'home' }

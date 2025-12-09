@@ -66,7 +66,7 @@
 
     <!-- BOTONES -->
     <div class="card-actions">
-      <button class="btn btn-icon btn-outline-success" (click)="editar(cliente)">
+      <button *ngIf="userRole !== 'EMPLEADO'" class="btn btn-icon btn-outline-success" (click)="editar(cliente)">
         <i class="bi bi-pencil"></i> Editar
       </button>
 
