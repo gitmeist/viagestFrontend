@@ -242,3 +242,236 @@
   max-width: 100%;
   box-sizing: border-box;
 }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+/* Tablet (768px - 1200px) */
+@media (max-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .quick-actions {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .action-card {
+    max-width: 100%;
+    flex: 1 1 calc(50% - 12px);
+    min-width: 280px;
+  }
+}
+
+/* Tablet pequeña (768px - 992px) */
+@media (max-width: 992px) {
+  .dashboard {
+    padding: 20px;
+  }
+
+  .dashboard h1 {
+    font-size: 1.75rem;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .card .value {
+    font-size: 24px;
+  }
+
+  .card .label {
+    font-size: 18px;
+  }
+
+  .quick-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .action-card {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
+/* Móvil (576px - 768px) */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 15px;
+  }
+
+  .dashboard h1 {
+    font-size: 1.5rem;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 25px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .card .value {
+    font-size: 22px;
+  }
+
+  .card .label {
+    font-size: 16px;
+  }
+
+  .icon-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-circle i {
+    font-size: 22px;
+  }
+
+  .quick-actions {
+    margin: 30px auto;
+    gap: 10px;
+  }
+
+  .action-card {
+    padding: 14px 20px;
+    gap: 14px;
+  }
+
+  .action-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .action-icon i {
+    font-size: 20px;
+  }
+
+  .action-texts h3 {
+    font-size: 14px;
+  }
+
+  .action-texts p {
+    font-size: 12px;
+  }
+
+  .reservation-item {
+    padding: 14px 18px;
+  }
+
+  .reservation-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .reservation-section {
+    width: 100%;
+  }
+
+  .status-section {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Móvil pequeño (< 576px) */
+@media (max-width: 576px) {
+  .dashboard {
+    padding: 12px;
+  }
+
+  .dashboard h1 {
+    font-size: 1.25rem;
+  }
+
+  .cards {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .card .value {
+    font-size: 20px;
+  }
+
+  .card .label {
+    font-size: 14px;
+  }
+
+  .top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .icon-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon-circle i {
+    font-size: 20px;
+  }
+
+  .action-card {
+    padding: 12px 16px;
+    border-radius: 30px;
+  }
+
+  .action-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .action-icon i {
+    font-size: 18px;
+  }
+
+  .action-texts h3 {
+    font-size: 13px;
+  }
+
+  .action-texts p {
+    font-size: 11px;
+  }
+
+  .reservation-item {
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+
+  .section-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .section-value {
+    font-size: 14px;
+  }
+
+  .section-label {
+    font-size: 11px;
+  }
+
+  .status {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+}

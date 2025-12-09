@@ -8,6 +8,8 @@
   color: #e9f1f7;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease;
+  z-index: 999;
 }
 
 
@@ -94,6 +96,23 @@
 @media (max-width: 900px) {
   .sb {
     width: 220px;
+  }
+}
+
+/* Responsive para móvil y tablet */
+@media (max-width: 768px) {
+  .sb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 999;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sb.sb-abierto {
+    transform: translateX(0);
   }
 }
 

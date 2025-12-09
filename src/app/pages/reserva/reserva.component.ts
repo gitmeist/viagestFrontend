@@ -67,8 +67,8 @@ export class ReservaComponent implements OnInit {
 
   cargarReservas(): void {
     this.reservaService.buscarTodas().subscribe({
-      next: data => {
-        this.reservas = (data || []).map(r => ({
+      next: (data: Reserva[]) => {
+        this.reservas = (data || []).map((r: Reserva) => ({
           ...r,
           fechaReserva: new Date(r.fechaReserva),
           fechaViaje: new Date(r.fechaViaje)
@@ -77,7 +77,7 @@ export class ReservaComponent implements OnInit {
         this.actualizarResumen();
         this.cargarEstadosPagos();
       },
-      error: err => console.error(err)
+      error: (err: any) => console.error(err)
     });
   }
 
@@ -85,12 +85,12 @@ export class ReservaComponent implements OnInit {
   cargarEstadosPagos(): void {
     this.reservas.forEach(reserva => {
       this.pagoService.buscarPorReserva(reserva.idReserva).subscribe({
-        next: (pagos) => {
+        next: (pagos: Pago[]) => {
           if (pagos && pagos.length > 0) {
             this.pagosEstados.set(reserva.idReserva, pagos[0].estadoPago);
           }
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al cargar estado del pago', err);
         }
       });
@@ -262,13 +262,13 @@ export class ReservaComponent implements OnInit {
 
   ver(r: Reserva): void {
     this.reservaService.buscarUna(r.idReserva).subscribe({
-      next: (reserva) => {
+      next: (reserva: Reserva) => {
         this.reservaVer = reserva;
         this.modoEdicion = false;
         this.mostrarModalVer = true;
         this.cargarPagoReserva(reserva.idReserva);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar reserva', err);
         alert('Error al cargar los detalles de la reserva');
       }
@@ -277,14 +277,14 @@ export class ReservaComponent implements OnInit {
 
   cargarPagoReserva(idReserva: number): void {
     this.pagoService.buscarPorReserva(idReserva).subscribe({
-      next: (pagos) => {
+      next: (pagos: Pago[]) => {
         if (pagos && pagos.length > 0) {
           this.pagoReserva = pagos[0];
         } else {
           this.pagoReserva = null;
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar pago', err);
         this.pagoReserva = null;
       }
@@ -314,18 +314,18 @@ export class ReservaComponent implements OnInit {
   actualizarReserva(): void {
     if (!this.reservaVer) return;
     this.reservaService.modificar(this.reservaVer.idReserva, this.reservaVer).subscribe({
-      next: (reservaActualizada) => {
+      next: (reservaActualizada: Reserva) => {
         console.log('Reserva actualizada', reservaActualizada);
 
         if (this.pagoReserva) {
           this.pagoService.modificar(this.pagoReserva.idPago, this.pagoReserva).subscribe({
-            next: (pagoActualizado) => {
+            next: (pagoActualizado: Pago) => {
               console.log('Pago actualizado', pagoActualizado);
               this.cargarReservas();
               this.cerrarModalVer();
               alert('Reserva y pago actualizados correctamente');
             },
-            error: (err) => {
+            error: (err: any) => {
               console.error('Error al actualizar pago', err);
               this.cargarReservas();
               this.cerrarModalVer();
@@ -338,7 +338,7 @@ export class ReservaComponent implements OnInit {
           alert('Reserva actualizada correctamente');
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al actualizar reserva', err);
         alert('Error al actualizar la reserva');
       }
@@ -349,7 +349,7 @@ export class ReservaComponent implements OnInit {
     if (!confirm(`¿Eliminar reserva ${r.idReserva}?`)) return;
     this.reservaService.eliminar(r.idReserva).subscribe({
       next: () => { this.cargarReservas(); },
-      error: (e) => alert('Error al eliminar')
+      error: (e: any) => alert('Error al eliminar')
     });
   }
 

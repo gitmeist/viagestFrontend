@@ -54,16 +54,23 @@ export class PaquetesComponent implements OnInit {
     };
   }
 
+  // Método para manejar el clic en "Ver Actividades Detalladas"
+verActividadesDetalladas(): void {
+  // Aquí puedes implementar la lógica para mostrar actividades detalladas
+  // Por ejemplo, abrir otro modal o redirigir a otra página
+  alert('Funcionalidad de actividades detalladas - Implementar según necesidad');
+}
+
   cargarPaquetes(): void {
     this.paqueteService.buscarTodos().subscribe({
-      next: (data) => {
+      next: (data: Paquete[]) => {
         this.paquetes = data;
 
         this.destinosDisponibles = [...new Set(this.paquetes.map(p => p.destino))];
 
         this.aplicarFiltros();
       },
-      error: (error) => console.error('Error al cargar paquetes:', error)
+      error: (error: any) => console.error('Error al cargar paquetes:', error)
     });
   }
 
@@ -112,7 +119,7 @@ export class PaquetesComponent implements OnInit {
       next: () => {
         this.aplicarFiltros();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al actualizar paquete:', error);
         paquete.activo = !paquete.activo;
       }
@@ -126,7 +133,7 @@ export class PaquetesComponent implements OnInit {
     if (confirm('¿Está seguro de eliminar este paquete?')) {
       this.paqueteService.eliminar(id).subscribe({
         next: () => this.cargarPaquetes(),
-        error: (error) => console.error('Error al eliminar paquete:', error)
+        error: (error: any) => console.error('Error al eliminar paquete:', error)
       });
     }
   }
@@ -177,9 +184,55 @@ export class PaquetesComponent implements OnInit {
           this.cargarPaquetes();
           this.cerrarModalEditar();
         },
-        error: (error) => console.error('Error al editar paquete:', error)
+        error: (error: any) => console.error('Error al editar paquete:', error)
       });
     }
+  }
+
+  /** Devuelve la URL de la imagen para un paquete.
+   *  - Si `paquete.imagen` está presente, la usa directamente.
+   *  - Si no, intenta mapear por `destino`/`nombre` a un archivo en `assets/img`.
+   *  - Si no encuentra, devuelve una imagen por defecto. */
+  getImagen(paquete: Paquete | null): string {
+    if (!paquete) return 'assets/img/logoBlanco.png';
+
+    // Si se proporciona explicitamente el nombre de archivo en paquete.imagen, úsalo (añade extensión si falta)
+    const imgProp = (paquete as any).imagen;
+    if (imgProp) {
+      const file = imgProp.toString();
+      return file.match(/\.(png|jpg|jpeg|webp|svg)$/i) ? `assets/img/${file}` : `assets/img/${file}.png`;
+    }
+
+    // Archivos disponibles en assets/img (mantener sincronizado si añades nuevas imágenes)
+    const available = new Set(['paris.png', 'roma.png', 'grecia.png', 'maldivas.png', 'logoBlanco.png']);
+
+    // Normaliza y divide en tokens (palabras) usando separadores no alfanuméricos
+    const normalize = (s: string) =>
+      s
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+
+    const source = normalize((paquete.destino || paquete.nombre || '').toString());
+    if (!source) return 'assets/img/logoBlanco.png';
+
+    const tokens = source.split(/\s+/).filter(t => t.length > 0);
+
+    // Intenta cada token: 'paris' -> 'paris.png'
+    for (const t of tokens) {
+      const candidate = `${t}.png`;
+      if (available.has(candidate)) return `assets/img/${candidate}`;
+    }
+
+    // Intenta combinación completa sin espacios: 'parisfrancia' -> 'paris.png' (buscar substring)
+    const joined = tokens.join('');
+    for (const file of Array.from(available)) {
+      if (joined.includes(file.replace(/\.png$/i, ''))) return `assets/img/${file}`;
+    }
+
+    return 'assets/img/logoBlanco.png';
   }
 
 }

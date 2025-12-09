@@ -1,8 +1,13 @@
 <header class="navbar">
-  <h4>Bienvenido, {{ username || 'Invitado' }}</h4>
+  <div class="navbar-left">
+    <button type="button" class="hamburger-btn" (click)="onToggleSidebar()" aria-label="Abrir menú">
+      <i class="bi bi-list"></i>
+    </button>
+    <h4>Bienvenido, {{ username || 'Invitado' }}</h4>
+  </div>
 
   <div class="actions">
-    <button type="button" class="icon user-initials" aria-label="Perfil de usuario" title="Perfil">
+    <button type="button" class="icon user-initials" aria-label="Perfil de usuario" title="Perfil" (click)="irAjustes()">
       {{ obtenerIniciales(username) }}
     </button>
 

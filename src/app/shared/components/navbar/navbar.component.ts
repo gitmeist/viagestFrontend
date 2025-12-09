@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/service/AuthService';
 
@@ -15,6 +15,7 @@ import { AuthService } from '../../../core/service/AuthService';
 export class NavbarComponent implements OnInit {
 
   username: string | null = null;
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   constructor(
     private authService: AuthService,
@@ -22,6 +23,10 @@ export class NavbarComponent implements OnInit {
   ) {
     const user = this.authService.getUser();
     this.username = user?.username || null;
+  }
+
+  irAjustes(): void {
+    this.router.navigate(['/settings']);
   }
 
   ngOnInit(): void {
@@ -43,6 +48,9 @@ export class NavbarComponent implements OnInit {
     return iniciales.substring(0, 2).toUpperCase();
   }
 
+  onToggleSidebar(): void {
+    this.toggleSidebar.emit();
+  }
 
 }
 

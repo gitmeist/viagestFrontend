@@ -1,4 +1,4 @@
-<nav class="sb">
+<nav class="sb" [class.sb-abierto]="abierto">
   <!-- Marca -->
   <div class="sb__brand">
     <img src="assets/img/logoBlanco.png" alt="Logo" class="logo-img">
@@ -9,7 +9,7 @@
   <ul class="sb__menu">
     <!-- Inicio -->
     <li>
-      <a routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+      <a routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-house"></i>
         </span>
@@ -20,7 +20,7 @@
 
     <!-- Clientes -->
     <li>
-      <a routerLink="/clientes" routerLinkActive="is-active">
+      <a routerLink="/clientes" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-people"></i>
         </span>
@@ -31,7 +31,7 @@
 
     <!-- Paquetes -->
     <li>
-      <a routerLink="/paquetes" routerLinkActive="is-active">
+      <a routerLink="/paquetes" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-archive"></i>
         </span>
@@ -42,7 +42,7 @@
 
     <!-- Reservas -->
     <li>
-      <a routerLink="/reservas" routerLinkActive="is-active">
+      <a routerLink="/reservas" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-calendar-check"></i>
         </span>
@@ -53,7 +53,7 @@
 
     <!-- Pagos -->
     <li>
-      <a routerLink="/pagos" routerLinkActive="is-active">
+      <a routerLink="/pagos" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-credit-card"></i>
         </span>
@@ -64,7 +64,7 @@
 
     <!-- Ajustes -->
     <li class="sb__bottom">
-      <a routerLink="/settings" routerLinkActive="is-active">
+      <a routerLink="/settings" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-gear"></i>
         </span>

@@ -1,8 +1,9 @@
 <div class="layout">
-  <app-sidebar></app-sidebar>
+  <div class="overlay" *ngIf="sidebarAbierto" (click)="cerrarSidebar()"></div>
+  <app-sidebar [abierto]="sidebarAbierto" (cerrar)="cerrarSidebar()"></app-sidebar>
 
   <div class="main">
-    <app-navbar></app-navbar>
+    <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
 
     <div class="content">
       <router-outlet></router-outlet>

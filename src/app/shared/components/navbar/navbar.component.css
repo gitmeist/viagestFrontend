@@ -8,10 +8,142 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #2c6685;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.hamburger-btn:hover {
+  background-color: #F8FAFF;
+}
+
 .navbar h4 {
   color: #2c6685;
   font-weight: 1200;
   font-size: 1.5rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: block;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+/* Tablet (768px - 992px) */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 0 15px;
+    height: 56px;
+  }
+
+  .navbar h4 {
+    font-size: 1.3rem;
+  }
+
+  .actions {
+    gap: 12px;
+  }
+
+  .icon,
+  .logout-btn,
+  .user-initials {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+}
+
+/* Móvil (576px - 768px) */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 12px;
+    height: 54px;
+  }
+
+  .navbar-left {
+    gap: 12px;
+  }
+
+  .hamburger-btn {
+    display: block;
+    font-size: 22px;
+    padding: 6px;
+  }
+
+  .navbar h4 {
+    font-size: 1.2rem;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .icon,
+  .logout-btn,
+  .user-initials {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .logout-btn i {
+    font-size: 14px;
+  }
+}
+
+/* Móvil pequeño (< 576px) */
+@media (max-width: 576px) {
+  .navbar {
+    padding: 0 10px;
+    height: 50px;
+  }
+
+  .navbar-left {
+    gap: 10px;
+  }
+
+  .hamburger-btn {
+    font-size: 20px;
+    padding: 5px;
+  }
+
+  .navbar h4 {
+    font-size: 1rem;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .icon,
+  .logout-btn,
+  .user-initials {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+
+  .logout-btn i {
+    font-size: 13px;
+  }
 }
 
 .actions {

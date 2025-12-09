@@ -444,16 +444,273 @@
   color: #FF5C5C;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+/* Tablet (768px - 1200px) */
+@media (max-width: 1200px) {
+  .reservas-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
   .resumen {
     grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .acciones {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .buscador-wrapper {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
+  .date-range-simple {
+    flex-wrap: wrap;
   }
 }
 
-@media (max-width: 576px) {
+/* Tablet pequeña (768px - 992px) */
+@media (max-width: 992px) {
+  .reservas-container,
+  .reservas-grid,
+  .resumen,
+  .paginacion,
+  .d-flex.justify-content-between.mt-3.pt-2 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .reservas-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .resumen {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .resumen-card {
+    padding: 16px;
+  }
+
+  .resumen-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .buscador-wrapper {
+    width: 100%;
+  }
+
+  .acciones .form-select,
+  .date-range-simple {
+    width: 100%;
+  }
+
+  .date-input {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .reset-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Móvil (576px - 768px) */
+@media (max-width: 768px) {
+  .d-flex h2 {
+    font-size: 1.5rem;
+  }
+
+  .reservas-container,
+  .reservas-grid,
+  .resumen,
+  .paginacion,
+  .d-flex.justify-content-between.mt-3.pt-2 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .reservas-container {
+    padding: 8px 12px;
+    margin-bottom: 15px;
+  }
+
+  .reservas-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .reserva-card {
+    padding: 16px;
+  }
+
   .resumen {
     grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 8px;
+  }
+
+  .resumen-card {
+    padding: 14px;
+  }
+
+  .resumen-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .resumen-text {
+    font-size: 0.75rem;
+  }
+
+  .acciones {
+    gap: 8px;
+  }
+
+  .acciones .form-control,
+  .acciones .form-select {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+  .date-range-simple {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .date-input {
+    width: 100%;
+  }
+
+  .date-separator {
+    display: none;
+  }
+
+  .paginacion {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .btn-paginacion {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .modal-container {
+    width: 95%;
+    padding: 20px;
+    max-height: 90vh;
+  }
+}
+
+/* Móvil pequeño (< 576px) */
+@media (max-width: 576px) {
+  .d-flex h2 {
+    font-size: 1.25rem;
+  }
+
+  .reservas-container,
+  .reservas-grid,
+  .resumen,
+  .paginacion,
+  .d-flex.justify-content-between.mt-3.pt-2 {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .reservas-container {
+    padding: 6px 10px;
+    border-radius: 12px;
+  }
+
+  .reservas-grid {
+    gap: 10px;
+  }
+
+  .reserva-card {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .card-header .id {
+    font-size: 0.7rem;
+  }
+
+  .estado-pill {
+    padding: 3px 8px;
+    font-size: 0.65rem;
+  }
+
+  .nombre {
+    font-size: 1rem;
+  }
+
+  .resumen-card {
+    padding: 12px;
+  }
+
+  .resumen-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .resumen-icon {
+    font-size: 18px;
+  }
+
+  .acciones .form-control,
+  .acciones .form-select {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+
+  .reset-btn {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .paginacion {
+    gap: 3px;
+  }
+
+  .btn-paginacion {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  .d-flex.justify-content-between.mt-3.pt-2 {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .d-flex.justify-content-between.mt-3.pt-2 small {
+    font-size: 0.75rem;
+  }
+
+  .modal-container {
+    width: 98%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .modal-title {
+    font-size: 1rem;
   }
 }
 

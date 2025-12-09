@@ -1,127 +1,370 @@
-<div class="settings-container mx-3">
-  <div>
-    <!-- Cabecera -->
-    <div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
-      <h2 class="fw-semibold text-dark mb-0">Ajustes de Usuario</h2>
+<div class="profile-container">
+  <!-- Header Section -->
+  <div class="profile-header">
+    <div class="header-texts">
+      <h2 class="profile-title">Perfil de Usuario</h2>
+      <p class="profile-subtitle">Administra tu información y detalles de cuenta</p>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="!usuarioActual" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando usuario...</p>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="usuarioActual" class="profile-content">
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <div class="profile-avatar-section">
+        <div class="avatar-large">
+          {{
+          (usuarioActual.nombre?.charAt(0) || '') + (usuarioActual.apellidos?.charAt(0) || '') | uppercase
+          }}
+        </div>
+
+        <div class="avatar-info">
+          <h2 class="user-name">{{ usuarioActual.nombre }} {{ usuarioActual.apellidos }}</h2>
+          <span class="role-badge role-primary">{{ usuarioActual.rol }}</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn-action-edit" (click)="isEditingUser = !isEditingUser">
+          <i class="bi" [class.bi-pencil]="!isEditingUser" [class.bi-x-lg]="isEditingUser"></i>
+          <span>{{ isEditingUser ? 'Cancelar' : 'Editar' }}</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Perfil de Usuario -->
-    <div class="card shadow-sm mb-4">
-      <div class="card-body">
-        <h5 class="card-title mb-3">Perfil de Usuario</h5>
+    <!-- Personal Info Card -->
+    <div class="info-cards-row">
+      <form [formGroup]="usuarioForm" class="info-card">
+        <div class="card-header">
+          <h3><i class="bi bi-person"></i> Información Personal</h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
 
-        <div class="row align-items-center mb-3">
-          <div class="col-md-2 text-center">
-            <img src="assets/avatar-placeholder.png" class="rounded-circle img-fluid mb-2" width="80" alt="avatar">
-            <button class="btn btn-outline-secondary w-100">Subir nueva foto</button>
+            <!-- Nombre -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-person-fill"></i> Nombre</label>
+              <input *ngIf="isEditingUser" type="text" class="form-input" formControlName="nombre" />
+              <p *ngIf="!isEditingUser" class="info-value">{{ usuarioActual.nombre }}</p>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-person-badge"></i> Apellidos</label>
+              <input *ngIf="isEditingUser" type="text" class="form-input" formControlName="apellidos" />
+              <p *ngIf="!isEditingUser" class="info-value">{{ usuarioActual.apellidos }}</p>
+            </div>
+
+            <!-- Email -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-envelope"></i> Email</label>
+              <input *ngIf="isEditingUser" type="email" class="form-input" formControlName="email" />
+              <p *ngIf="!isEditingUser" class="info-value">{{ usuarioActual.email }}</p>
+            </div>
+
+            <!-- Username -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-person-badge-fill"></i> Usuario</label>
+              <p class="info-value">{{ usuarioActual.username }}</p>
+            </div>
+
+            <!-- Password (masked) -->
+            <div class="info-item" *ngIf="!isEditingUser">
+              <label class="info-label"><i class="bi bi-key"></i> Contraseña</label>
+              <p class="info-value password-masked">••••••••</p>
+            </div>
+
           </div>
+        </div>
 
-          <div class="col-md-10">
-            <form [formGroup]="usuarioForm">
-              <div class="row g-3">
-                <!-- Nombre completo -->
-                <div class="col-md-6">
-                  <label class="form-label">Nombre completo</label>
-                  <input type="text" class="form-control" formControlName="nombre"
-                    placeholder="Ingrese su nombre completo">
-                </div>
+        <!-- Action Buttons -->
+        <div *ngIf="isEditingUser" class="actions-card">
+          <button type="button" class="btn-save" (click)="guardarCambios()">
+            <i class="bi bi-check-lg"></i> Guardar
+          </button>
+          <button type="button" class="btn-cancel" (click)="isEditingUser = false">
+            <i class="bi bi-x-lg"></i> Cancelar
+          </button>
+        </div>
+      </form>
 
-                <!-- Email -->
-                <div class="col-md-6">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" formControlName="email" placeholder="email@example.com">
-                </div>
+      <!-- Account Details Card -->
+      <div class="info-card">
+        <div class="card-header">
+          <h3><i class="bi bi-gear"></i> Detalles de la Cuenta</h3>
+        </div>
+        <div class="card-body">
+          <div class="info-grid">
 
-                <!-- Rol -->
-                <div class="col-md-6">
-                  <label class="form-label">Rol</label>
-                  <span class="badge bg-primary d-block py-2 fs-6">
-                    {{ usuarioForm.get('rol')?.value }}
-                  </span>
-                </div>
+            <!-- Rol -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-shield-check"></i> Rol</label>
+              <p class="info-value">
+                <span class="role-badge role-primary">{{ usuarioActual.rol }}</span>
+              </p>
+            </div>
 
-                <!-- Estado de la cuenta -->
-                <div class="col-md-6">
-                  <label class="form-label">Estado de la cuenta</label>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="estadoCuenta" formControlName="enabled">
-                    <label class="form-check-label" for="estadoCuenta">
-                      {{ usuarioForm.get('enabled')?.value ? 'Activo' : 'Inactivo' }}
-                    </label>
-                  </div>
-                </div>
-              </div>
+            <!-- Estado -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-check-circle"></i> Estado</label>
+              <p class="info-value">
+                <span [class]="'status-badge ' + (usuarioActual.enabled === 1 ? 'status-active' : 'status-inactive')">
+                  {{ usuarioActual.enabled === 1 ? 'Activo' : 'Inactivo' }}
+                </span>
+              </p>
+            </div>
 
-              <!-- Botones -->
-              <div class="text-end mt-4">
-                <button class="btn-cancelar me-2" type="button">Cancelar</button>
-                <button class="btn btn-turquoise shadow-sm" type="button" (click)="guardarCambios()">Guardar
-                  Cambios</button>
-              </div>
-            </form>
+            <!-- Fecha de Registro -->
+            <div class="info-item">
+              <label class="info-label"><i class="bi bi-calendar-event"></i> Fecha de Registro</label>
+              <p class="info-value">{{ usuarioActual.fechaRegistro | date:'longDate' }}</p>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
+    <!-- Tabla de Usuarios (solo visible para administradores) -->
+    <div *ngIf="usuarioActual && usuarioActual.rol === 'ADMON'" class="card-elevated users-card mt-5">
 
-    <!-- Gestión de Usuarios -->
-    <div class="card shadow-sm">
+      <div class="card-header-table d-flex justify-between align-center mb-4">
+        <h2 class="table-title">Gestión de Usuarios</h2>
+        <button class="btn-primary" (click)="mostrarModalCrear = true">
+          <i class="bi bi-plus-circle me-1"></i> Nuevo Usuario
+        </button>
+      </div>
+
+      <!-- Modal Crear Usuario -->
+      <div class="modal-overlay" *ngIf="mostrarModalCrear">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+          <button type="button" class="close-btn" (click)="mostrarModalCrear = false">&times;</button>
+
+          <h4 class="fw-semibold mb-3">Nuevo Usuario</h4>
+          <hr class="divider" />
+
+          <form [formGroup]="nuevoUsuarioForm" (ngSubmit)="crearUsuario()">
+            <h6 class="modal-title">Datos del Usuario</h6>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label>Nombre</label>
+                <input type="text" formControlName="nombre" placeholder="Nombre del usuario" />
+              </div>
+              <div class="col-md-6">
+                <label>Username</label>
+                <input type="text" formControlName="username" placeholder="Usuario" />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label>Apellidos</label>
+              <input type="text" formControlName="apellidos" placeholder="Apellidos del usuario" />
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label>Email</label>
+                <input type="email" formControlName="email" placeholder="Correo electrónico" />
+              </div>
+              <div class="col-md-6">
+                <label>Contraseña</label>
+                <input type="password" formControlName="password" placeholder="Contraseña" />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label>Dirección</label>
+              <input type="text" formControlName="direccion" placeholder="Dirección del usuario" />
+            </div>
+
+            <div class="mb-3">
+              <label>Rol</label>
+              <select formControlName="rol">
+                <option value="ADMON">ADMIN</option>
+                <option value="AGENTE">AGENTE</option>
+                <option value="EMPLEADO">EMPLEADO</option>
+              </select>
+            </div>
+
+            <div class="text-end mt-3">
+              <button type="button" class="btn-cancelar me-2" (click)="mostrarModalCrear = false">Cancelar</button>
+              <button type="submit" class="btn-guardar">Crear Usuario</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal Editar Usuario de la Tabla -->
+      <div class="modal-overlay" *ngIf="mostrarModalEditar" (click)="cerrarModalEditar()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+          <button type="button" class="close-btn" (click)="cerrarModalEditar()">&times;</button>
+
+          <h4 class="fw-semibold mb-3">Editar Usuario</h4>
+          <hr class="divider" />
+
+          <form [formGroup]="editarUsuarioForm" (ngSubmit)="guardarUsuarioEditado()">
+            <h6 class="modal-title">Datos del Usuario</h6>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label>Nombre</label>
+                <input type="text" formControlName="nombre" placeholder="Nombre del usuario" />
+              </div>
+              <div class="col-md-6">
+                <label>Username</label>
+                <input type="text" formControlName="username" placeholder="Usuario" [disabled]="true" />
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label>Apellidos</label>
+                <input type="text" formControlName="apellidos" placeholder="Apellidos del usuario" />
+              </div>
+              <div class="col-md-6">
+                <label>Email</label>
+                <input type="email" formControlName="email" placeholder="Correo electrónico" />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label>Dirección</label>
+              <input type="text" formControlName="direccion" placeholder="Dirección del usuario" />
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label>Rol</label>
+                <select formControlName="rol">
+                  <option value="ADMON">ADMIN</option>
+                  <option value="AGENTE">AGENTE</option>
+                  <option value="EMPLEADO">EMPLEADO</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label>Estado</label>
+                <select formControlName="enabled">
+                  <option [ngValue]="true">Activo</option>
+                  <option [ngValue]="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="text-end mt-3">
+              <button type="button" class="btn-cancelar me-2" (click)="cerrarModalEditar()">Cancelar</button>
+              <button type="submit" class="btn-guardar">Guardar Cambios</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="card-title mb-0">Gestión de Usuarios</h5>
-          <button class="btn btn-turquoise btn-sm">
-            <i class="bi bi-plus-lg me-1"></i> Nuevo Usuario
-          </button>
+        <!-- Cargando -->
+        <div class="state-block" *ngIf="!usuarios || usuarios.length === 0">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-3 text-muted mb-0">Cargando usuarios...</p>
         </div>
 
-        <div class="table-responsive flex-grow-1">
-          <table class="table align-middle table-hover">
-            <thead class="table-light">
+        <div class="users-table-wrapper" *ngIf="usuarios && usuarios.length > 0">
+          <table class="users-table">
+            <thead>
               <tr>
-                <th>Nombre de usuario</th>
                 <th>Nombre completo</th>
+                <th>Username</th>
+                <th>Email</th>
                 <th>Rol</th>
                 <th>Estado</th>
-                <th>Email</th>
-                <th>Acciones</th>
+                <th class="text-center">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let u of usuarios">
-                <td>{{ u.username }}</td>
-                <td>{{ u.nombre }}</td>
+              <tr *ngFor="let usuario of usuarios">
+                <!-- Avatar + Nombre -->
                 <td>
-                  <span class="badge" [ngClass]="{
-                          'bg-success': u.rol === 'AGENTE',
-                          'bg-warning text-dark': u.rol === 'ADMIN',
-                          'bg-secondary': u.rol === 'EMPLEADO'
-                        }">
-                    {{ u.rol }}
+                  <div class="user-cell">
+                    <div class="user-avatar">
+                      <span>
+                        {{
+                        ((usuario.nombre || '?')[0] || '') + ((usuario.apellidos || '?')[0] || '') | uppercase
+                        }}
+                      </span>
+                    </div>
+                    <div class="user-meta">
+                      <span class="user-name">{{ usuario.nombre }} {{ usuario.apellidos }}</span>
+                      <span class="user-mail small text-muted">{{ usuario.email }}</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Username -->
+                <td>
+                  <span class="user-username">{{ usuario.username }}</span>
+                </td>
+
+                <!-- Email -->
+                <td class="cell-email">
+                  <span>{{ usuario.email }}</span>
+                </td>
+
+                <!-- Rol -->
+                <td>
+                  <select class="role-select" [value]="usuario.rol"
+                    (change)="actualizarRol(usuario, $any($event.target).value)">
+                    <option value="ADMON">ADMIN</option>
+                    <option value="AGENTE">AGENTE</option>
+                    <option value="EMPLEADO">EMPLEADO</option>
+                  </select>
+                </td>
+
+                <!-- Estado -->
+                <td>
+                  <span [class]="'status-badge ' + (usuario.enabled === 1 ? 'status-active' : 'status-inactive')">
+                    {{ usuario.enabled === 1 ? 'Activo' : 'Inactivo' }}
                   </span>
                 </td>
+
+                <!-- Acciones -->
                 <td>
-                  <span class="d-flex align-items-center">
-                    <span class="status-dot me-2" [ngClass]="{
-                            'bg-success': u.enabled === 1,
-                            'bg-danger': u.enabled === 0
-                          }">
-                    </span>
-                    {{ u.enabled === 1 ? 'Activo' : 'Inactivo' }}
-                  </span>
-                </td>
-                <td>{{ u.email }}</td>
-                <td class="text-center">
-                  <button class="btn btn-icon btn-outline-success me-1"><i class="bi bi-pencil"></i></button>
-                  <button class="btn btn-icon btn-outline-danger" (click)="eliminarUsuario(u.username)"><i
-                      class="bi bi-trash"></i></button>
+                  <div class="user-actions">
+                    <button type="button" class="btn-icon btn-icon-edit" (click)="editarUsuario(usuario)"
+                      title="Editar usuario">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="btn-icon btn-icon-delete" (click)="eliminarUsuario(usuario.username)"
+                      title="Eliminar usuario">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
+
+        <!-- Sin usuarios -->
+        <div class="state-block" *ngIf="usuarios && usuarios.length === 0">
+          <div class="icon-circle icon-soft mb-3">
+            <i class="bi bi-people"></i>
+          </div>
+          <h3 class="mb-2">No hay usuarios</h3>
+          <p class="text-muted mb-3">
+            Comienza creando tu primer usuario del sistema.
+          </p>
+          <button class="btn-primary" type="button" (click)="crearUsuario()">
+            <i class="bi bi-plus-circle me-1"></i>
+            Crear usuario
+          </button>
+        </div>
+
       </div>
     </div>
-
-  </div>
-</div>

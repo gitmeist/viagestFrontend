@@ -15,31 +15,31 @@ export class UsuarioService {
 
   /** Listar todos los usuarios */
   listarTodos(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.baseUrl);
+    return this.http.get<Usuario[]>(this.baseUrl, { withCredentials: true });;
   }
 
   /** Obtener usuario por username */
   buscarPorUsername(username: string): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.baseUrl}/${username}`);
+    return this.http.get<Usuario>(`${this.baseUrl}/${username}`, { withCredentials: true });;
   }
 
   /** Crear nuevo usuario */
   crear(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.baseUrl, usuario);
+    return this.http.post<Usuario>(this.baseUrl, usuario, { withCredentials: true });;
   }
 
   /** Actualizar usuario */
   actualizar(usuario: Usuario): Observable<Usuario> {
-    return this.http.put<Usuario>(this.baseUrl, usuario);
+    return this.http.put<Usuario>(this.baseUrl, usuario, { withCredentials: true });;
   }
 
   /** Eliminar usuario por username */
   eliminar(username: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${username}`);
+    return this.http.delete<void>(`${this.baseUrl}/${username}`, { withCredentials: true });;
   }
 
   /** Listar usuarios por rol */
   buscarPorRol(rol: string): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(`${this.baseUrl}/rol/${rol}`);
+    return this.http.get<Usuario[]>(`${this.baseUrl}/rol/${rol}`, { withCredentials: true });;
   }
 }

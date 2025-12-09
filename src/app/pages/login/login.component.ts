@@ -39,7 +39,7 @@ export class LoginComponent {
             alert('Credenciales incorrectas');
           }
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error de login', err);
           alert('Error al iniciar sesión');
         }

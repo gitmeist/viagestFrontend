@@ -50,24 +50,24 @@ export class HomeComponent implements OnInit {
 
   private cargarDatos(): void {
     // Clientes activos
-    this.clienteService.buscarTodos().subscribe(clientes => {
+    this.clienteService.buscarTodos().subscribe((clientes: any[]) => {
       this.resumen[0].value = clientes.length;
     });
 
     // Reservas del mes actual y últimas reservas
-    this.reservaService.buscarTodas().subscribe(reservas => {
+    this.reservaService.buscarTodas().subscribe((reservas: Reserva[]) => {
       const ahora = new Date();
       const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
 
-      const reservasEsteMes = reservas.filter(r => new Date(r.fechaReserva) >= inicioMes);
+      const reservasEsteMes = reservas.filter((r: Reserva) => new Date(r.fechaReserva) >= inicioMes);
       this.resumen[1].value = reservasEsteMes.length;
 
       this.cargarUltimasReservas(reservas);
     });
 
     // Pagos pendientes
-    this.pagoService.buscarTodos().subscribe(pagos => {
-      const pendientes = pagos.filter(p => p.estadoPago === EstadoPago.PENDIENTE);
+    this.pagoService.buscarTodos().subscribe((pagos: any[]) => {
+      const pendientes = pagos.filter((p: any) => p.estadoPago === EstadoPago.PENDIENTE);
       this.resumen[2].value = pendientes.length;
     });
   }

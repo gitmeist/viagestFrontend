@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClienteService } from '../../core/service/cliente.service';
 import { Cliente } from '../../shared/interfaces/cliente';
@@ -14,11 +12,12 @@ import { Pago } from '../../shared/interfaces/pago';
 import { EstadoReserva } from '../../shared/interfaces/estado-reserva';
 import { MetodoPago } from '../../shared/interfaces/metodo-pago';
 import { EstadoPago } from '../../shared/interfaces/estado-pago';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-cliente',
-  imports: [FormsModule, RouterModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './cliente.component.html',
   styleUrl: './cliente.component.css'
 })
@@ -87,8 +86,8 @@ export class ClienteComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarClientes();
-    this.clienteService.buscarTodos().subscribe(data => this.clientes = data || []);
-    this.paqueteService.buscarTodos().subscribe(data => this.paquetes = data || []);
+    this.clienteService.buscarTodos().subscribe((data: Cliente[]) => this.clientes = data || []);
+    this.paqueteService.buscarTodos().subscribe((data: Paquete[]) => this.paquetes = data || []);
     this.fechaMinima = this.obtenerFechaLocal();
   }
 
@@ -146,7 +145,7 @@ export class ClienteComponent implements OnInit {
     };
 
     this.reservaService.alta(nuevaReserva).subscribe({
-      next: (reservaCreada) => {
+      next: (reservaCreada: Reserva) => {
         console.log('Reserva creada:', reservaCreada);
 
         // Crear pago asociado a la reserva
@@ -160,19 +159,19 @@ export class ClienteComponent implements OnInit {
         };
 
         this.pagoService.alta(nuevoPago).subscribe({
-          next: (pagoCreado) => {
+          next: (pagoCreado: Pago) => {
             console.log('Pago creado:', pagoCreado);
             this.cerrarModalReserva();
             alert('Reserva y pago registrados correctamente');
           },
-          error: (err) => {
+          error: (err: any) => {
             console.error('Error al crear pago:', err);
             alert('Reserva creada pero hubo un error al registrar el pago');
             this.cerrarModalReserva();
           }
         });
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al crear reserva:', err);
         alert('Error al crear la reserva');
       }
@@ -236,14 +235,14 @@ export class ClienteComponent implements OnInit {
     this.nuevoClienteData.fechaRegistro = new Date();
 
     this.clienteService.alta(this.nuevoClienteData).subscribe({
-      next: (clienteGuardado) => {
+      next: (clienteGuardado: Cliente) => {
         console.log('Cliente creado:', clienteGuardado);
         this.clientes.push(clienteGuardado);
         this.aplicarFiltros();
         this.cerrarModalCliente();
         alert('Cliente registrado correctamente.');
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al guardar cliente:', err);
         if (err.status === 409) {
           alert('Ya existe un cliente con ese CIF.');
@@ -269,7 +268,7 @@ export class ClienteComponent implements OnInit {
       fechaRegistro: new Date(this.clienteEditar.fechaRegistro)
     };
     this.clienteService.modificar(this.clienteEditar.cif, clienteParaActualizar).subscribe({
-      next: (clienteActualizado) => {
+      next: (clienteActualizado: Cliente) => {
         console.log('Cliente actualizado:', clienteActualizado);
         const index = this.clientes.findIndex(c => c.cif === clienteActualizado.cif);
         if (index !== -1) {
@@ -279,7 +278,7 @@ export class ClienteComponent implements OnInit {
         this.cerrarModalEditar();
         alert('Cliente actualizado correctamente.');
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al actualizar cliente:', err);
         alert('Error al actualizar el cliente.');
       }
@@ -294,12 +293,12 @@ export class ClienteComponent implements OnInit {
 
   cargarClientes(): void {
     this.clienteService.buscarTodos().subscribe({
-      next: (data) => {
+      next: (data: Cliente[]) => {
         this.clientes = data || [];
         this.paginaActual = 1;
         this.aplicarFiltros(false);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar clientes', err);
         this.clientes = [];
         this.clientesFiltrados = [];

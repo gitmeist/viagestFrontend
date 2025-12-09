@@ -372,79 +372,250 @@
 }
 
 
-/*  RESPONSIVE  */
-@media (max-width: 768px) {
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+/* Tablet (768px - 1200px) */
+@media (max-width: 1200px) {
+  .clientes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Tablet pequeña (768px - 992px) */
+@media (max-width: 992px) {
+  .d-flex h2 {
+    font-size: 1.75rem;
+  }
+
   .clientes-container {
-    padding: 24px;
-    height: calc(100vh - 120px);
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  .filtros {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .filtros .form-control,
+  .filtros .form-control-fecha {
+    flex: 1 1 calc(50% - 3px);
+    min-width: 150px;
+  }
+
+  .reset-btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .clientes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    padding: 8px;
+  }
+
+  .cliente-card {
+    height: auto;
+    min-height: 280px;
+  }
+}
+
+/* Móvil (576px - 768px) */
+@media (max-width: 768px) {
+  .d-flex h2 {
+    font-size: 1.5rem;
+  }
+
+  .clientes-container {
+    padding: 10px;
+    border-radius: 12px;
   }
 
   .filtros {
     flex-direction: column;
+    gap: 8px;
   }
 
-  .table thead {
-    display: none;
+  .filtros .form-control,
+  .filtros .form-control-fecha {
+    width: 100%;
+    flex: 1 1 100%;
   }
 
-  .table tbody tr {
-    display: block;
-    margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 10px;
+  .reset-btn {
+    width: 100%;
   }
 
-  .table tbody td {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
+  .clientes-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 6px;
   }
 
-  .table tbody td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #555;
+  .cliente-card {
+    height: auto;
+    min-height: 260px;
+    padding: 14px;
   }
 
-  .text-center {
-    text-align: right !important;
+  .cliente-iniciales {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
 
-  /* ANIMACIONES */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
+  .header-info h5 {
+    font-size: 1.1rem;
   }
 
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  .header-info .cliente-cif {
+    font-size: 0.75rem;
   }
 
+  .card-info p {
+    font-size: 0.85rem;
+  }
 
-  @media (max-width: 576px) {
-    .paginacion {
-      gap: 2px;
-      padding: 1px 2px;
-    }
+  .card-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-    .btn-paginacion {
-      padding: 4px 8px;
-      font-size: 0.8rem;
-    }
+  .card-actions button {
+    flex: 1 1 calc(50% - 4px);
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .paginacion {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .btn-paginacion {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+
+  .d-flex.justify-content-between.mt-3.pt-2 {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .d-flex.justify-content-between.mt-3.pt-2 small {
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .modal-container {
+    width: 95%;
+    padding: 20px;
+    max-height: 90vh;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+}
+
+/* Móvil pequeño (< 576px) */
+@media (max-width: 576px) {
+  .d-flex h2 {
+    font-size: 1.25rem;
+  }
+
+  .clientes-container {
+    padding: 8px;
+  }
+
+  .clientes-grid {
+    gap: 12px;
+    padding: 4px;
+  }
+
+  .cliente-card {
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 240px;
+  }
+
+  .cliente-iniciales {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .header-info h5 {
+    font-size: 1rem;
+  }
+
+  .header-info .cliente-cif {
+    font-size: 0.7rem;
+  }
+
+  .card-info p {
+    font-size: 0.8rem;
+    margin: 4px 0;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .card-actions button {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .paginacion {
+    gap: 3px;
+  }
+
+  .btn-paginacion {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+
+  .modal-container {
+    width: 98%;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .modal-title {
+    font-size: 0.95rem;
+  }
+
+  .close-btn {
+    font-size: 20px;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

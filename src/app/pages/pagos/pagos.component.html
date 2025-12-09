@@ -1,80 +1,193 @@
-<div class="pagos-container">
-  <h2>Gestión de Pagos</h2>
+<!-- CABECERA -->
+<div class="d-flex justify-content-between align-items-center mb-4 px-4 mt-3">
+  <h2 class="fw-semibold text-dark mb-0">Gestión de Pagos</h2>
+</div>
 
-  <!-- BUSCADOR Y FILTROS -->
-  <div class="acciones">
-    <input type="text" placeholder="Buscar por cliente o referencia" [(ngModel)]="filtroTexto"
-      (input)="aplicarFiltros()" />
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="pagos-container mx-3">
+  <div>
+    <!-- BUSCADOR Y FILTROS -->
+    <div class="acciones d-flex flex-wrap align-items-center gap-2">
+      <div class="position-relative flex-grow-1 buscador-wrapper" style="min-width:260px;">
+        <i class="bi bi-search search-icon"></i>
+        <input id="busqueda-pagos" type="text" class="form-control buscador-input ps-5"
+          placeholder="Buscar por cliente o referencia" [(ngModel)]="filtroTexto" (input)="aplicarFiltros()"
+          aria-label="Buscar" />
+      </div>
 
-    <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
-      <option value="">Estados</option>
-      <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
-    </select>
+      <div>
+        <select class="form-select" [(ngModel)]="filtroEstado" (change)="aplicarFiltros()"
+          aria-label="Filtrar por estados">
+          <option value="">Filtrar por Estados</option>
+          <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
 
-    <select [(ngModel)]="filtroMetodo" (change)="aplicarFiltros()">
-      <option value="">Métodos de Pago</option>
-      <option *ngFor="let metodo of metodos" [value]="metodo">{{ metodo }}</option>
-    </select>
+      <div>
+        <select class="form-select" [(ngModel)]="filtroMetodo" (change)="aplicarFiltros()"
+          aria-label="Filtrar por métodos">
+          <option value="">Filtrar por Métodos</option>
+          <option *ngFor="let metodo of metodos" [value]="metodo">{{ metodo }}</option>
+        </select>
+      </div>
 
-    <input type="date" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" />
-    <input type="date" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" />
+      <div>
+        <input type="date" class="form-control" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" placeholder="Desde">
+      </div>
+
+      <div>
+        <input type="date" class="form-control" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" placeholder="Hasta">
+      </div>
+
+      <!-- Botón Resetear Filtros -->
+      <button class="reset-btn" (click)="resetFiltros()">
+        <i class="bi bi-x-circle"></i> Resetear Filtros
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+ <!-- GRID DE TARJETAS -->
+<div class="cards-grid">
+  <div class="pago-card" *ngFor="let pago of pagosPaginados">
+
+    <!-- Encabezado -->
+    <div class="card-header">
+      <span class="id-info">
+        Pago ID: {{ pago.idPago }} | Reserva ID: {{ pago.reserva.idReserva }}
+      </span>
+
+      <span class="estado-badge" [ngClass]="getEstadoCss(pago.estadoPago)">
+        {{ pago.estadoPago }}
+      </span>
+    </div>
+
+    <!-- Nombre -->
+    <h3 class="cliente">{{ pago.reserva.cliente.nombre }}</h3>
+
+    <!-- Monto -->
+    <div class="monto">
+      {{ pago.monto | currency:'EUR' }}
+    </div>
+
+    <!-- Datos -->
+    <div class="detalle">
+      <span>💳 {{ pago.metodoPago }}</span>
+      <span>📅 {{ pago.fechaPago | date:'yyyy-MM-dd' }}</span>
+      <span>📄 {{ pago.referencia }}</span>
+    </div>
+
+    <!-- Botones -->
+    <div class="card-btns">
+      <button *ngIf="pago.estadoPago === 'PENDIENTE'" class="btn-accion"
+              (click)="aceptarPago(pago)">
+        Aceptar Pago
+      </button>
+      <button class="btn-detalles" (click)="abrirModalVerPago(pago)">Detalles</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- Modal Ver Pago -->
+  <div class="modal-overlay" *ngIf="mostrarModalVerPago" (click)="cerrarModalVerPago()">
+    <div class="modal-container modal-ver" (click)="$event.stopPropagation()">
+      <div class="modal-header-ver">
+        <h2 class="modal-title-ver">Detalles del Pago #{{ pagoVer?.idPago }}</h2>
+        <span class="estado-badge-ver position-absolute top-0 end-0 mt-2 me-2 px-3 py-1 fs-7"
+          [ngClass]="pagoVer?.estadoPago === 'COMPLETADO' ? 'estado-activo' : 'estado-inactivo'">
+          {{ pagoVer?.estadoPago }}
+        </span>
+      </div>
+
+      <div class="modal-body-ver">
+        <div *ngIf="pagoVer">
+          <h6 class="modal-title">Información del Pago</h6>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label>ID Pago</label>
+              <input type="text" class="form-control" [value]="pagoVer.idPago" readonly />
+            </div>
+            <div class="col-md-6">
+              <label>Estado</label>
+              <input type="text" class="form-control" [value]="pagoVer.estadoPago" readonly />
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label>Monto (€)</label>
+              <input *ngIf="modoEdicion" type="number" class="form-control" [(ngModel)]="pagoVer.monto" min="0" step="0.01" />
+              <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="(pagoVer.monto | currency:'EUR')" readonly />
+            </div>
+            <div class="col-md-6">
+              <label>Método de Pago</label>
+              <select *ngIf="modoEdicion" class="form-select" [(ngModel)]="pagoVer.metodoPago">
+                <option value="TARJETA">💳 Tarjeta</option>
+                <option value="TRANSFERENCIA">🏦 Transferencia</option>
+                <option value="EFECTIVO">💵 Efectivo</option>
+              </select>
+              <input *ngIf="!modoEdicion" type="text" class="form-control" [value]="pagoVer.metodoPago" readonly />
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label>Fecha de Pago</label>
+              <input type="text" class="form-control" [value]="pagoVer.fechaPago | date:'yyyy-MM-dd HH:mm'" readonly />
+            </div>
+            <div class="col-md-6">
+              <label>Referencia</label>
+              <input type="text" class="form-control" [value]="pagoVer.referencia" readonly />
+            </div>
+          </div>
+
+        </div>
+
+        <hr class="divider" />
+        <div class="text-end mt-3">
+          <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success me-2" (click)="toggleEdicionPago()">
+            <i class="bi bi-pencil me-1"></i>Editar Pago
+          </button>
+          <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary me-2" (click)="toggleEdicionPago()">
+            <i class="bi bi-x-circle me-1"></i>Cancelar Edición
+          </button>
+          <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise me-2" (click)="actualizarPago()">
+            <i class="bi bi-check-circle me-1"></i>Actualizar Pago
+          </button>
+
+          <button type="button" class="btn btn-success me-2" (click)="generarFactura()">
+            <i class="bi bi-file-earmark-text me-1"></i>Generar Factura
+          </button>
+
+          <button type="button" class="btn btn-secondary" (click)="cerrarModalVerPago()">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- TABLA -->
-  <table class="tabla-pagos">
-    <thead>
-      <tr>
-        <th>ID Pago</th>
-        <th>ID Reserva</th>
-        <th>Cliente</th>
-        <th>Monto</th>
-        <th>Método</th>
-        <th>Fecha</th>
-        <th>Estado</th>
-        <th>Referencia</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <tr *ngFor="let pago of pagosPaginados">
-        <td>{{ pago.idPago }}</td>
-        <td>{{ pago.reserva.idReserva }}</td>
-        <td>{{ pago.reserva.cliente.nombre }}</td>
-        <td>{{ pago.monto | currency:'EUR' }}</td>
-        <td>{{ pago.metodoPago }}</td>
-        <td>{{ pago.fechaPago | date:'yyyy-MM-dd' }}</td>
+<!-- PAGINACIÓN -->
+<div class="d-flex justify-content-between align-items-center mt-3 pt-2">
+  <small class="text-muted">
+    Mostrando {{ (paginaActual - 1) * elementosPorPagina + 1 }} -
+    {{ Math.min(paginaActual * elementosPorPagina, totalFiltrados) }} de {{ totalFiltrados }}
+  </small>
 
-        <td>
-          <span class="estado" [ngClass]="getEstadoCss(pago.estadoPago)">
-            {{ pago.estadoPago }}
-          </span>
-        </td>
-
-        <td>{{ pago.referencia }}</td>
-
-        <td class="acciones-btns">
-          <button *ngIf="pago.estadoPago === 'PENDIENTE'" (click)="aceptarPago(pago)">
-            ACEPTAR
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- PAGINACIÓN -->
-  <div class="paginacion" *ngIf="paginasTotales.length > 1">
-    <button (click)="cambiarPagina(paginaActual - 1)" [disabled]="paginaActual === 1">
+  <div class="paginacion">
+    <button class="btn-paginacion" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">
       Anterior
     </button>
 
-    <ng-container *ngFor="let num of paginasTotales">
-      <button [ngClass]="{ activo: num === paginaActual }" (click)="cambiarPagina(num)">
-        {{ num }}
+    <ng-container *ngFor="let p of pageNumbers(); let i = index">
+      <button class="btn-paginacion" [class.activa]="paginaActual === p" (click)="cambiarPagina(p)">
+        {{ p }}
       </button>
     </ng-container>
 
-    <button (click)="cambiarPagina(paginaActual + 1)" [disabled]="paginaActual === paginasTotales.length">
+    <button class="btn-paginacion" [disabled]="paginaActual === totalPages" (click)="cambiarPagina(paginaActual + 1)">
       Siguiente
     </button>
   </div>
