@@ -75,6 +75,8 @@ export class ClienteComponent implements OnInit {
     fechaRegistro: ''
   };
 
+  userRole: string | null = null;
+
   constructor(
     private clienteService: ClienteService,
     private paqueteService: PaqueteService,
@@ -85,6 +87,7 @@ export class ClienteComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.userRole = this.authService.getRole();
     this.cargarClientes();
     this.clienteService.buscarTodos().subscribe((data: Cliente[]) => this.clientes = data || []);
     this.paqueteService.buscarTodos().subscribe((data: Paquete[]) => this.paquetes = data || []);

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { tap } from 'rxjs';
 
@@ -12,18 +12,21 @@ export class AuthService {
   constructor() {}
 
   /**
-   * Realiza login enviando username y password al backend.
-   * Solo guarda los datos del usuario si la respuesta es exitosa.
+   * Realiza el login usando autenticación HTTP Basic a través de un POST a /api/login.
+   * La respuesta de la llamada contiene los datos del usuario.
    */
   login(username: string, password: string) {
-    return this.http.post(`${this.baseUrl}/login`, { username, password }, { withCredentials: true })
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa(username + ':' + password)
+    });
+
+    // Llamada POST a /api/login con cabecera de autorización
+    return this.http.post(`${this.baseUrl}/login`, null, { headers, withCredentials: true })
       .pipe(
-        // Guardar usuario en localStorage si login correcto
-        tap((res: any) => {
-          if (res.status === 'success') {
-            localStorage.setItem(this.USER_KEY, JSON.stringify({ username: res.username }));
-          }
-      })    
+        // Guardar el usuario en localStorage
+        tap((user: any) => {
+          localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+        })
       );
   }
 
@@ -31,6 +34,12 @@ export class AuthService {
   getUser() {
     const userJson = localStorage.getItem(this.USER_KEY);
     return userJson ? JSON.parse(userJson) : null;
+  }
+
+  /** Devuelve el rol del usuario logueado o null si no hay */
+  getRole() {
+    const user = this.getUser();
+    return user ? user.role : null;
   }
 
   /** Indica si hay un usuario autenticado */

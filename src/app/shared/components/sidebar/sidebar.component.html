@@ -8,7 +8,7 @@
 
   <ul class="sb__menu">
     <!-- Inicio -->
-    <li>
+    <li *ngIf="userRole">
       <a routerLink="/home" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-house"></i>
@@ -19,7 +19,7 @@
 
 
     <!-- Clientes -->
-    <li>
+    <li *ngIf="userRole && (userRole.includes('ADMON') || userRole.includes('AGENTE') || userRole.includes('EMPLEADO'))">
       <a routerLink="/clientes" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-people"></i>
@@ -30,7 +30,7 @@
 
 
     <!-- Paquetes -->
-    <li>
+    <li *ngIf="userRole && (userRole.includes('ADMON') || userRole.includes('AGENTE'))">
       <a routerLink="/paquetes" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-archive"></i>
@@ -41,7 +41,7 @@
 
 
     <!-- Reservas -->
-    <li>
+    <li *ngIf="userRole && (userRole.includes('ADMON') || userRole.includes('AGENTE') || userRole.includes('EMPLEADO'))">
       <a routerLink="/reservas" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-calendar-check"></i>
@@ -52,9 +52,9 @@
 
 
     <!-- Pagos -->
-    <li>
+    <li *ngIf="userRole && (userRole.includes('ADMON') || userRole.includes('EMPLEADO'))">
       <a routerLink="/pagos" routerLinkActive="is-active" (click)="onLinkClick()">
-        <span class="sb__ico" aria-hidden="true">
+        <span classs="sb__ico" aria-hidden="true">
           <i class="bi bi-credit-card"></i>
         </span>
         Pagos
@@ -63,7 +63,7 @@
 
 
     <!-- Ajustes -->
-    <li class="sb__bottom">
+    <li *ngIf="userRole && userRole.includes('ADMON')" class="sb__bottom">
       <a routerLink="/settings" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-gear"></i>
