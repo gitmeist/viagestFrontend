@@ -192,6 +192,8 @@
 <div class="modal-overlay" *ngIf="mostrarModalVer" (click)="cerrarModalVer()">
   <div class="modal-container modal-detalle-paquete" (click)="$event.stopPropagation()">
 
+     <div *ngIf="stepActual === 1">
+
     <!-- HEADER DEL MODAL: nombre a la izquierda + estado a la derecha -->
     <div class="header-detalle-paquete">
       <h1 class="titulo-paquete">{{ paqueteVer?.nombre }}</h1>
@@ -308,8 +310,80 @@
       </div>
 
     </div>
+    </div>
+    
+    <!-- ========================== -->
+<!--       STEP 2 ACTIVIDADES    -->
+<!-- ========================== -->
+<div *ngIf="stepActual === 2" class="step-actividades-container">
 
+  <!-- STEPPER -->
+  <div class="stepper-paquete">
+    <div class="step-paquete">
+      <span class="step-numero">1</span>
+      <span class="step-texto">Información del Paquete</span>
+    </div>
+    <div class="step-linea"></div>
+    <div class="step-paquete active">
+      <span class="step-numero">2</span>
+      <span class="step-texto">Actividades Incluidas</span>
+    </div>
   </div>
+
+  <div class="linea-separacion"></div>
+
+  <h2 class="titulo-actividades-img">
+    Itinerario de Actividades - {{ actividades.length }} actividades incluidas
+  </h2>
+
+  <p class="subtitulo-actividades-img">
+    Horario detallado de experiencias durante el viaje
+  </p>
+
+  <!-- Tarjetas como en la imagen -->
+  <div class="lista-actividades-img">
+
+    <div *ngFor="let act of actividades" class="actividad-card-img">
+
+      <!-- Imagen izquierda -->
+      <div class="actividad-imagen-wrapper">
+        <img [src]="act.imagen" class="actividad-imagen-img" />
+      </div>
+
+      <!-- Contenido derecha -->
+      <div class="actividad-info-img">
+
+        <div class="actividad-fecha-img">
+          <i class="bi bi-calendar2-week"></i>
+          Día {{ act.dia }} · {{ act.horaInicio?.slice(0,5) }} - {{ act.horaFin?.slice(0,5) }}
+
+        </div>
+
+        <h3 class="actividad-titulo-img">{{ act.titulo }}</h3>
+
+        <p class="actividad-descripcion-img">{{ act.descripcion }}</p>
+
+        <div class="actividad-extra-img">
+          <div class="actividad-icono-texto">
+            <i class="bi bi-geo-alt"></i> {{ paqueteVer?.destino }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN VOLVER -->
+  <div class="boton-volver">
+    <button class="btn-volver" (click)="volverStep1()">
+      <i class="bi bi-arrow-left me-2"></i> Volver a información
+    </button>
+  </div>
+
+</div>
+
+
+  </div>   
 </div>
 
 

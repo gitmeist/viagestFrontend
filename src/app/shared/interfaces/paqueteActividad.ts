@@ -6,4 +6,5 @@ export interface PaqueteActividad {
   horaInicio: string;
   horaFin: string;
   dia: number;
+  imagen: string;
 }

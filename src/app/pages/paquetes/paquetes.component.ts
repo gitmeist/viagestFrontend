@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { PaqueteService } from '../../core/service/paquete.service';
 import { Paquete } from '../../shared/interfaces/paquete';
 import { Observable } from 'rxjs';
+import { PaqueteActividadService } from '../../core/service/paqueteActividad.service';
+import { PaqueteActividad } from '../../shared/interfaces/paqueteActividad';
 
 @Component({
   standalone: true,
@@ -35,7 +37,14 @@ export class PaquetesComponent implements OnInit {
   paquetesPorPagina = 8;
   totalFiltrados = 0;
 
-  constructor(private paqueteService: PaqueteService) { }
+  // --- STEP 2 VARIABLES ---
+  stepActual = 1;
+  actividades: PaqueteActividad[] = [];
+
+
+  constructor(private paqueteService: PaqueteService,
+    private paqueteActividad: PaqueteActividadService
+  ) { }
 
   ngOnInit(): void {
     this.cargarPaquetes();
@@ -54,12 +63,28 @@ export class PaquetesComponent implements OnInit {
     };
   }
 
-  // Método para manejar el clic en "Ver Actividades Detalladas"
-verActividadesDetalladas(): void {
-  // Aquí puedes implementar la lógica para mostrar actividades detalladas
-  // Por ejemplo, abrir otro modal o redirigir a otra página
-  alert('Funcionalidad de actividades detalladas - Implementar según necesidad');
-}
+  
+  verActividadesDetalladas(): void {
+    if (!this.paqueteVer) return;
+
+    this.stepActual = 2;
+
+    this.paqueteActividad
+      .actividadesPorPaquete(this.paqueteVer.idPaquete)
+      .subscribe({
+        next: (data) => {
+          this.actividades = data.sort((a, b) => a.dia - b.dia);
+        },
+        error: (error) => {
+          console.error('Error al cargar actividades:', error);
+        }
+      });
+  }
+
+  volverStep1(): void {
+    this.stepActual = 1;
+  }
+
 
   cargarPaquetes(): void {
     this.paqueteService.buscarTodos().subscribe({
@@ -159,6 +184,8 @@ verActividadesDetalladas(): void {
 
   abrirModalVer(paquete: Paquete): void {
     this.paqueteVer = paquete;
+    this.stepActual = 1; // SIEMPRE EMPIEZA EN STEP 1
+    this.actividades = []; // LIMPIA ACTIVIDADES
     this.mostrarModalVer = true;
   }
 

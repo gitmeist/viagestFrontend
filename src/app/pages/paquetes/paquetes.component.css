@@ -966,6 +966,186 @@ label {
 }
 
 
+/* modal ver actividad */
+.step-actividades-container {
+  padding: 20px;
+}
+
+.titulo-actividades {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.subtitulo-actividades {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.lista-actividades {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tarjeta-actividad {
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 15px;
+  background: white;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+}
+
+.actividad-titulo {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.actividad-descripcion {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.actividad-footer {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.btn-volver {
+  border: none;
+  background-color: #ececec;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.actividad-imagen {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* ============= */
+/* TITULOS */
+.titulo-actividades-img {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #233a47;
+}
+
+.subtitulo-actividades-img {
+  color: #6b6b6b;
+  margin-bottom: 25px;
+}
+
+/* ============= */
+/* LISTA TARJETAS */
+.lista-actividades-img {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Tarjeta completa */
+.actividad-card-img {
+  display: flex;
+  gap: 18px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #dfdfdf;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.06);
+}
+
+/* Imagen */
+.actividad-imagen-wrapper {
+  width: 160px;
+  height: 145px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.actividad-imagen-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Caja derecha */
+.actividad-info-img {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Fecha estilo etiqueta */
+.actividad-fecha-img {
+  font-size: 0.86rem;
+  background: #E7F3F3;
+  padding: 6px 12px;
+  width: fit-content;
+  border-radius: 8px;
+  color: #286376;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.actividad-titulo-img {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #233a47;
+}
+
+.actividad-descripcion-img {
+  color: #4a4a4a;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+/* Iconos inferiores */
+.actividad-extra-img {
+  margin-top: auto;
+  display: flex;
+  gap: 20px;
+}
+
+.actividad-icono-texto {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #245a6a;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.actividad-icono-texto i {
+  font-size: 1rem;
+  color: #4fa9a9;
+}
+
+/* Botón volver */
+.btn-volver {
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-start;
+  background: #4fa9a9;
+  color: white;
+  padding: 10px 26px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  transition: 0.2s ease;
+  
+}
+
 
 
 /* ============================================================
