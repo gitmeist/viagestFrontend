@@ -327,12 +327,7 @@
 
                 <!-- Rol -->
                 <td>
-                  <select class="role-select" [value]="usuario.rol"
-                    (change)="actualizarRol(usuario, $any($event.target).value)">
-                    <option value="ADMON">ADMIN</option>
-                    <option value="AGENTE">AGENTE</option>
-                    <option value="EMPLEADO">EMPLEADO</option>
-                  </select>
+                  <span class="role-badge role-primary">{{ usuario.rol }}</span>
                 </td>
 
                 <!-- Estado -->
