@@ -34,7 +34,7 @@ export class PagosComponent implements OnInit {
   paginaActual = 1;
   elementosPorPagina = 10;
   totalFiltrados = 0;
-  Math = Math; // Para usar en el template
+  Math = Math; 
 
   // Modal ver pago
   mostrarModalVerPago = false;
@@ -120,7 +120,7 @@ export class PagosComponent implements OnInit {
         const index = this.pagos.findIndex(p => p.idPago === res.idPago);
         if (index !== -1) this.pagos[index] = res;
         this.aplicarFiltros();
-        // Tras aceptar el pago, intentar confirmar la reserva asociada
+        // Tras aceptar el pago,confirma la reserva asociada
         const idReserva = pago.reserva?.idReserva;
         if (idReserva) {
           this.reservaService.buscarUna(idReserva).subscribe({
@@ -169,7 +169,6 @@ export class PagosComponent implements OnInit {
 
   toggleEdicionPago(): void {
     this.modoEdicion = !this.modoEdicion;
-    // make a defensive copy when entering edit mode to avoid mutating list before save
     if (this.modoEdicion && this.pagoVer) {
       this.pagoVer = { ...this.pagoVer } as Pago;
     }
@@ -180,7 +179,6 @@ export class PagosComponent implements OnInit {
     const id = this.pagoVer.idPago;
     this.pagoService.modificar(id, this.pagoVer).subscribe({
       next: (res: Pago) => {
-        // update local array
         const idx = this.pagos.findIndex(p => p.idPago === res.idPago);
         if (idx !== -1) this.pagos[idx] = res;
         this.aplicarFiltros();
@@ -206,7 +204,7 @@ export class PagosComponent implements OnInit {
       error: () => {
         // Si no existe, crear una factura básica a partir del pago
         const subtotal = Number(this.pagoVer?.monto || 0);
-        const impuestos = +(subtotal * 0.21).toFixed(2); // ejemplo 21% IVA
+        const impuestos = +(subtotal * 0.21).toFixed(2); 
         const nueva: Factura = {
           idFactura: 0,
           numeroFactura: `F-${Date.now()}`,
@@ -277,7 +275,6 @@ export class PagosComponent implements OnInit {
       doc.setFontSize(11);
       doc.text('Detalles:', left, y);
       y += 6;
-      // Wrap detalles text
       const detalles = factura.detalles || '';
       const split = doc.splitTextToSize(detalles, 170);
       doc.text(split, left, y);
@@ -290,7 +287,7 @@ export class PagosComponent implements OnInit {
     }
   }
 
-  /** Devuelve clases CSS según estado */
+  /** estado del pago */
   getEstadoCss(estado: EstadoPago): string {
     return {
       'COMPLETADO': 'badge-confirmado',

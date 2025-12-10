@@ -94,9 +94,7 @@
   font-size: 1rem;
 }
 
-/* -------------------------------------------------------
-   TARJETAS (misma estética que tarjetas de reserva)
-------------------------------------------------------- */
+/* CARDS */
 
 /* GRID */
 .cards-grid {
@@ -135,7 +133,7 @@
   color: #555;
 }
 
-/* ESTADOS — MISMO ESTILO QUE RESERVAS */
+/* ESTADOS */
 .estado-badge {
   padding: 4px 10px;
   border-radius: 50px;
@@ -143,7 +141,6 @@
   font-weight: bold;
 }
 
-/* Usar los mismos colores y variantes que .estado-pill en reserva */
 .estado-badge.confirmado {
   background: #eaffea;
   color: #2ea043;
@@ -159,7 +156,6 @@
   color: #d93b3b;
 }
 
-/* Compatibilidad con las clases que devuelve getEstadoCss (badge-*) */
 .estado-badge.badge-confirmado {
   background: #eaffea;
   color: #2ea043;
@@ -360,7 +356,7 @@
   border-radius: 6px;
 }
 
-/* Modal ver pago (estilo similar al modal de ver de paquetes) */
+/* Modal ver pago */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -458,7 +454,7 @@
   }
 }
 
-/* Copiado de reserva: modal y sección de edición para mantener mismo estilo */
+/* MODAL*/
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -528,7 +524,7 @@
   background-color: #5a6268;
 }
 
-/* Seccion de editar pago (mismo look que reserva) */
+/*EDITAR PAGO */
 .payment-edit-section {
   background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
   padding: 20px;
@@ -554,11 +550,9 @@
   box-shadow: 0 0 0 0.2rem rgba(255, 152, 0, 0.25);
 }
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
+/* RESPONSIVE */
 
-/* Tablet (768px - 1200px) */
+/* Tablet */
 @media (max-width: 1200px) {
   .cards-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -566,7 +560,7 @@
   }
 }
 
-/* Tablet pequeña (768px - 992px) */
+/* Tablet pequeña */
 @media (max-width: 992px) {
   .d-flex h2 {
     font-size: 1.75rem;
@@ -612,7 +606,7 @@
   }
 }
 
-/* Móvil (576px - 768px) */
+/* Móvil */
 @media (max-width: 768px) {
   .d-flex h2 {
     font-size: 1.5rem;
@@ -736,7 +730,7 @@
   }
 }
 
-/* Móvil pequeño (< 576px) */
+/* Móvil pequeño*/
 @media (max-width: 576px) {
   .d-flex h2 {
     font-size: 1.25rem;

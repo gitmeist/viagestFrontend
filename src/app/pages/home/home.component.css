@@ -243,11 +243,9 @@
   box-sizing: border-box;
 }
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
+/* RESPONSIVE */
 
-/* Tablet (768px - 1200px) */
+/* Tablet */
 @media (max-width: 1200px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);
@@ -266,7 +264,7 @@
   }
 }
 
-/* Tablet pequeña (768px - 992px) */
+/* Tablet pequeña */
 @media (max-width: 992px) {
   .dashboard {
     padding: 20px;
@@ -302,7 +300,7 @@
   }
 }
 
-/* Móvil (576px - 768px) */
+/* Móvil  */
 @media (max-width: 768px) {
   .dashboard {
     padding: 15px;
@@ -386,7 +384,7 @@
   }
 }
 
-/* Móvil pequeño (< 576px) */
+/* Móvil pequeño  */
 @media (max-width: 576px) {
   .dashboard {
     padding: 12px;

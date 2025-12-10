@@ -96,7 +96,7 @@
           placeholder="Buscar paquetes por nombre o destino" [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
       </div>
 
-      <!-- FILTROS DERECHA -->
+      <!-- FILTROS  -->
       <div class="filters-right">
         <select class="filtro-select" [(ngModel)]="mostrarSoloActivos" (change)="aplicarFiltros()">
           <option [ngValue]="false">Estados</option>
@@ -192,198 +192,195 @@
 <div class="modal-overlay" *ngIf="mostrarModalVer" (click)="cerrarModalVer()">
   <div class="modal-container modal-detalle-paquete" (click)="$event.stopPropagation()">
 
-     <div *ngIf="stepActual === 1">
+    <div *ngIf="stepActual === 1">
 
-    <!-- HEADER DEL MODAL: nombre a la izquierda + estado a la derecha -->
-    <div class="header-detalle-paquete">
-      <h1 class="titulo-paquete">{{ paqueteVer?.nombre }}</h1>
+      <!-- HEADER DEL MODAL -->
+      <div class="header-detalle-paquete">
+        <h1 class="titulo-paquete">{{ paqueteVer?.nombre }}</h1>
 
-      <span class="estado-badge-paquete-detalle"
-        [ngClass]="paqueteVer?.activo ? 'estado-activo-detalle' : 'estado-inactivo-detalle'">
-        {{ paqueteVer?.activo ? 'Disponible' : 'No Disponible' }}
-      </span>
-    </div>
-
-
-    <!-- STEPPER -->
-    <div class="stepper-paquete">
-      <div class="step-paquete active">
-        <span class="step-numero">1</span>
-        <span class="step-texto">Información del Paquete</span>
+        <span class="estado-badge-paquete-detalle"
+          [ngClass]="paqueteVer?.activo ? 'estado-activo-detalle' : 'estado-inactivo-detalle'">
+          {{ paqueteVer?.activo ? 'Disponible' : 'No Disponible' }}
+        </span>
       </div>
-      <div class="step-linea"></div>
-      <div class="step-paquete">
-        <span class="step-numero">2</span>
-        <span class="step-texto">Actividades Incluidas</span>
-      </div>
-    </div>
 
-    <!-- Línea de separación -->
-    <div class="linea-separacion"></div>
 
-    <!-- Imagen del paquete (NO a borde completo) -->
-    <div class="modal-imagen-paquete">
-      <img [src]="getImagen(paqueteVer)" class="imagen-paquete" [alt]="paqueteVer?.nombre" />
-
-      <!-- Ahora muestra "X días en Y" -->
-      <div class="overlay-titulo-paquete">
-        <h1 class="titulo-paquete-imagen">
-          {{ paqueteVer?.duracionDias }} días en {{ paqueteVer?.destino }}
-        </h1>
-      </div>
-    </div>
-
-    <!-- Contenido del modal -->
-    <div class="modal-contenido-paquete">
-
-      <!-- Información del Paquete -->
-      <div class="seccion-paquete">
-
-        <div class="destino-detalle-paquete">
-          <div class="contenedor-icono-texto">
-            <span class="icono-documento">
-              <i class="bi bi-geo-alt-fill"></i>
-            </span>
-            <span class="destino-texto-paquete-detalle">{{ paqueteVer?.destino }}</span>
-          </div>
-
-          <div class="contenedor-icono-texto">
-            <span class="icono-documento">
-              <i class="bi bi-file-earmark-text"></i>
-            </span>
-            <p class="descripcion-paquete-detalle">
-              {{ paqueteVer?.descripcion }}
-            </p>
-          </div>
-
+      <!-- STEPPER -->
+      <div class="stepper-paquete">
+        <div class="step-paquete active">
+          <span class="step-numero">1</span>
+          <span class="step-texto">Información del Paquete</span>
         </div>
-
-        <!-- Duración y precio -->
-        <div class="info-duracion-precio-paquete">
-          <div class="contenedor-icono-texto">
-            <span class="icono-documento">
-              <i class="bi bi-clock"></i>
-            </span>
-            <span class="duracion-texto-paquete">{{ paqueteVer?.duracionDias }} días</span>
-          </div>
-
-          <div class="contenedor-icono-texto">
-            <span class="icono-documento">
-              <i class="bi bi-currency-euro"></i>
-            </span>
-            <span class="precio-valor-paquete">{{ paqueteVer?.precio }}€/persona</span>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Servicios Incluidos -->
-      <div class="seccion-servicios-anterior">
-        <h5 class="section-title-ver mt-3">Servicios Incluidos</h5>
-        <div class="tags-container-ver">
-          <span *ngIf="paqueteVer?.incluyeVuelo" class="paquete-tag-ver">
-            <i class="bi bi-airplane"></i> Vuelo
-          </span>
-          <span *ngIf="paqueteVer?.incluyeHotel" class="paquete-tag-ver">
-            <i class="bi bi-hospital"></i> Hotel
-          </span>
-          <span *ngIf="!paqueteVer?.incluyeHotel && !paqueteVer?.incluyeVuelo" class="tag-empty-ver">
-            Ninguno
-          </span>
-
-          <!-- Transporte fijo -->
-          <span class="paquete-tag-ver">
-            <i class="bi bi-bus-front"></i> Transporte
-          </span>
+        <div class="step-linea"></div>
+        <div class="step-paquete">
+          <span class="step-numero">2</span>
+          <span class="step-texto">Actividades Incluidas</span>
         </div>
       </div>
 
       <!-- Línea de separación -->
       <div class="linea-separacion"></div>
 
-      <!-- Botón ver actividades -->
-      <div class="boton-actividades-paquete">
-        <button class="btn-ver-actividades-paquete" (click)="verActividadesDetalladas()">
-          Ver Actividades Detalladas
-          <i class="bi bi-arrow-right ms-2"></i>
+      <!-- Imagen del paquete -->
+      <div class="modal-imagen-paquete">
+        <img [src]="getImagen(paqueteVer)" class="imagen-paquete" [alt]="paqueteVer?.nombre" />
+
+        <div class="overlay-titulo-paquete">
+          <h1 class="titulo-paquete-imagen">
+            {{ paqueteVer?.duracionDias }} días en {{ paqueteVer?.destino }}
+          </h1>
+        </div>
+      </div>
+
+      <!-- Contenido del modal -->
+      <div class="modal-contenido-paquete">
+
+        <!-- Información del Paquete -->
+        <div class="seccion-paquete">
+
+          <div class="destino-detalle-paquete">
+            <div class="contenedor-icono-texto">
+              <span class="icono-documento">
+                <i class="bi bi-geo-alt-fill"></i>
+              </span>
+              <span class="destino-texto-paquete-detalle">{{ paqueteVer?.destino }}</span>
+            </div>
+
+            <div class="contenedor-icono-texto">
+              <span class="icono-documento">
+                <i class="bi bi-file-earmark-text"></i>
+              </span>
+              <p class="descripcion-paquete-detalle">
+                {{ paqueteVer?.descripcion }}
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Duración y precio -->
+          <div class="info-duracion-precio-paquete">
+            <div class="contenedor-icono-texto">
+              <span class="icono-documento">
+                <i class="bi bi-clock"></i>
+              </span>
+              <span class="duracion-texto-paquete">{{ paqueteVer?.duracionDias }} días</span>
+            </div>
+
+            <div class="contenedor-icono-texto">
+              <span class="icono-documento">
+                <i class="bi bi-currency-euro"></i>
+              </span>
+              <span class="precio-valor-paquete">{{ paqueteVer?.precio }}€/persona</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Servicios Incluidos -->
+        <div class="seccion-servicios-anterior">
+          <h5 class="section-title-ver mt-3">Servicios Incluidos</h5>
+          <div class="tags-container-ver">
+            <span *ngIf="paqueteVer?.incluyeVuelo" class="paquete-tag-ver">
+              <i class="bi bi-airplane"></i> Vuelo
+            </span>
+            <span *ngIf="paqueteVer?.incluyeHotel" class="paquete-tag-ver">
+              <i class="bi bi-hospital"></i> Hotel
+            </span>
+            <span *ngIf="!paqueteVer?.incluyeHotel && !paqueteVer?.incluyeVuelo" class="tag-empty-ver">
+              Ninguno
+            </span>
+
+            <!-- Transporte fijo -->
+            <span class="paquete-tag-ver">
+              <i class="bi bi-bus-front"></i> Transporte
+            </span>
+          </div>
+        </div>
+
+        <!-- Línea de separación -->
+        <div class="linea-separacion"></div>
+
+        <!-- Botón ver actividades -->
+        <div class="boton-actividades-paquete">
+          <button class="btn-ver-actividades-paquete" (click)="verActividadesDetalladas()">
+            Ver Actividades Detalladas
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!--       STEP 2 ACTIVIDADES    -->
+    <div *ngIf="stepActual === 2" class="step-actividades-container">
+
+      <!-- STEPPER -->
+      <div class="stepper-paquete">
+        <div class="step-paquete">
+          <span class="step-numero">1</span>
+          <span class="step-texto">Información del Paquete</span>
+        </div>
+        <div class="step-linea"></div>
+        <div class="step-paquete active">
+          <span class="step-numero">2</span>
+          <span class="step-texto">Actividades Incluidas</span>
+        </div>
+      </div>
+
+      <div class="linea-separacion"></div>
+
+      <h2 class="titulo-actividades-img">
+        Itinerario de Actividades - {{ actividades.length }} actividades incluidas
+      </h2>
+
+      <p class="subtitulo-actividades-img">
+        Horario detallado de experiencias durante el viaje
+      </p>
+
+      <!-- Tarjetas  -->
+      <div class="lista-actividades-img">
+
+        <div *ngFor="let act of actividades" class="actividad-card-img">
+
+          <!-- Imagen -->
+          <div class="actividad-imagen-wrapper">
+            <img [src]="act.imagen" class="actividad-imagen-img" />
+          </div>
+
+          <!-- Contenido-->
+          <div class="actividad-info-img">
+
+            <div class="actividad-fecha-img">
+              <i class="bi bi-calendar2-week"></i>
+              Día {{ act.dia }} · {{ act.horaInicio?.slice(0,5) }} - {{ act.horaFin?.slice(0,5) }}
+
+            </div>
+
+            <h3 class="actividad-titulo-img">{{ act.titulo }}</h3>
+
+            <p class="actividad-descripcion-img">{{ act.descripcion }}</p>
+
+            <div class="actividad-extra-img">
+              <div class="actividad-icono-texto">
+                <i class="bi bi-geo-alt"></i> {{ paqueteVer?.destino }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTÓN VOLVER -->
+      <div class="boton-volver">
+        <button class="btn-volver" (click)="volverStep1()">
+          <i class="bi bi-arrow-left me-2"></i> Volver a información
         </button>
       </div>
 
     </div>
-    </div>
-    
-    <!-- ========================== -->
-<!--       STEP 2 ACTIVIDADES    -->
-<!-- ========================== -->
-<div *ngIf="stepActual === 2" class="step-actividades-container">
 
-  <!-- STEPPER -->
-  <div class="stepper-paquete">
-    <div class="step-paquete">
-      <span class="step-numero">1</span>
-      <span class="step-texto">Información del Paquete</span>
-    </div>
-    <div class="step-linea"></div>
-    <div class="step-paquete active">
-      <span class="step-numero">2</span>
-      <span class="step-texto">Actividades Incluidas</span>
-    </div>
+
   </div>
-
-  <div class="linea-separacion"></div>
-
-  <h2 class="titulo-actividades-img">
-    Itinerario de Actividades - {{ actividades.length }} actividades incluidas
-  </h2>
-
-  <p class="subtitulo-actividades-img">
-    Horario detallado de experiencias durante el viaje
-  </p>
-
-  <!-- Tarjetas como en la imagen -->
-  <div class="lista-actividades-img">
-
-    <div *ngFor="let act of actividades" class="actividad-card-img">
-
-      <!-- Imagen izquierda -->
-      <div class="actividad-imagen-wrapper">
-        <img [src]="act.imagen" class="actividad-imagen-img" />
-      </div>
-
-      <!-- Contenido derecha -->
-      <div class="actividad-info-img">
-
-        <div class="actividad-fecha-img">
-          <i class="bi bi-calendar2-week"></i>
-          Día {{ act.dia }} · {{ act.horaInicio?.slice(0,5) }} - {{ act.horaFin?.slice(0,5) }}
-
-        </div>
-
-        <h3 class="actividad-titulo-img">{{ act.titulo }}</h3>
-
-        <p class="actividad-descripcion-img">{{ act.descripcion }}</p>
-
-        <div class="actividad-extra-img">
-          <div class="actividad-icono-texto">
-            <i class="bi bi-geo-alt"></i> {{ paqueteVer?.destino }}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTÓN VOLVER -->
-  <div class="boton-volver">
-    <button class="btn-volver" (click)="volverStep1()">
-      <i class="bi bi-arrow-left me-2"></i> Volver a información
-    </button>
-  </div>
-
-</div>
-
-
-  </div>   
 </div>
 
 

@@ -376,7 +376,7 @@
    RESPONSIVE
 ============================================================ */
 
-/* Tablet (768px - 1200px) */
+/* Tablet */
 @media (max-width: 1200px) {
   .clientes-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -384,7 +384,7 @@
   }
 }
 
-/* Tablet pequeña (768px - 992px) */
+/* Tablet pequeña */
 @media (max-width: 992px) {
   .d-flex h2 {
     font-size: 1.75rem;
@@ -423,7 +423,7 @@
   }
 }
 
-/* Móvil (576px - 768px) */
+/* Móvil */
 @media (max-width: 768px) {
   .d-flex h2 {
     font-size: 1.5rem;
@@ -523,7 +523,7 @@
   }
 }
 
-/* Móvil pequeño (< 576px) */
+/* Móvil pequeño */
 @media (max-width: 576px) {
   .d-flex h2 {
     font-size: 1.25rem;
@@ -619,7 +619,7 @@
   }
 }
 
-/* MODAL OVERLAY */
+/* MODAL  */
 .modal-overlay {
   position: fixed;
   top: 0;

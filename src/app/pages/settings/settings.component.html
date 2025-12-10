@@ -1,5 +1,5 @@
 <div class="profile-container">
-  <!-- Header Section -->
+  <!-- CABECERA -->
   <div class="profile-header">
     <div class="header-texts">
       <h2 class="profile-title">Perfil de Usuario</h2>
@@ -7,16 +7,16 @@
     </div>
   </div>
 
-  <!-- Loading state -->
+  <!-- CARGA DE USUARIO -->
   <div *ngIf="!usuarioActual" class="loading-state">
     <div class="spinner"></div>
     <p>Cargando usuario...</p>
   </div>
 
-  <!-- Profile Content -->
+  <!-- CONTENIDO DEL PERFIL -->
   <div *ngIf="usuarioActual" class="profile-content">
 
-    <!-- Profile Card -->
+    <!-- CARD PERFIL -->
     <div class="profile-card">
       <div class="profile-avatar-section">
         <div class="avatar-large">
@@ -75,7 +75,7 @@
               <p class="info-value">{{ usuarioActual.username }}</p>
             </div>
 
-            <!-- Password (masked) -->
+            <!-- Password -->
             <div class="info-item" *ngIf="!isEditingUser">
               <label class="info-label"><i class="bi bi-key"></i> Contraseña</label>
               <p class="info-value password-masked">••••••••</p>
@@ -84,7 +84,7 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!--BOTONES DE ACCIONES -->
         <div *ngIf="isEditingUser" class="actions-card">
           <button type="button" class="btn-save" (click)="guardarCambios()">
             <i class="bi bi-check-lg"></i> Guardar
@@ -95,7 +95,7 @@
         </div>
       </form>
 
-      <!-- Account Details Card -->
+      <!-- DETALLES DE LA CUENTA -->
       <div class="info-card">
         <div class="card-header">
           <h3><i class="bi bi-gear"></i> Detalles de la Cuenta</h3>
@@ -288,7 +288,6 @@
             </thead>
             <tbody>
               <tr *ngFor="let usuario of usuarios">
-                <!-- Avatar + Nombre -->
                 <td>
                   <div class="user-cell">
                     <div class="user-avatar">

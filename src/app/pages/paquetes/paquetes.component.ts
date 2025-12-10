@@ -37,7 +37,7 @@ export class PaquetesComponent implements OnInit {
   paquetesPorPagina = 8;
   totalFiltrados = 0;
 
-  // --- STEP 2 VARIABLES ---
+  // STEP 2
   stepActual = 1;
   actividades: PaqueteActividad[] = [];
 
@@ -184,8 +184,8 @@ export class PaquetesComponent implements OnInit {
 
   abrirModalVer(paquete: Paquete): void {
     this.paqueteVer = paquete;
-    this.stepActual = 1; // SIEMPRE EMPIEZA EN STEP 1
-    this.actividades = []; // LIMPIA ACTIVIDADES
+    this.stepActual = 1; 
+    this.actividades = []; 
     this.mostrarModalVer = true;
   }
 
@@ -216,24 +216,18 @@ export class PaquetesComponent implements OnInit {
     }
   }
 
-  /** Devuelve la URL de la imagen para un paquete.
-   *  - Si `paquete.imagen` está presente, la usa directamente.
-   *  - Si no, intenta mapear por `destino`/`nombre` a un archivo en `assets/img`.
-   *  - Si no encuentra, devuelve una imagen por defecto. */
+
   getImagen(paquete: Paquete | null): string {
     if (!paquete) return 'assets/img/logoBlanco.png';
 
-    // Si se proporciona explicitamente el nombre de archivo en paquete.imagen, úsalo (añade extensión si falta)
     const imgProp = (paquete as any).imagen;
     if (imgProp) {
       const file = imgProp.toString();
       return file.match(/\.(png|jpg|jpeg|webp|svg)$/i) ? `assets/img/${file}` : `assets/img/${file}.png`;
     }
 
-    // Archivos disponibles en assets/img (mantener sincronizado si añades nuevas imágenes)
     const available = new Set(['paris.png', 'roma.png', 'grecia.png', 'maldivas.png', 'logoBlanco.png']);
 
-    // Normaliza y divide en tokens (palabras) usando separadores no alfanuméricos
     const normalize = (s: string) =>
       s
         .toLowerCase()
@@ -247,13 +241,11 @@ export class PaquetesComponent implements OnInit {
 
     const tokens = source.split(/\s+/).filter(t => t.length > 0);
 
-    // Intenta cada token: 'paris' -> 'paris.png'
     for (const t of tokens) {
       const candidate = `${t}.png`;
       if (available.has(candidate)) return `assets/img/${candidate}`;
     }
 
-    // Intenta combinación completa sin espacios: 'parisfrancia' -> 'paris.png' (buscar substring)
     const joined = tokens.join('');
     for (const file of Array.from(available)) {
       if (joined.includes(file.replace(/\.png$/i, ''))) return `assets/img/${file}`;

@@ -541,7 +541,6 @@ label {
   transition: all 0.3s ease;
 }
 
-/* HOVER SUAVE */
 .toolbar-filtros:hover {
   box-shadow: 0 8px 25px rgba(79, 169, 169, 0.25);
 }
@@ -664,9 +663,7 @@ label {
 
 /* ACTIVIDAD PAQUETE */
 
-/* ================================
-   OVERLAY
-================================= */
+/*MODAL VER PAQUETE*/
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -677,9 +674,7 @@ label {
   z-index: 9999;
 }
 
-/* ================================
-   CONTENEDOR DEL MODAL
-================================= */
+/*ÇCONTENEDOR DEL MODAL */
 .modal-container.modal-detalle-paquete {
   width: 780px;
   max-width: 95%;
@@ -697,9 +692,7 @@ label {
   to { opacity: 1; transform: translateY(0);}
 }
 
-/* ================================
-   IMAGEN SUPERIOR
-================================= */
+/* IMAGEN*/
 .modal-imagen-paquete {
   position: relative;
   width: 100%;
@@ -714,7 +707,7 @@ label {
   object-fit: cover;
 }
 
-/* Título grande sobre la imagen */
+/* Título sobre la imagen */
 .overlay-titulo-paquete {
   position: absolute;
   bottom: 22px;
@@ -725,7 +718,7 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px; /* Más separación del stepper */
+  margin-bottom: 28px; 
 }
 
 .titulo-paquete-imagen {
@@ -738,11 +731,11 @@ label {
 .titulo-paquete {
   font-size: 2rem;
   font-weight: 700;
-  color: #286376; /* Azul */
-  text-shadow: none; /* Opcional si no quieres sombra */
+  color: #286376;
+  text-shadow: none; 
 }
 
-/* Badge de estado (idéntico a la imagen) */
+/* Badge de estado */
 .estado-badge-paquete-detalle {
  padding: 6px 14px;
   border-radius: 12px;
@@ -763,16 +756,12 @@ label {
   border-color: #E5A3A8;
 }
 
-/* ================================
-   CONTENIDO
-================================= */
+/* CONTENIDO*/
 .modal-contenido-paquete {
   padding: 32px 34px 28px 34px;
 }
 
-/* ================================
-   STEPPER (idéntico al de la imagen)
-================================= */
+/* STEPPER*/
 .stepper-paquete {
   display: flex;
   align-items: center;
@@ -815,9 +804,7 @@ label {
   background: #dcdcdc;
 }
 
-/* ================================
-   SECCIÓN INFO
-================================= */
+/* SECCIÓN INFO */
 
 /* Destino */
 .destino-info-paquete-detalle {
@@ -832,19 +819,18 @@ label {
   font-size: 1.2rem;
 }
 
-/* Contenedor flex para icono + descripción */
+/*  icono + descripción */
 .descripcion-con-icono {
   display: flex;
   align-items: flex-start;
-  gap: 12px; /* Espacio entre icono y texto */
+  gap: 12px; 
 }
 
-/* Círculo azul con ícono */
 .icono-documento {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #E7F3F3; /* Azul claro */
+  background-color: #E7F3F3; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -852,14 +838,14 @@ label {
 }
 
 .icono-documento i {
- color: #286376; /* Azul */
+ color: #286376; 
   font-size: 0.9rem;
 }
 
 .contenedor-icono-texto {
   display: flex;
   align-items: flex-start;
-  gap: 10px; /* Espacio entre icono y texto */
+  gap: 10px;
   margin-bottom: 10px;
 }
 
@@ -873,7 +859,7 @@ label {
 /* Duración + precio */
 .info-duracion-precio-paquete {
    display: flex;
-  gap: 30px; /* Espacio entre duración y precio */
+  gap: 30px; 
   margin-top: 20px;
   align-items: center;
   justify-content: flex-start; 
@@ -881,8 +867,8 @@ label {
 
 .duracion-texto-paquete,
 .precio-valor-paquete {
-  font-size: 1rem; /* Mismo tamaño */
-  color: #286376;  /* Azul uniforme */
+  font-size: 1rem; 
+  color: #286376; 
   font-weight: 600;
 }
 
@@ -892,9 +878,7 @@ label {
   gap: 10px;
 }
 
-/* ================================
-   SERVICIOS INCLUIDOS
-================================= */
+/* SERVICIOS INCLUIDOS*/
 .section-title-ver {
   font-size: 1.05rem;
   font-weight: 600;
@@ -934,9 +918,7 @@ label {
   font-style: italic;
 }
 
-/* ================================
-   BOTÓN ACTIVIDADES
-================================= */
+/*  BOTÓN ACTIVIDADES*/
 .boton-actividades-paquete {
   margin-top: 30px;
   text-align: center;
@@ -958,11 +940,10 @@ label {
   background: #3f9090;
 }
 
-/* Línea de separación gris clara */
 .linea-separacion {
   border-top: 1px solid #4fa9a95d;
   width: 100%;
-  margin: 30px 0; /* Ajusta verticalmente el espacio */
+  margin: 30px 0; 
 }
 
 
@@ -1029,7 +1010,6 @@ label {
   border-radius: 6px;
 }
 
-/* ============= */
 /* TITULOS */
 .titulo-actividades-img {
   font-size: 1.4rem;
@@ -1042,7 +1022,6 @@ label {
   margin-bottom: 25px;
 }
 
-/* ============= */
 /* LISTA TARJETAS */
 .lista-actividades-img {
   display: flex;
@@ -1084,7 +1063,7 @@ label {
   gap: 6px;
 }
 
-/* Fecha estilo etiqueta */
+/* Fecha */
 .actividad-fecha-img {
   font-size: 0.86rem;
   background: #E7F3F3;
@@ -1148,11 +1127,9 @@ label {
 
 
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
+/* RESPONSIVE */
 
-/* Tablet (768px - 1200px) */
+/* Tablet */
 @media (max-width: 1200px) {
   .content {
     padding: 1.5rem;
@@ -1164,7 +1141,7 @@ label {
   }
 }
 
-/* Tablet pequeña (768px - 992px) */
+/* Tablet pequeña*/
 @media (max-width: 992px) {
   .content {
     padding: 1rem;
@@ -1231,7 +1208,7 @@ label {
   }
 }
 
-/* Móvil (576px - 768px) */
+/* Móvil*/
 @media (max-width: 768px) {
   .content {
     padding: 0.75rem;
@@ -1349,7 +1326,7 @@ label {
   }
 }
 
-/* Móvil pequeño (< 576px) */
+/* Móvil pequeño */
 @media (max-width: 576px) {
   .content {
     padding: 0.5rem;

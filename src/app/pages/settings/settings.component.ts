@@ -15,14 +15,14 @@ import { AuthService } from '../../core/service/AuthService';
 })
 export class SettingsComponent implements OnInit {
 
-  usuarioForm!: FormGroup;         // Formulario del usuario actual (solo para Personal Info Card)
-  nuevoUsuarioForm!: FormGroup;    // Formulario para crear nuevo usuario
-  editarUsuarioForm!: FormGroup;   // Formulario para editar usuario de la tabla
+  usuarioForm!: FormGroup;
+  nuevoUsuarioForm!: FormGroup;
+  editarUsuarioForm!: FormGroup;
   usuarioActual!: Usuario;
   usuarios: Usuario[] = [];
-  isEditingUser = false;           // solo para editar usuario desde Personal Info Card
+  isEditingUser = false;
   mostrarModalCrear = false;
-  mostrarModalEditar = false;      // Modal para editar usuario de la tabla
+  mostrarModalEditar = false;
   usuarioAEditar: Usuario | null = null;
 
 
@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Inicializamos formulario del usuario actual
+    // formulario del usuario actual
     this.usuarioForm = this.fb.group({
       nombre: [''],
       email: [{ value: '', disabled: true }],
@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
       enabled: [false]
     });
 
-    // Inicializamos formulario para crear nuevo usuario
+    //formulario para crear nuevo usuario
     this.nuevoUsuarioForm = this.fb.group({
       nombre: [''],
       username: [''],
@@ -53,10 +53,10 @@ export class SettingsComponent implements OnInit {
       enabled: [true]
     });
 
-    // Inicializamos formulario para editar usuario de la tabla
+    //  formulario para editar usuario 
     this.editarUsuarioForm = this.fb.group({
       nombre: [''],
-      username: [{ value: '', disabled: true }], // Username no se puede editar
+      username: [{ value: '', disabled: true }],
       apellidos: [''],
       email: [''],
       direccion: [''],
@@ -74,7 +74,6 @@ export class SettingsComponent implements OnInit {
         });
     }
     // Cargar todos los usuarios SOLO si el usuario es administrador
-    // (se hará después de obtener usuarioActual)
     if (loggedUser) {
       this.usuarioService.buscarPorUsername(loggedUser.username)
         .subscribe((u: Usuario) => {
@@ -100,14 +99,14 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  /** Carga todos los usuarios desde el backend */
+  /** Carga todos los usuarios*/
   cargarUsuarios() {
     this.usuarioService.listarTodos().subscribe((data: Usuario[]) => {
       this.usuarios = data;
     });
   }
 
-  /** Guarda cambios del usuario actual (solo desde Personal Info Card) */
+  /** Guarda cambios del usuario actual */
   guardarCambios() {
     const updatedUser: Usuario = {
       ...this.usuarioActual,
@@ -118,9 +117,8 @@ export class SettingsComponent implements OnInit {
     this.usuarioService.actualizar(updatedUser).subscribe({
       next: (usuarioActualizado: Usuario) => {
         alert('Cambios guardados correctamente');
-        this.usuarioActual = usuarioActualizado; // actualizar datos locales
+        this.usuarioActual = usuarioActualizado;
         this.isEditingUser = false;
-        // Recargar usuario actual y lista de usuarios
         const loggedUser = this.authService.getUser();
         if (loggedUser) {
           this.usuarioService.buscarPorUsername(loggedUser.username)
@@ -157,7 +155,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  /** Abre el modal para editar un usuario de la tabla */
+  /** editar un usuario */
   editarUsuario(u: Usuario) {
     this.usuarioAEditar = { ...u };
     this.editarUsuarioForm.patchValue({
@@ -172,14 +170,14 @@ export class SettingsComponent implements OnInit {
     this.mostrarModalEditar = true;
   }
 
-  /** Guarda los cambios del usuario editado desde la tabla */
+  /** Guarda los cambios del usuario editado */
   guardarUsuarioEditado() {
     if (!this.usuarioAEditar || this.editarUsuarioForm.invalid) return;
 
     const updatedUser: Usuario = {
       ...this.usuarioAEditar,
       ...this.editarUsuarioForm.getRawValue(),
-      username: this.usuarioAEditar.username, // Mantener el username original
+      username: this.usuarioAEditar.username,
       enabled: this.editarUsuarioForm.value.enabled ? 1 : 0
     };
 
@@ -204,30 +202,29 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  /** Crear un nuevo usuario desde el modal */
+  /** Crear un nuevo usuario  */
   crearUsuario() {
     if (this.nuevoUsuarioForm.invalid) return;
 
-    // Obtener fecha actual en formato yyyy-MM-dd
     const fechaActual = new Date().toISOString().split('T')[0];
 
     const payload: Usuario = {
       ...this.nuevoUsuarioForm.value,
       enabled: this.nuevoUsuarioForm.value.enabled ? 1 : 0,
-      fechaRegistro: fechaActual // Añadir fecha de registro automáticamente
+      fechaRegistro: fechaActual
     };
 
     this.usuarioService.crear(payload).subscribe({
       next: () => {
         alert('Usuario creado correctamente');
         this.cargarUsuarios();
-        // Reset formulario
+
         this.nuevoUsuarioForm.reset({
           rol: 'EMPLEADO',
           enabled: true,
           direccion: ''
         });
-        this.mostrarModalCrear = false; // cerrar modal
+        this.mostrarModalCrear = false;
       },
       error: (err: any) => {
         alert('Error al crear el usuario: ' + (err.message || 'Error desconocido'));

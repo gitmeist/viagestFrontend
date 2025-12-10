@@ -10,7 +10,6 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const userRole = authService.getRole();
 
   if (!authService.isAuthenticated() || !userRole || !expectedRoles.some(role => userRole.includes(role))) {
-    // Redirect to a default page if the user doesn't have the required role
     router.navigate(['/home']);
     return false;
   }
