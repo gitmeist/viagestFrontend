@@ -81,6 +81,16 @@
               <p class="info-value password-masked">••••••••</p>
             </div>
 
+            <!-- Cambiar contraseña -->
+            <div class="info-item" *ngIf="isEditingUser">
+              <label class="info-label"><i class="bi bi-shield-lock"></i> Nueva contraseña</label>
+              <input type="password" class="form-input" formControlName="newPassword" placeholder="Nueva contraseña" />
+            </div>
+            <div class="info-item" *ngIf="isEditingUser">
+              <label class="info-label"><i class="bi bi-shield-lock"></i> Confirmar contraseña</label>
+              <input type="password" class="form-input" formControlName="confirmPassword" placeholder="Confirmar contraseña" />
+            </div>
+
           </div>
         </div>
 
