@@ -1132,10 +1132,19 @@ label {
 }
 
 /* Botón volver */
-.btn-volver {
-  margin-top: 25px;
+.boton-volver {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.btn-volver {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   background: #4fa9a9;
   color: white;
   padding: 10px 26px;
@@ -1143,7 +1152,25 @@ label {
   font-weight: 600;
   border: none;
   transition: 0.2s ease;
-  
+}
+
+.boton-volver .btn-ver-actividades-paquete {
+  background: #4fa9a9;
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+@media (max-width: 576px) {
+  .boton-volver {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .boton-volver button {
+    width: 100%;
+  }
 }
 
 

@@ -367,6 +367,18 @@
           <div class="actividad-icono-texto">
             <i class="bi bi-geo-alt"></i> {{ paqueteVer?.destino }}
           </div>
+          <div class="actividad-icono-texto">
+            <i class="bi bi-tags"></i> {{ act.tipo }}
+          </div>
+        </div>
+
+        <div class="actividad-actions">
+          <button class="btn btn-sm btn-outline-success me-2" (click)="abrirModalEditarActividad(act)">
+            <i class="bi bi-pencil"></i> Editar
+          </button>
+          <button class="btn btn-sm btn-outline-danger" (click)="eliminarActividad(act)">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
         </div>
 
       </div>
@@ -377,6 +389,9 @@
   <div class="boton-volver">
     <button class="btn-volver" (click)="volverStep1()">
       <i class="bi bi-arrow-left me-2"></i> Volver a información
+    </button>
+    <button class="btn-ver-actividades-paquete ms-2" (click)="abrirModalNuevaActividad()">
+      <i class="bi bi-plus-lg me-1"></i> Nueva Actividad
     </button>
   </div>
 
@@ -458,3 +473,59 @@
     </form>
   </div>
 </div>
+
+<!-- Modal Crear/Editar Actividad -->
+<div class="modal-overlay" *ngIf="mostrarModalActividad" (click)="cerrarModalActividad()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <h5 class="modal-title">{{ isNuevaActividad ? 'Nueva Actividad' : 'Editar Actividad' }}</h5>
+    <hr class="divider" />
+    <form *ngIf="actividadEdit" (ngSubmit)="guardarActividad()">
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Tipo</label>
+          <select class="form-select" [(ngModel)]="actividadEdit.tipo" name="tipoActividad">
+            <option value="ACTIVIDAD">ACTIVIDAD</option>
+            <option value="VUELO">VUELO</option>
+            <option value="HOTEL">HOTEL</option>
+            <option value="TRANSPORTE">TRANSPORTE</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label>Día</label>
+          <input type="number" class="form-control" [(ngModel)]="actividadEdit.dia" name="diaActividad" min="1" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Título</label>
+        <input type="text" class="form-control" [(ngModel)]="actividadEdit.titulo" name="tituloActividad" />
+      </div>
+
+      <div class="mb-3">
+        <label>Descripción</label>
+        <textarea class="form-control" rows="3" [(ngModel)]="actividadEdit.descripcion" name="descripcionActividad"></textarea>
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label>Hora inicio</label>
+          <input type="time" class="form-control" [(ngModel)]="actividadEdit.horaInicio" name="horaInicioActividad" />
+        </div>
+        <div class="col-md-6">
+          <label>Hora fin</label>
+          <input type="time" class="form-control" [(ngModel)]="actividadEdit.horaFin" name="horaFinActividad" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label>Imagen (opcional)</label>
+        <input type="text" class="form-control" [(ngModel)]="actividadEdit.imagen" name="imagenActividad" placeholder="URL o nombre de archivo en assets/img" />
+      </div>
+
+      <div class="text-end mt-3">
+        <button type="button" class="btn btn-cancelar me-2" (click)="cerrarModalActividad()">Cancelar</button>
+        <button type="submit" class="btn btn-guardar">{{ isNuevaActividad ? 'Crear' : 'Guardar' }}</button>
+      </div>
+    </form>
+  </div>
+  </div>
