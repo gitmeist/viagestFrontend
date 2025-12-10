@@ -63,7 +63,7 @@
 
 
     <!-- Ajustes -->
-    <li *ngIf="userRole && userRole.includes('ADMON')" class="sb__bottom">
+    <li *ngIf="userRole && (userRole.includes('ADMON') || userRole.includes('AGENTE') || userRole.includes('EMPLEADO'))" class="sb__bottom">
       <a routerLink="/settings" routerLinkActive="is-active" (click)="onLinkClick()">
         <span class="sb__ico" aria-hidden="true">
           <i class="bi bi-gear"></i>
