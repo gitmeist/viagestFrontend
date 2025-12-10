@@ -11,7 +11,7 @@
       <div class="position-relative flex-grow-1 buscador-wrapper" style="min-width:260px;">
         <i class="bi bi-search search-icon"></i>
         <input id="busqueda-pagos" type="text" class="form-control buscador-input ps-5"
-          placeholder="Buscar por cliente o referencia" [(ngModel)]="filtroTexto" (input)="aplicarFiltros()"
+          placeholder="Buscar por cliente" [(ngModel)]="filtroTexto" (input)="aplicarFiltros()"
           aria-label="Buscar" />
       </div>
 
@@ -72,7 +72,6 @@
     <div class="detalle">
       <span>💳 {{ pago.metodoPago }}</span>
       <span>📅 {{ pago.fechaPago | date:'yyyy-MM-dd' }}</span>
-      <span>📄 {{ pago.referencia }}</span>
     </div>
 
     <!-- Botones -->
@@ -137,10 +136,6 @@
             <div class="col-md-6">
               <label>Fecha de Pago</label>
               <input type="text" class="form-control" [value]="pagoVer.fechaPago | date:'yyyy-MM-dd HH:mm'" readonly />
-            </div>
-            <div class="col-md-6">
-              <label>Referencia</label>
-              <input type="text" class="form-control" [value]="pagoVer.referencia" readonly />
             </div>
           </div>
 

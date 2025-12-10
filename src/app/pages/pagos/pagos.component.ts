@@ -68,7 +68,6 @@ export class PagosComponent implements OnInit {
       const texto = this.filtroTexto.toLowerCase();
       const coincideTexto =
         !texto ||
-        pago.referencia.toLowerCase().includes(texto) ||
         pago.reserva.cliente?.nombre?.toLowerCase().includes(texto);
 
       const coincideEstado = !this.filtroEstado || pago.estadoPago === this.filtroEstado;
@@ -272,8 +271,6 @@ export class PagosComponent implements OnInit {
       doc.setFontSize(11);
       const p = factura.pago;
       doc.text(`ID Pago: ${p?.idPago ?? '-'}`, left, y);
-      y += 6;
-      doc.text(`Referencia: ${p?.referencia ?? '-'}`, left, y);
       y += 6;
       doc.text(`Cliente: ${p?.reserva?.cliente?.nombre ?? '-'}`, left, y);
       y += 6;
