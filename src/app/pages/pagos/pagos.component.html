@@ -151,18 +151,18 @@
         </div>
 
         <hr class="divider" />
-        <div class="text-end mt-3">
-          <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success me-2" (click)="toggleEdicionPago()">
+        <div class="modal-footer-actions">
+          <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success" (click)="toggleEdicionPago()">
             <i class="bi bi-pencil me-1"></i>Editar Pago
           </button>
-          <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary me-2" (click)="toggleEdicionPago()">
+          <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary" (click)="toggleEdicionPago()">
             <i class="bi bi-x-circle me-1"></i>Cancelar Edición
           </button>
-          <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise me-2" (click)="actualizarPago()">
+          <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise" (click)="actualizarPago()">
             <i class="bi bi-check-circle me-1"></i>Actualizar Pago
           </button>
 
-          <button type="button" class="btn btn-success me-2" (click)="generarFactura()">
+          <button type="button" class="btn btn-success" (click)="generarFactura()">
             <i class="bi bi-file-earmark-text me-1"></i>Generar Factura
           </button>
 
