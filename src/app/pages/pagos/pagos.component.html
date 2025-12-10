@@ -85,6 +85,10 @@
               (click)="aceptarPago(pago)">
         Aceptar Pago
       </button>
+      <button *ngIf="pago.estadoPago === 'CANCELADO'" class="btn-accion btn-fallido"
+              (click)="marcarComoFallido(pago)">
+        Marcar Fallido
+      </button>
       <button class="btn-detalles" (click)="abrirModalVerPago(pago)">Detalles</button>
     </div>
 

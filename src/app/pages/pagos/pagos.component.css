@@ -228,6 +228,14 @@
   background: #0a4438;
 }
 
+.btn-accion.btn-fallido {
+  background: #e57373;
+}
+
+.btn-accion.btn-fallido:hover {
+  background: #d9534f;
+}
+
 .btn-detalles {
   background: #f1f1f1;
   border-radius: 18px;

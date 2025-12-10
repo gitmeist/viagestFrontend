@@ -156,6 +156,24 @@ export class PagosComponent implements OnInit {
     });
   }
 
+  /** Marca el pago como fallido */
+  marcarComoFallido(pago: Pago): void {
+    if (!confirm(`¿Marcar el pago #${pago.idPago} como FALLIDO?`)) return;
+
+    this.pagoService.fallarPago(pago.idPago).subscribe({
+      next: (res: Pago) => {
+        const index = this.pagos.findIndex(p => p.idPago === res.idPago);
+        if (index !== -1) this.pagos[index] = res;
+        this.aplicarFiltros();
+        alert(`Pago #${pago.idPago} marcado como FALLIDO`);
+      },
+      error: (err: any) => {
+        console.error('Error al marcar pago como fallido:', err);
+        alert('No se pudo marcar el pago como fallido');
+      }
+    });
+  }
+
   abrirModalVerPago(pago: Pago): void {
     this.pagoVer = pago;
     this.mostrarModalVerPago = true;

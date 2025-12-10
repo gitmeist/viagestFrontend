@@ -125,6 +125,10 @@
         <i class="bi bi-card-text me-1"></i> Detalles
       </button>
 
+      <button *ngIf="r.estadoReserva === 'CONFIRMADA'" class="btn-accion cancelar" (click)="cancelar(r)">
+        <i class="bi bi-x-circle me-1"></i> Cancelar
+      </button>
+
       <button class="btn-accion eliminar" (click)="borrar(r)">
         <i class="bi bi-trash me-1"></i> Eliminar
       </button>

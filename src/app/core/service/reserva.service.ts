@@ -23,6 +23,11 @@ export class ReservaService {
     return this.http.put<Reserva>(`${this.baseUrl}/${id}`, reserva, { withCredentials: true });
   }
 
+  /** Cancelar reserva */
+  cancelar(id: number): Observable<Reserva> {
+    return this.http.put<Reserva>(`${this.baseUrl}/${id}/cancelar`, {}, { withCredentials: true });
+  }
+
   /** Eliminar reserva por ID */
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
