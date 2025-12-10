@@ -32,11 +32,7 @@
       </div>
 
       <div>
-        <input type="date" class="form-control" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" placeholder="Desde">
-      </div>
-
-      <div>
-        <input type="date" class="form-control" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" placeholder="Hasta">
+        <input type="date" class="form-control" [(ngModel)]="filtroFecha" (change)="aplicarFiltros()" placeholder="Fecha de Pago">
       </div>
 
       <!-- Botón Resetear Filtros -->

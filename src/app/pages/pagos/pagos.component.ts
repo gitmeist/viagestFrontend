@@ -28,7 +28,7 @@ export class PagosComponent implements OnInit {
   filtroTexto = '';
   filtroEstado = '';
   filtroMetodo = '';
-  rangoFecha = { desde: '', hasta: '' };
+  filtroFecha = '';
 
   // Paginación
   paginaActual = 1;
@@ -74,10 +74,11 @@ export class PagosComponent implements OnInit {
       const coincideEstado = !this.filtroEstado || pago.estadoPago === this.filtroEstado;
       const coincideMetodo = !this.filtroMetodo || pago.metodoPago === this.filtroMetodo;
 
-      const fecha = new Date(pago.fechaPago).getTime();
-      const desde = this.rangoFecha.desde ? new Date(this.rangoFecha.desde).getTime() : null;
-      const hasta = this.rangoFecha.hasta ? new Date(this.rangoFecha.hasta).getTime() : null;
-      const coincideFecha = (!desde || fecha >= desde) && (!hasta || fecha <= hasta);
+      let coincideFecha = true;
+      if (this.filtroFecha) {
+        const fechaPago = new Date(pago.fechaPago).toISOString().split('T')[0];
+        coincideFecha = fechaPago === this.filtroFecha;
+      }
 
       return coincideTexto && coincideEstado && coincideMetodo && coincideFecha;
     });
@@ -324,7 +325,7 @@ export class PagosComponent implements OnInit {
     this.filtroTexto = '';
     this.filtroEstado = '';
     this.filtroMetodo = '';
-    this.rangoFecha = { desde: '', hasta: '' };
+    this.filtroFecha = '';
     this.paginaActual = 1;
     this.aplicarFiltros();
   }
