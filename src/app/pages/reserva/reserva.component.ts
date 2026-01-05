@@ -358,7 +358,6 @@ export class ReservaComponent implements OnInit {
     if (!confirm(`¿Cancelar la reserva #${r.idReserva}?`)) return;
     this.reservaService.cancelar(r.idReserva).subscribe({
       next: (reservaActualizada: Reserva) => {
-        // Refrescar la lista y resumen
         this.cargarReservas();
         alert('Reserva cancelada correctamente');
       },

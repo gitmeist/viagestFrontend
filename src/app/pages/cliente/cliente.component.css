@@ -20,7 +20,6 @@
   transition: all 0.3s ease;
 }
 
-/* HOVER SUAVE */
 .clientes-container:hover {
   box-shadow: 0 8px 25px rgba(79, 169, 169, 0.25);
 }
@@ -372,9 +371,7 @@
 }
 
 
-/* ============================================================
-   RESPONSIVE
-============================================================ */
+/*  RESPONSIVE */
 
 /* Tablet */
 @media (max-width: 1200px) {

@@ -14,7 +14,7 @@ export interface Paquete {
   /** Precio del paquete */
   precio: number;
 
-  /** Nombre de archivo de la imagen (opcional) dentro de `assets/img` */
+  /** Nombre de archivo de la imagen  */
   imagen?: string;
 
   /** Duración en días */

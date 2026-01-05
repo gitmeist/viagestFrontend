@@ -251,12 +251,12 @@ export class PagosComponent implements OnInit {
       const doc = new jsPDF();
 
       // Colores corporativos
-      const primaryColor = [79, 169, 169]; // #4fa9a9 (Turquesa)
-      const darkColor = [40, 99, 118];     // #286376 (Azul oscuro)
-      const lightGray = [245, 247, 250];   // #f5f7fa (Gris claro)
+      const primaryColor = [79, 169, 169]; 
+      const darkColor = [40, 99, 118];    
+      const lightGray = [245, 247, 250];  
       const white = [255, 255, 255];
 
-      // --- HEADER ---
+      // HEADER
       // Fondo del encabezado
       doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
       doc.rect(0, 0, 210, 40, 'F');
@@ -267,7 +267,7 @@ export class PagosComponent implements OnInit {
       doc.setFont('helvetica', 'bold');
       doc.text('FACTURA', 15, 25);
 
-      // Datos de la empresa (Derecha)
+      // Datos de la empresa 
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
       doc.text('ViaGest S.L.', 195, 15, { align: 'right' });
@@ -275,12 +275,12 @@ export class PagosComponent implements OnInit {
       doc.text('CIF: B-12345678', 195, 25, { align: 'right' });
       doc.text('info@viagest.com', 195, 30, { align: 'right' });
 
-      // --- INFO FACTURA & CLIENTE ---
+      // INFO FACTURA y CLIENTE 
       let y = 55;
       const left = 15;
       const right = 120;
 
-      // Columna Izquierda: Cliente
+      //  Cliente
       doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
@@ -293,7 +293,7 @@ export class PagosComponent implements OnInit {
       const clienteNombre = factura.pago?.reserva?.cliente?.nombre || 'Cliente General';
       doc.text(clienteNombre, left, y);
       
-      // Columna Derecha: Detalles Factura
+      // Detalles Factura
       y = 55;
       doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
       doc.setFontSize(11);
@@ -315,7 +315,7 @@ export class PagosComponent implements OnInit {
       doc.text(`Método Pago:`, right, y);
       doc.text(`${factura.pago?.metodoPago || '-'}`, right + 30, y);
 
-      // --- TABLA DE CONCEPTOS ---
+      //TABLA DE CONCEPTOS
       y = 90;
       
       // Encabezado Tabla
@@ -328,7 +328,7 @@ export class PagosComponent implements OnInit {
       doc.text('DESCRIPCIÓN', 20, y + 7);
       doc.text('IMPORTE', 190, y + 7, { align: 'right' });
 
-      // Fila 1 (Detalles)
+      // Detalles
       y += 18;
       doc.setTextColor(0, 0, 0);
       doc.setFont('helvetica', 'normal');
@@ -339,10 +339,9 @@ export class PagosComponent implements OnInit {
       
       doc.text(`${factura.subtotal.toFixed(2)} €`, 190, y, { align: 'right' });
 
-      // --- TOTALES ---
-      y += 40; // Espacio fijo para simplificar
+      // TOTALES
+      y += 40; 
       
-      // Línea separadora
       doc.setDrawColor(220, 220, 220);
       doc.line(120, y, 195, y);
       y += 5;
@@ -366,7 +365,7 @@ export class PagosComponent implements OnInit {
       doc.text('TOTAL:', 140, y + 3);
       doc.text(`${factura.total.toFixed(2)} €`, 190, y + 3, { align: 'right' });
 
-      // --- FOOTER ---
+      // FOOTER
       const pageHeight = doc.internal.pageSize.height;
       doc.setTextColor(150, 150, 150);
       doc.setFontSize(8);

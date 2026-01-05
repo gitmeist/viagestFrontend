@@ -326,10 +326,8 @@ export class PaquetesComponent implements OnInit {
   getImagenActividad(actividad: PaqueteActividad | null): string {
     if (!actividad) return 'assets/img/actividades/default.png';
 
-    // Si el campo imagen existe y tiene valor, usarlo
     const imagen = (actividad as any).imagen?.trim();
     if (imagen) {
-      // Construcción de ruta basada en lo que tenga
       if (imagen.includes('assets/img/')) {
         return imagen;
       } else if (imagen.match(/\.(png|jpg|jpeg|webp|svg)$/i)) {
@@ -339,13 +337,11 @@ export class PaquetesComponent implements OnInit {
       }
     }
 
-    // Si no hay campo imagen, usar la descripción para seleccionar imagen
     const descripcionNormalizada = (actividad.descripcion || '')
       .toLowerCase()
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
     
-    // Mapeo específico de descripciones a imágenes - más específico primero
     if (descripcionNormalizada.includes('desayuno') || 
         descripcionNormalizada.includes('frances')) {
       return 'assets/img/actividades/desayuno-frances.jpg';
@@ -359,8 +355,6 @@ export class PaquetesComponent implements OnInit {
     if (descripcionNormalizada.includes('vuelo')) {
       return 'assets/img/actividades/vuelo-incluido.jpg';
     }
-
-    // Fallback
     return 'assets/img/actividades/default.png';
   }
 

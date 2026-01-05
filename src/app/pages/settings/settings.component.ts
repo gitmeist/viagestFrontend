@@ -117,7 +117,6 @@ export class SettingsComponent implements OnInit {
       alert('Las contraseñas no coinciden');
       return;
     }
-    // Validación básica de longitud
     if (newPassword && newPassword.length < 8) {
       alert('La nueva contraseña debe tener al menos 8 caracteres');
       return;
@@ -129,7 +128,6 @@ export class SettingsComponent implements OnInit {
       enabled: this.usuarioForm.value.enabled ? 1 : 0
     };
 
-    // Si hay nueva contraseña válida, incluirla en el payload
     if (newPassword && newPassword === confirmPassword) {
       (updatedUser as any).password = newPassword;
     }

@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   }
 
   onLinkClick(): void {
-    // Cerrar sidebar en móvil al hacer clic en un enlace
+    // Cerrar sidebar en móvil 
     if (window.innerWidth <= 768) {
       this.cerrar.emit();
     }
