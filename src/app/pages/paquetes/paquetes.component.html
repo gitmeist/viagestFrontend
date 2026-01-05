@@ -344,7 +344,12 @@
 
           <!-- Imagen -->
           <div class="actividad-imagen-wrapper">
-            <img [src]="act.imagen" class="actividad-imagen-img" />
+            <img 
+              [src]="getImagenActividad(act)" 
+              class="actividad-imagen-img" 
+              alt="{{ act.titulo }}"
+              (error)="onImageError($event)"
+            />
           </div>
 
           <!-- Contenido-->

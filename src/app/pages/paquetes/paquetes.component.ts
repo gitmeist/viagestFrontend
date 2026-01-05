@@ -79,6 +79,8 @@ export class PaquetesComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.actividades = data.sort((a, b) => a.dia - b.dia);
+          console.log('Actividades cargadas:', this.actividades);
+          console.log('Valores de imagen:', this.actividades.map(a => ({ titulo: a.titulo, imagen: a.imagen })));
         },
         error: (error) => {
           console.error('Error al cargar actividades:', error);
@@ -319,6 +321,55 @@ export class PaquetesComponent implements OnInit {
     }
 
     return 'assets/img/logoBlanco.png';
+  }
+
+  getImagenActividad(actividad: PaqueteActividad | null): string {
+    if (!actividad) return 'assets/img/actividades/default.png';
+
+    // Si el campo imagen existe y tiene valor, usarlo
+    const imagen = (actividad as any).imagen?.trim();
+    if (imagen) {
+      // Construcción de ruta basada en lo que tenga
+      if (imagen.includes('assets/img/')) {
+        return imagen;
+      } else if (imagen.match(/\.(png|jpg|jpeg|webp|svg)$/i)) {
+        return `assets/img/actividades/${imagen}`;
+      } else {
+        return `assets/img/actividades/${imagen}.png`;
+      }
+    }
+
+    // Si no hay campo imagen, usar la descripción para seleccionar imagen
+    const descripcionNormalizada = (actividad.descripcion || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    
+    // Mapeo específico de descripciones a imágenes - más específico primero
+    if (descripcionNormalizada.includes('desayuno') || 
+        descripcionNormalizada.includes('frances')) {
+      return 'assets/img/actividades/desayuno-frances.jpg';
+    }
+    
+    if (descripcionNormalizada.includes('tour') || 
+        descripcionNormalizada.includes('guiado')) {
+      return 'assets/img/actividades/tour-guiado.jpg';
+    }
+    
+    if (descripcionNormalizada.includes('vuelo')) {
+      return 'assets/img/actividades/vuelo-incluido.jpg';
+    }
+
+    // Fallback
+    return 'assets/img/actividades/default.png';
+  }
+
+  onImageError(event: any): void {
+    const src = event.target.src;
+    const actividadInfo = event.target.alt;
+    console.error('❌ Error cargando imagen:', src);
+    console.error('Actividad:', actividadInfo);
+    event.target.src = 'assets/img/actividades/default.png';
   }
 
 }
