@@ -38,7 +38,9 @@ export class SettingsComponent implements OnInit {
       nombre: [''],
       email: [{ value: '', disabled: true }],
       rol: [''],
-      enabled: [false]
+      enabled: [false],
+      newPassword: [''],
+      confirmPassword: ['']
     });
 
     //formulario para crear nuevo usuario
@@ -95,7 +97,9 @@ export class SettingsComponent implements OnInit {
       apellidos: [usuario.apellidos || ''],
       email: [{ value: usuario.email, disabled: true }],
       rol: [usuario.rol],
-      enabled: [usuario.enabled === 1]
+      enabled: [usuario.enabled === 1],
+      newPassword: [''],
+      confirmPassword: ['']
     });
   }
 
@@ -108,17 +112,36 @@ export class SettingsComponent implements OnInit {
 
   /** Guarda cambios del usuario actual */
   guardarCambios() {
+    const { newPassword, confirmPassword } = this.usuarioForm.getRawValue();
+    if ((newPassword || confirmPassword) && newPassword !== confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    // Validación básica de longitud
+    if (newPassword && newPassword.length < 8) {
+      alert('La nueva contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+
     const updatedUser: Usuario = {
       ...this.usuarioActual,
       ...this.usuarioForm.getRawValue(),
       enabled: this.usuarioForm.value.enabled ? 1 : 0
     };
 
+    // Si hay nueva contraseña válida, incluirla en el payload
+    if (newPassword && newPassword === confirmPassword) {
+      (updatedUser as any).password = newPassword;
+    }
+
     this.usuarioService.actualizar(updatedUser).subscribe({
       next: (usuarioActualizado: Usuario) => {
         alert('Cambios guardados correctamente');
         this.usuarioActual = usuarioActualizado;
         this.isEditingUser = false;
+        // Limpiar campos de contraseña del formulario
+        this.usuarioForm.patchValue({ newPassword: '', confirmPassword: '' });
+        // Recargar usuario actual y lista de usuarios
         const loggedUser = this.authService.getUser();
         if (loggedUser) {
           this.usuarioService.buscarPorUsername(loggedUser.username)

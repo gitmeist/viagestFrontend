@@ -33,6 +33,11 @@ export class PaquetesComponent implements OnInit {
   mostrarModalEditar = false;
   paqueteEditar: Paquete | null = null;
 
+  // Modal editar/crear actividad
+  mostrarModalActividad = false;
+  actividadEdit: PaqueteActividad | null = null;
+  isNuevaActividad = false;
+
   paginaActual = 1;
   paquetesPorPagina = 8;
   totalFiltrados = 0;
@@ -83,6 +88,68 @@ export class PaquetesComponent implements OnInit {
 
   volverStep1(): void {
     this.stepActual = 1;
+  }
+
+  abrirModalNuevaActividad(): void {
+    if (!this.paqueteVer) return;
+    this.isNuevaActividad = true;
+    this.actividadEdit = {
+      id: 0,
+      tipo: 'ACTIVIDAD',
+      titulo: '',
+      descripcion: '',
+      horaInicio: '09:00',
+      horaFin: '10:00',
+      dia: 1,
+      imagen: ''
+    };
+    this.mostrarModalActividad = true;
+  }
+
+  abrirModalEditarActividad(act: PaqueteActividad): void {
+    this.isNuevaActividad = false;
+    this.actividadEdit = { ...act };
+    this.mostrarModalActividad = true;
+  }
+
+  cerrarModalActividad(): void {
+    this.mostrarModalActividad = false;
+    this.actividadEdit = null;
+  }
+
+  guardarActividad(): void {
+    if (!this.paqueteVer || !this.actividadEdit) return;
+    const idPaquete = this.paqueteVer.idPaquete;
+    if (this.isNuevaActividad) {
+      this.paqueteActividad.crear(this.actividadEdit, idPaquete).subscribe({
+        next: (a) => {
+          this.actividades.push(a);
+          this.actividades.sort((x,y)=> x.dia - y.dia);
+          this.cerrarModalActividad();
+        },
+        error: (e) => alert('Error al crear actividad')
+      });
+    } else {
+      this.paqueteActividad.actualizar(this.actividadEdit.id, this.actividadEdit).subscribe({
+        next: (a) => {
+          const idx = this.actividades.findIndex(x=> x.id === a.id);
+          if (idx !== -1) this.actividades[idx] = a;
+          this.actividades.sort((x,y)=> x.dia - y.dia);
+          this.cerrarModalActividad();
+        },
+        error: (e) => alert('Error al actualizar actividad')
+      });
+    }
+  }
+
+  eliminarActividad(act: PaqueteActividad): void {
+    if (!confirm(`¿Eliminar actividad "${act.titulo}"?`)) return;
+    this.paqueteActividad.eliminar(act.id).subscribe({
+      next: () => {
+        this.actividades = this.actividades.filter(a => a.id !== act.id);
+      },
+      error: () => alert('Error al eliminar actividad')
+    });
   }
 
 

@@ -17,4 +17,19 @@ export class PaqueteActividadService {
   actividadesPorPaquete(idPaquete: number): Observable<PaqueteActividad[]> {
     return this.http.get<PaqueteActividad[]>(`${this.baseUrl}/paquete/${idPaquete}`, { withCredentials: true });
   }
+
+  /** Crear actividad */
+  crear(actividad: PaqueteActividad, idPaquete: number): Observable<PaqueteActividad> {
+    return this.http.post<PaqueteActividad>(`${this.baseUrl}/paquete/${idPaquete}`, actividad, { withCredentials: true });
+  }
+
+  /** Actualizar actividad */
+  actualizar(id: number, actividad: PaqueteActividad): Observable<PaqueteActividad> {
+    return this.http.put<PaqueteActividad>(`${this.baseUrl}/${id}`, actividad, { withCredentials: true });
+  }
+
+  /** Eliminar actividad */
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
 }

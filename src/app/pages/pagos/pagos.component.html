@@ -11,7 +11,7 @@
       <div class="position-relative flex-grow-1 buscador-wrapper" style="min-width:260px;">
         <i class="bi bi-search search-icon"></i>
         <input id="busqueda-pagos" type="text" class="form-control buscador-input ps-5"
-          placeholder="Buscar por cliente o referencia" [(ngModel)]="filtroTexto" (input)="aplicarFiltros()"
+          placeholder="Buscar por cliente" [(ngModel)]="filtroTexto" (input)="aplicarFiltros()"
           aria-label="Buscar" />
       </div>
 
@@ -32,11 +32,7 @@
       </div>
 
       <div>
-        <input type="date" class="form-control" [(ngModel)]="rangoFecha.desde" (change)="aplicarFiltros()" placeholder="Desde">
-      </div>
-
-      <div>
-        <input type="date" class="form-control" [(ngModel)]="rangoFecha.hasta" (change)="aplicarFiltros()" placeholder="Hasta">
+        <input type="date" class="form-control" [(ngModel)]="filtroFecha" (change)="aplicarFiltros()" placeholder="Fecha de Pago">
       </div>
 
       <!-- Botón Resetear Filtros -->
@@ -76,7 +72,6 @@
     <div class="detalle">
       <span>💳 {{ pago.metodoPago }}</span>
       <span>📅 {{ pago.fechaPago | date:'yyyy-MM-dd' }}</span>
-      <span>📄 {{ pago.referencia }}</span>
     </div>
 
     <!-- Botones -->
@@ -84,6 +79,10 @@
       <button *ngIf="pago.estadoPago === 'PENDIENTE'" class="btn-accion"
               (click)="aceptarPago(pago)">
         Aceptar Pago
+      </button>
+      <button *ngIf="pago.estadoPago === 'CANCELADO'" class="btn-accion btn-fallido"
+              (click)="marcarComoFallido(pago)">
+        Marcar Fallido
       </button>
       <button class="btn-detalles" (click)="abrirModalVerPago(pago)">Detalles</button>
     </div>
@@ -138,27 +137,23 @@
               <label>Fecha de Pago</label>
               <input type="text" class="form-control" [value]="pagoVer.fechaPago | date:'yyyy-MM-dd HH:mm'" readonly />
             </div>
-            <div class="col-md-6">
-              <label>Referencia</label>
-              <input type="text" class="form-control" [value]="pagoVer.referencia" readonly />
-            </div>
           </div>
 
         </div>
 
         <hr class="divider" />
-        <div class="text-end mt-3">
-          <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success me-2" (click)="toggleEdicionPago()">
+        <div class="modal-footer-actions">
+          <button *ngIf="!modoEdicion" type="button" class="btn btn-outline-success" (click)="toggleEdicionPago()">
             <i class="bi bi-pencil me-1"></i>Editar Pago
           </button>
-          <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary me-2" (click)="toggleEdicionPago()">
+          <button *ngIf="modoEdicion" type="button" class="btn btn-outline-secondary" (click)="toggleEdicionPago()">
             <i class="bi bi-x-circle me-1"></i>Cancelar Edición
           </button>
-          <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise me-2" (click)="actualizarPago()">
+          <button *ngIf="modoEdicion" type="button" class="btn btn-turquoise" (click)="actualizarPago()">
             <i class="bi bi-check-circle me-1"></i>Actualizar Pago
           </button>
 
-          <button type="button" class="btn btn-success me-2" (click)="generarFactura()">
+          <button type="button" class="btn btn-success" (click)="generarFactura()">
             <i class="bi bi-file-earmark-text me-1"></i>Generar Factura
           </button>
 

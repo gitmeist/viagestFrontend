@@ -39,7 +39,7 @@ export const routes: Routes = [
         path: 'pagos', component: PagosComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'EMPLEADO'] }
       },
       { 
-        path: 'settings', component: SettingsComponent, canActivate: [roleGuard], data: { roles: ['ADMON'] }
+        path: 'settings', component: SettingsComponent, canActivate: [roleGuard], data: { roles: ['ADMON', 'AGENTE', 'EMPLEADO'] }
       }
     ]
   },

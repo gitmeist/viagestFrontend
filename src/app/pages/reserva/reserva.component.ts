@@ -353,6 +353,22 @@ export class ReservaComponent implements OnInit {
     });
   }
 
+  cancelar(r: Reserva): void {
+    if (r.estadoReserva !== 'CONFIRMADA') return;
+    if (!confirm(`¿Cancelar la reserva #${r.idReserva}?`)) return;
+    this.reservaService.cancelar(r.idReserva).subscribe({
+      next: (reservaActualizada: Reserva) => {
+        // Refrescar la lista y resumen
+        this.cargarReservas();
+        alert('Reserva cancelada correctamente');
+      },
+      error: (err: any) => {
+        console.error('Error al cancelar la reserva', err);
+        alert('Error al cancelar la reserva');
+      }
+    });
+  }
+
   nuevoRegistro(): void {
     console.log('Crear nueva reserva');
   }

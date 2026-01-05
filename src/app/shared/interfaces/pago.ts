@@ -19,9 +19,6 @@ export interface Pago {
   /** Estado actual del pago */
   estadoPago: EstadoPago;
 
-  /** Referencia o código del pago  */
-  referencia: string;
-
   /** Reserva asociada*/
   reserva: Reserva;
 }

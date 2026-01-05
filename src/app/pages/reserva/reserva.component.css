@@ -304,6 +304,14 @@
   background: #d9534f;
 }
 
+.btn-accion.cancelar {
+  background: #ffb74d;
+}
+
+.btn-accion.cancelar:hover {
+  background: #ffa726;
+}
+
 .sin-reservas {
   grid-column: 1 / -1;
   text-align: center;
