@@ -160,19 +160,9 @@ export class ClienteComponent implements OnInit {
           referencia: `PAG-${Date.now()}`,
           reserva: reservaCreada
         };
+        this.cerrarModalReserva();
 
-        this.pagoService.alta(nuevoPago).subscribe({
-          next: (pagoCreado: Pago) => {
-            console.log('Pago creado:', pagoCreado);
-            this.cerrarModalReserva();
-            alert('Reserva y pago registrados correctamente');
-          },
-          error: (err: any) => {
-            console.error('Error al crear pago:', err);
-            alert('Reserva creada pero hubo un error al registrar el pago');
-            this.cerrarModalReserva();
-          }
-        });
+
       },
       error: (err: any) => {
         console.error('Error al crear reserva:', err);
